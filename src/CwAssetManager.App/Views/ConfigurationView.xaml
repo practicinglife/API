@@ -1,0 +1,67 @@
+<UserControl x:Class="CwAssetManager.App.Views.ConfigurationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" MaxWidth="600" HorizontalAlignment="Left">
+            <TextBlock Text="Configuration" FontSize="22" FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,16"/>
+
+            <!-- CW Manage -->
+            <TextBlock Text="ConnectWise Manage" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,8"/>
+            <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Base URL" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ManageBaseUrl, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="Company ID" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ManageCompanyId, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="Client ID" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ManageClientId, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="Public Key" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ManagePublicKey, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="Private Key" Margin="0,0,0,4"/>
+                    <PasswordBox x:Name="ManagePrivateKeyBox" Padding="4,4" Margin="0,0,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- CW Control -->
+            <TextBlock Text="ConnectWise Control" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,8"/>
+            <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Base URL" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ControlBaseUrl, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="OAuth2 Token Endpoint" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ControlTokenEndpoint, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="Client ID" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ControlClientId, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="Client Secret" Margin="0,0,0,4"/>
+                    <PasswordBox x:Name="ControlClientSecretBox" Padding="4,4"/>
+                </StackPanel>
+            </Border>
+
+            <!-- CW RMM -->
+            <TextBlock Text="ConnectWise RMM" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,8"/>
+            <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Base URL" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding RmmBaseUrl, UpdateSourceTrigger=PropertyChanged}" Padding="4,4" Margin="0,0,0,8"/>
+                    <TextBlock Text="API Key" Margin="0,0,0,4"/>
+                    <PasswordBox x:Name="RmmApiKeyBox" Padding="4,4"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Actions -->
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Save Configuration" Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding SaveCommand}" Margin="0,0,8,0"
+                        IsEnabled="{Binding IsSaving, Converter={x:Static converters:InverseBoolConverter.Instance}}"/>
+            </StackPanel>
+
+            <TextBlock Text="{Binding StatusMessage}" Margin="0,8,0,0"
+                       Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

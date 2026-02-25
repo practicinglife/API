@@ -1,0 +1,38 @@
+<UserControl x:Class="CwAssetManager.App.Views.RequestLogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="{StaticResource BackgroundBrush}">
+    <DockPanel Margin="24">
+        <TextBlock DockPanel.Dock="Top" Text="Request Log" FontSize="22" FontWeight="Bold"
+                   Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,12"/>
+
+        <!-- Toolbar -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
+            <TextBlock Text="Provider filter:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBox Text="{Binding FilterProvider, UpdateSourceTrigger=PropertyChanged}"
+                     Width="140" Padding="4,2" Margin="0,0,8,0"/>
+            <Button Content="Refresh" Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding LoadLogsCommand}" Margin="0,0,8,0"/>
+            <Button Content="Purge 30d+" Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding PurgeOldLogsCommand}" Background="{StaticResource WarnBrush}"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding Logs}" AutoGenerateColumns="False"
+                  IsReadOnly="True" GridLinesVisibility="Horizontal"
+                  Background="White" AlternatingRowBackground="#F8F8F8"
+                  BorderThickness="1" BorderBrush="#DDDDDD">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Timestamp"    Binding="{Binding Timestamp, StringFormat='{}{0:g}'}" Width="140"/>
+                <DataGridTextColumn Header="Provider"     Binding="{Binding Provider}"     Width="100"/>
+                <DataGridTextColumn Header="Method"       Binding="{Binding Method}"       Width="70"/>
+                <DataGridTextColumn Header="Status"       Binding="{Binding StatusCode}"   Width="70"/>
+                <DataGridTextColumn Header="Duration (ms)"Binding="{Binding DurationMs}"   Width="100"/>
+                <DataGridTextColumn Header="URL"          Binding="{Binding Url}"          Width="*"/>
+                <DataGridTextColumn Header="Correlation"  Binding="{Binding CorrelationId}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

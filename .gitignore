@@ -1,0 +1,62 @@
+## OS / IDE
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.idea/
+
+## Build outputs
+[Bb]in/
+[Oo]bj/
+out/
+publish/
+
+## .NET
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Test results
+TestResults/
+test-results/
+*.trx
+*.coverage
+*.coveragexml
+
+## Logs & databases
+*.log
+logs/
+*.db
+*.db-shm
+*.db-wal
+cw-secrets.bin
+
+## OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## Environment / secrets
+appsettings.*.local.json
+*.env
+.env*
+secrets.json
+
+## Entity Framework migrations (keep only committed ones)
+# Uncomment to ignore auto-generated migrations:
+# src/**/Migrations/
+
+## NuGet
+.nuget/
+packages/
+*.nupkg
+
+## Rider
+.idea/
+
+## ConnectWise API spec browser-asset files (JS/CSS companion to the saved HTML page)
+Session Manager API reference - ConnectWise_files/

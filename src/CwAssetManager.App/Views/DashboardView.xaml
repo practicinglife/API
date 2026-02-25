@@ -1,0 +1,69 @@
+<UserControl x:Class="CwAssetManager.App.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Text="Dashboard" FontSize="22" FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,16"/>
+
+            <!-- KPI cards -->
+            <WrapPanel>
+                <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8"
+                        Padding="20" Margin="0,0,12,12" Width="160">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TotalMachines}" FontSize="32" FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryBrush}"/>
+                        <TextBlock Text="Total Assets" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8"
+                        Padding="20" Margin="0,0,12,12" Width="160">
+                    <StackPanel>
+                        <TextBlock Text="{Binding OnlineMachines}" FontSize="32" FontWeight="Bold"
+                                   Foreground="{StaticResource SuccessBrush}"/>
+                        <TextBlock Text="Online" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8"
+                        Padding="20" Margin="0,0,12,12" Width="160">
+                    <StackPanel>
+                        <TextBlock Text="{Binding OfflineMachines}" FontSize="32" FontWeight="Bold"
+                                   Foreground="{StaticResource ErrorBrush}"/>
+                        <TextBlock Text="Offline" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8"
+                        Padding="20" Margin="0,0,12,12" Width="160">
+                    <StackPanel>
+                        <TextBlock Text="{Binding UnknownMachines}" FontSize="32" FontWeight="Bold"
+                                   Foreground="{StaticResource WarnBrush}"/>
+                        <TextBlock Text="Unknown" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+            </WrapPanel>
+
+            <!-- Recent assets -->
+            <TextBlock Text="Recent Assets" FontSize="16" FontWeight="SemiBold"
+                       Foreground="{StaticResource PrimaryBrush}" Margin="0,16,0,8"/>
+            <DataGrid ItemsSource="{Binding RecentMachines}" AutoGenerateColumns="False"
+                      IsReadOnly="True" GridLinesVisibility="Horizontal"
+                      Background="White" RowBackground="White" AlternatingRowBackground="#F8F8F8"
+                      BorderThickness="1" BorderBrush="#DDDDDD">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Hostname"      Binding="{Binding Hostname}"       Width="180"/>
+                    <DataGridTextColumn Header="IP Address"    Binding="{Binding IpAddress}"      Width="130"/>
+                    <DataGridTextColumn Header="OS"            Binding="{Binding OperatingSystem}" Width="160"/>
+                    <DataGridTextColumn Header="Status"        Binding="{Binding Status}"         Width="90"/>
+                    <DataGridTextColumn Header="Last Seen"     Binding="{Binding LastSeen, StringFormat='{}{0:g}'}" Width="150"/>
+                    <DataGridTextColumn Header="CW Manage ID"  Binding="{Binding CwManageDeviceId}"  Width="120"/>
+                    <DataGridTextColumn Header="CW Control ID" Binding="{Binding CwControlSessionId}" Width="120"/>
+                    <DataGridTextColumn Header="CW RMM ID"     Binding="{Binding CwRmmDeviceId}"  Width="120"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
