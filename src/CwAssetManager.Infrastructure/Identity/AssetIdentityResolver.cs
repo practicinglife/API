@@ -30,6 +30,8 @@ public sealed class AssetIdentityResolver
     {
         if (!string.IsNullOrWhiteSpace(incoming.CwManageDeviceId))
             existing.CwManageDeviceId = incoming.CwManageDeviceId;
+        if (!string.IsNullOrWhiteSpace(incoming.CwManageDeviceIdentifier))
+            existing.CwManageDeviceIdentifier = incoming.CwManageDeviceIdentifier;
         if (!string.IsNullOrWhiteSpace(incoming.CwControlSessionId))
             existing.CwControlSessionId = incoming.CwControlSessionId;
         if (!string.IsNullOrWhiteSpace(incoming.CwRmmDeviceId))

@@ -22,10 +22,27 @@ public sealed class ConnectWiseManageClientTests
     [Fact]
     public async Task GetMachinesAsync_WithValidResponse_ReturnsMachines()
     {
+        // Use the Company.Configuration schema fields from All.json (v2025.16).
         var json = JsonSerializer.Serialize(new[]
         {
-            new { id = 1, name = "PC01", ipAddress = "10.0.0.1", osType = "Windows", status = new { name = "Active" } },
-            new { id = 2, name = "SERVER01", ipAddress = "10.0.0.2", osType = "Windows Server", status = new { name = "Active" } }
+            new
+            {
+                id = 1, name = "PC01", ipAddress = "10.0.0.1",
+                osType = "Windows 11", osInfo = "Windows 11 Pro 23H2",
+                serialNumber = "SN001", macAddress = "AA:BB:CC:DD:EE:01",
+                mobileGuid = "11111111-1111-1111-1111-111111111111",
+                activeFlag = true,
+                status = new { name = "Active" }
+            },
+            new
+            {
+                id = 2, name = "SERVER01", ipAddress = "10.0.0.2",
+                osType = "Windows Server 2022", osInfo = "Windows Server 2022 Standard",
+                serialNumber = "SN002", macAddress = "AA:BB:CC:DD:EE:02",
+                mobileGuid = "22222222-2222-2222-2222-222222222222",
+                activeFlag = true,
+                status = new { name = "Active" }
+            }
         });
 
         var rateLimiter = new Mock<IRateLimiter>();
@@ -37,9 +54,22 @@ public sealed class ConnectWiseManageClientTests
         var machines = await client.GetMachinesAsync();
 
         machines.Should().HaveCount(2);
-        machines[0].Hostname.Should().Be("PC01");
-        machines[0].IpAddress.Should().Be("10.0.0.1");
-        machines[1].Hostname.Should().Be("SERVER01");
+
+        var pc01 = machines.Single(m => m.Hostname == "PC01");
+        pc01.IpAddress.Should().Be("10.0.0.1");
+        pc01.SerialNumber.Should().Be("SN001");
+        pc01.MacAddress.Should().Be("AA:BB:CC:DD:EE:01");
+        // osInfo takes precedence over osType
+        pc01.OperatingSystem.Should().Be("Windows 11 Pro 23H2");
+        // mobileGuid → BiosGuid
+        pc01.BiosGuid.Should().Be("11111111-1111-1111-1111-111111111111");
+        // activeFlag=true + status.name="Active" → Online
+        pc01.Status.Should().Be(Core.Enums.MachineStatus.Online);
+        // id → CwManageDeviceId (as string)
+        pc01.CwManageDeviceId.Should().Be("1");
+
+        machines.Single(m => m.Hostname == "SERVER01")
+                .OperatingSystem.Should().Be("Windows Server 2022 Standard");
     }
 
     [Fact]

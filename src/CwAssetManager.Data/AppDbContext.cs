@@ -26,6 +26,7 @@ public sealed class AppDbContext : DbContext
             e.Property(m => m.SerialNumber).HasMaxLength(128);
             e.Property(m => m.BiosGuid).HasMaxLength(64);
             e.Property(m => m.CwManageDeviceId).HasMaxLength(64);
+            e.Property(m => m.CwManageDeviceIdentifier).HasMaxLength(128);
             e.Property(m => m.CwControlSessionId).HasMaxLength(128);
             e.Property(m => m.CwRmmDeviceId).HasMaxLength(128);
             e.Property(m => m.OperatingSystem).HasMaxLength(256);

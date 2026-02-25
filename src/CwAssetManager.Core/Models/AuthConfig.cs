@@ -18,7 +18,12 @@ public sealed class AuthConfig
     public string? OAuthTokenEndpoint { get; set; }
     public string? OAuthScope { get; set; }
 
-    // --- Generic API key header ---
+    // --- ConnectWise Control direct API key ---
+    // Set this to skip the OAuth2 token exchange and authenticate directly.
+    // The key is sent as "Authorization: Bearer {CwControlApiKey}".
+    public string? CwControlApiKey { get; set; }
+
+    // --- Generic API key header (RMM / other providers) ---
     public string? ApiKey { get; set; }
     public string? ApiKeyHeader { get; set; } = "x-api-key";
 }

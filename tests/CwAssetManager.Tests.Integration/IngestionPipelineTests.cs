@@ -65,7 +65,18 @@ public sealed class IngestionPipelineTests : IDisposable
 
         machines.Should().HaveCount(2);
         machines.Should().Contain(m => m.Hostname == "WORKSTATION01");
-        machines.Should().Contain(m => m.CwControlSessionId == "sess-001");
+        machines.Should().Contain(m => m.Hostname == "LAPTOP01");
+        // Verify SessionID is mapped from the GUID field
+        machines.Should().Contain(m => m.CwControlSessionId == MockConnectWiseControlServer.Session1Id);
+        // Verify GuestInfo fields are mapped
+        var ws = machines.Single(m => m.Hostname == "WORKSTATION01");
+        ws.IpAddress.Should().Be("192.168.1.101");
+        ws.SerialNumber.Should().Be("SN-CTRL-001");
+        ws.OperatingSystem.Should().Contain("Windows 11 Pro");
+        ws.Status.Should().Be(CwAssetManager.Core.Enums.MachineStatus.Online); // has Guest connection
+        // LAPTOP01 has no active connections → Offline
+        machines.Single(m => m.Hostname == "LAPTOP01")
+                .Status.Should().Be(CwAssetManager.Core.Enums.MachineStatus.Offline);
     }
 
     [Fact]

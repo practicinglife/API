@@ -1,5 +1,6 @@
-using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
+using CwAssetManager.ApiClients.ConnectWiseManage.Models;
 using CwAssetManager.Core.Enums;
 using CwAssetManager.Core.Interfaces;
 using CwAssetManager.Core.Models;
@@ -8,8 +9,12 @@ using Microsoft.Extensions.Logging;
 namespace CwAssetManager.ApiClients.ConnectWiseManage;
 
 /// <summary>
-/// ConnectWise Manage REST API client.
-/// Supports paginated /company/configurations and /service/tickets endpoints.
+/// ConnectWise Manage REST API client (OpenAPI 3.0.1, version 2025.16).
+/// <para>
+/// Uses cursor-based pagination via <c>pageId</c> for efficient traversal of large
+/// configuration sets, falling back to <c>page</c>/<c>pageSize</c> on first request.
+/// Active configurations are filtered with <c>conditions=activeFlag=true</c>.
+/// </para>
 /// Authentication is handled by <see cref="ConnectWiseManageAuthHandler"/>.
 /// </summary>
 public sealed class ConnectWiseManageClient : IApiClient
@@ -17,7 +22,15 @@ public sealed class ConnectWiseManageClient : IApiClient
     private readonly HttpClient _http;
     private readonly IRateLimiter _rateLimiter;
     private readonly ILogger<ConnectWiseManageClient> _logger;
+
+    // Fields requested from the API — matches Company.Configuration schema in All.json.
+    private const string ConfigFields =
+        "id,name,deviceIdentifier,serialNumber,modelNumber,macAddress,ipAddress," +
+        "osType,osInfo,mobileGuid,activeFlag,status,type,tagNumber,lastLoginName";
+
     private const int PageSize = 1000;
+
+    private static readonly JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.Web);
 
     public ConnectWiseManageClient(
         HttpClient http,
@@ -33,6 +46,7 @@ public sealed class ConnectWiseManageClient : IApiClient
     public async Task<IReadOnlyList<Machine>> GetMachinesAsync(CancellationToken ct = default)
     {
         var machines = new List<Machine>();
+        int? pageId = null;   // cursor — null means first request
         var page = 1;
 
         while (true)
@@ -40,32 +54,35 @@ public sealed class ConnectWiseManageClient : IApiClient
             if (!await _rateLimiter.AcquireAsync(ct).ConfigureAwait(false))
                 throw new InvalidOperationException("Rate limiter timed out waiting for a token.");
 
-            var url = $"company/configurations?pageSize={PageSize}&page={page}&fields=id,name,deviceIdentifier,ipAddress,osType,lastUpdated,status";
+            // Use pageId cursor after the first page for efficient server-side pagination.
+            var url = pageId.HasValue
+                ? $"company/configurations?pageSize={PageSize}&pageId={pageId}&fields={ConfigFields}&conditions=activeFlag=true"
+                : $"company/configurations?pageSize={PageSize}&page={page}&fields={ConfigFields}&conditions=activeFlag=true";
+
             _logger.LogDebug("[Manage] GET {Url}", url);
 
             using var resp = await _http.GetAsync(url, ct).ConfigureAwait(false);
             resp.EnsureSuccessStatusCode();
 
-            var json = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
-            using var doc = JsonDocument.Parse(json);
-            var items = doc.RootElement;
+            var configs = await resp.Content
+                .ReadFromJsonAsync<List<CwManageConfiguration>>(_jsonOptions, ct)
+                .ConfigureAwait(false);
 
-            if (items.ValueKind != JsonValueKind.Array || items.GetArrayLength() == 0)
+            if (configs is null || configs.Count == 0)
                 break;
 
-            foreach (var item in items.EnumerateArray())
-            {
-                var machine = MapToMachine(item);
-                machines.Add(machine);
-            }
+            foreach (var cfg in configs)
+                machines.Add(MapToMachine(cfg));
 
-            if (items.GetArrayLength() < PageSize)
+            if (configs.Count < PageSize)
                 break;
 
+            // Advance cursor: use last item's id as the pageId for the next request.
+            pageId = configs[^1].Id;
             page++;
         }
 
-        _logger.LogInformation("[Manage] Retrieved {Count} configurations", machines.Count);
+        _logger.LogInformation("[Manage] Retrieved {Count} active configurations", machines.Count);
         return machines;
     }
 
@@ -75,13 +92,20 @@ public sealed class ConnectWiseManageClient : IApiClient
         if (!await _rateLimiter.AcquireAsync(ct).ConfigureAwait(false))
             throw new InvalidOperationException("Rate limiter timed out.");
 
-        using var resp = await _http.GetAsync($"company/configurations/{providerId}", ct).ConfigureAwait(false);
-        if (resp.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+        using var resp = await _http.GetAsync(
+            $"company/configurations/{providerId}?fields={ConfigFields}", ct)
+            .ConfigureAwait(false);
+
+        if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
+            return null;
+
         resp.EnsureSuccessStatusCode();
 
-        var json = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
-        using var doc = JsonDocument.Parse(json);
-        return MapToMachine(doc.RootElement);
+        var cfg = await resp.Content
+            .ReadFromJsonAsync<CwManageConfiguration>(_jsonOptions, ct)
+            .ConfigureAwait(false);
+
+        return cfg is null ? null : MapToMachine(cfg);
     }
 
     /// <inheritdoc/>
@@ -89,6 +113,7 @@ public sealed class ConnectWiseManageClient : IApiClient
     {
         try
         {
+            // GET /system/info returns version metadata — lightweight connectivity check.
             using var resp = await _http.GetAsync("system/info", ct).ConfigureAwait(false);
             return resp.IsSuccessStatusCode;
         }
@@ -99,38 +124,42 @@ public sealed class ConnectWiseManageClient : IApiClient
         }
     }
 
-    private static Machine MapToMachine(JsonElement item)
+    /// <summary>
+    /// Maps a <see cref="CwManageConfiguration"/> (from the Company.Configuration schema)
+    /// to the unified <see cref="Machine"/> domain model.
+    /// </summary>
+    private static Machine MapToMachine(CwManageConfiguration cfg)
     {
-        var machine = new Machine
-        {
-            CwManageDeviceId = GetString(item, "id"),
-            Hostname = GetString(item, "name"),
-            IpAddress = GetString(item, "ipAddress"),
-            OperatingSystem = GetString(item, "osType"),
-            LastSeen = DateTimeOffset.UtcNow,
-            Status = MachineStatus.Unknown
-        };
+        // Prefer osInfo (detailed version string) over osType (short category).
+        var os = !string.IsNullOrWhiteSpace(cfg.OsInfo) ? cfg.OsInfo : cfg.OsType;
 
-        var statusStr = GetString(item, "status.name");
-        machine.Status = statusStr?.ToLowerInvariant() switch
-        {
-            "active" => MachineStatus.Online,
-            "inactive" => MachineStatus.Offline,
-            _ => MachineStatus.Unknown
-        };
+        // activeFlag=true → Online; false → Offline; absence → Unknown.
+        var status = cfg.ActiveFlag ? MachineStatus.Online : MachineStatus.Offline;
 
-        return machine;
-    }
-
-    private static string? GetString(JsonElement element, string path)
-    {
-        var parts = path.Split('.');
-        JsonElement current = element;
-        foreach (var part in parts)
+        // Status.Name may provide finer-grained state (e.g. "Active", "Inactive", "Retired").
+        if (cfg.Status?.Name is { } statusName)
         {
-            if (!current.TryGetProperty(part, out current))
-                return null;
+            status = statusName.ToLowerInvariant() switch
+            {
+                "active" => MachineStatus.Online,
+                "inactive" or "retired" or "disposed" => MachineStatus.Offline,
+                _ => status
+            };
         }
-        return current.ValueKind == JsonValueKind.String ? current.GetString() : current.ToString();
+
+        return new Machine
+        {
+            // CwManageDeviceId stores the integer record ID as a string.
+            CwManageDeviceId = cfg.Id.ToString(),
+            // mobileGuid is the BIOS/hardware GUID — the strongest cross-provider key.
+            BiosGuid = cfg.MobileGuid,
+            Hostname = cfg.Name,
+            SerialNumber = cfg.SerialNumber,
+            MacAddress = cfg.MacAddress,
+            IpAddress = cfg.IpAddress,
+            OperatingSystem = os,
+            Status = status,
+            LastSeen = DateTimeOffset.UtcNow,
+        };
     }
 }

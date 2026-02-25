@@ -6,8 +6,25 @@ using Microsoft.Extensions.Logging;
 namespace CwAssetManager.ApiClients.ConnectWiseControl;
 
 /// <summary>
-/// Delegating handler for ConnectWise Control that injects a Bearer token
-/// obtained via OAuth2 client credentials.
+/// Delegating handler for ConnectWise Control that authenticates each request using either:
+/// <list type="bullet">
+///   <item>
+///     <term>API Key</term>
+///     <description>
+///       If <see cref="AuthConfig.CwControlApiKey"/> is set, injects
+///       <c>Authorization: Bearer {apiKey}</c> directly — no token exchange required.
+///       This is the recommended approach for server-to-server access as documented in
+///       the Session Manager API reference.
+///     </description>
+///   </item>
+///   <item>
+///     <term>OAuth2 Client Credentials</term>
+///     <description>
+///       Falls back to obtaining a Bearer token via the OAuth2 client credentials flow
+///       when no API key is configured. Tokens are cached and refreshed 30 s before expiry.
+///     </description>
+///   </item>
+/// </list>
 /// </summary>
 public sealed class ConnectWiseControlAuthHandler : DelegatingHandler
 {
@@ -29,23 +46,38 @@ public sealed class ConnectWiseControlAuthHandler : DelegatingHandler
         HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
-        var token = await _tokenManager.GetTokenAsync(
-            _config.OAuthTokenEndpoint ?? throw new InvalidOperationException("OAuthTokenEndpoint is not configured"),
-            _config.OAuthClientId ?? throw new InvalidOperationException("OAuthClientId is not configured"),
-            _config.OAuthClientSecret ?? throw new InvalidOperationException("OAuthClientSecret is not configured"),
-            _config.OAuthScope,
-            cancellationToken).ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(_config.CwControlApiKey))
+        {
+            // Prefer direct API key — avoids an extra round-trip to the token endpoint.
+            request.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", _config.CwControlApiKey);
+        }
+        else
+        {
+            // OAuth2 client credentials flow — fetches (and caches) a token.
+            var token = await _tokenManager.GetTokenAsync(
+                _config.OAuthTokenEndpoint
+                    ?? throw new InvalidOperationException("OAuthTokenEndpoint is not configured"),
+                _config.OAuthClientId
+                    ?? throw new InvalidOperationException("OAuthClientId is not configured"),
+                _config.OAuthClientSecret
+                    ?? throw new InvalidOperationException("OAuthClientSecret is not configured"),
+                _config.OAuthScope,
+                cancellationToken).ConfigureAwait(false);
 
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
         _logger.LogDebug("[Control] → {Method} {Uri}", request.Method, request.RequestUri);
 
         var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-        // Token may have been invalidated on 401
-        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        // Invalidate cached OAuth token on 401 so the next request triggers a fresh exchange.
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+            && string.IsNullOrWhiteSpace(_config.CwControlApiKey))
         {
             _tokenManager.Invalidate();
-            _logger.LogWarning("[Control] 401 received – token invalidated");
+            _logger.LogWarning("[Control] 401 received — OAuth token invalidated; will refresh on next request");
         }
 
         return response;
