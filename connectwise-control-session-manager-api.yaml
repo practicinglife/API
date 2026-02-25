@@ -1,0 +1,2310 @@
+openapi: 3.0.3
+info:
+  title: ConnectWise Control Session Manager API
+  description: >
+    The Session Manager API provides programmatic access to ConnectWise Control
+    (formerly ScreenConnect) session management. This API allows you to create,
+    read, update, and manage remote support/access sessions, session groups,
+    session event triggers, captures, audit entries, and licensing.
+  version: "1.0.0"
+servers:
+  - url: https://{instance}.screenconnect.com
+    variables:
+      instance:
+        default: yourcompany
+        description: Your ConnectWise Control instance name
+  - url: https://{host}
+    variables:
+      host:
+        default: your-connectwise-control-host
+        description: Your on-premises ConnectWise Control hostname
+
+tags:
+  - name: Sessions
+    description: Operations for creating and managing remote sessions
+  - name: Session Groups
+    description: Operations for managing session groups and summaries
+  - name: Session Connections
+    description: Operations for managing connections within sessions
+  - name: Session Events
+    description: Operations for session events and event triggers
+  - name: Session Captures
+    description: Operations for session capture recordings
+  - name: Session Audit
+    description: Operations for session audit entries
+  - name: Hosts
+    description: Operations for managing eligible session hosts
+  - name: Licensing
+    description: Operations for managing instance licenses
+  - name: Reports
+    description: Operations for running reports against session data
+  - name: Extensions
+    description: Operations for managing extension settings
+
+paths:
+  /api/v1/sessions:
+    get:
+      tags:
+        - Sessions
+      summary: Get all sessions
+      description: >
+        Retrieves the Session objects for all existing sessions
+        (GetSessionsAsync). Returns all Session objects in the database.
+      operationId: getSessions
+      parameters:
+        - name: sessionFilter
+          in: query
+          description: >
+            Expression describing which sessions to include/exclude; follows
+            the same SQL-like format used for managing session groups
+            (e.g., "HostConnectedCount > 0 AND GuestConnectedCount > 0").
+            When omitted, all sessions are returned.
+          required: false
+          schema:
+            type: string
+        - name: lastAlteredSinceVersion
+          in: query
+          description: >
+            SessionManager state version to compare with the LastAlteredVersion
+            of each session. When provided, returns only sessions with versions
+            greater than the specified value.
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Sessions retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+    post:
+      tags:
+        - Sessions
+      summary: Create a new session
+      description: >
+        Creates a new Support or Meeting session (CreateSessionAsync). The host,
+        name, and method of joining are assigned at creation. Use the
+        sessionType field to specify Support or Meeting; the Access session type
+        should be created via the access session endpoint.
+      operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSessionRequest"
+      responses:
+        "201":
+          description: Session created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+        "400":
+          description: Bad request (e.g., invalid session type)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/access:
+    post:
+      tags:
+        - Sessions
+      summary: Create a new Access session
+      description: >
+        Creates a new Access session (CreateSession). The sessionID and
+        encryptionKey are assigned at creation; the resulting session appears
+        on the Host page of the web server.
+      operationId: createAccessSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAccessSessionRequest"
+      responses:
+        "201":
+          description: Access session created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/public:
+    get:
+      tags:
+        - Sessions
+      summary: Get all public sessions
+      description: >
+        Retrieves the Session objects for all existing sessions that are
+        publicly available to view and join from the dropdown menu on the Guest
+        page (GetPublicSessionsAsync). These are sessions where isPublic is
+        set to true.
+      operationId: getPublicSessions
+      responses:
+        "200":
+          description: Public sessions retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/non-public-code-sessions-exist:
+    get:
+      tags:
+        - Sessions
+      summary: Check if non-public code sessions exist
+      description: >
+        Indicates the existence of non-public sessions with a join code
+        (DoNonPublicCodeSessionsExistAsync).
+      operationId: doNonPublicCodeSessionsExist
+      responses:
+        "200":
+          description: Result indicating whether non-public code sessions exist.
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/by-code/{code}:
+    get:
+      tags:
+        - Sessions
+      summary: Get a session by join code
+      description: >
+        Retrieves the first Session object having the indicated join code
+        (GetSessionAsync by code). Returns null if no matching session is found.
+      operationId: getSessionByCode
+      parameters:
+        - name: code
+          in: path
+          required: true
+          description: The join code that had been specified for the session of interest.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}:
+    get:
+      tags:
+        - Sessions
+      summary: Get a session by ID
+      description: >
+        Retrieves the single Session object having the specified identifier
+        (GetSessionAsync). Returns null if no such session exists.
+      operationId: getSession
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      responses:
+        "200":
+          description: Session retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+    put:
+      tags:
+        - Sessions
+      summary: Update a session
+      description: >
+        Modifies information about the indicated session
+        (UpdateSessionAsync by host). Fields such as name, isPublic,
+        code, and custom property values may be updated.
+      operationId: updateSession
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - name: byHost
+          in: query
+          description: User name of the host considered responsible for editing the session properties.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSessionRequest"
+      responses:
+        "204":
+          description: Session updated successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/demand:
+    get:
+      tags:
+        - Sessions
+      summary: Demand a session by ID (throws if not found)
+      description: >
+        Attempts to retrieve the Session object matching the given identifier,
+        throwing an exception if not found (DemandSessionAsync). This differs
+        from the standard GET session method, which returns null when a
+        matching identifier does not exist.
+      operationId: demandSession
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      responses:
+        "200":
+          description: Session retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+        "404":
+          description: Session not found (throws exception)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/details:
+    get:
+      tags:
+        - Sessions
+      summary: Get session details
+      description: >
+        Retrieves the SessionDetails object for the session matching the given
+        identifier (GetSessionDetailsAsync). Contains information about
+        screenshot content, events, and connections.
+      operationId: getSessionDetails
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      responses:
+        "200":
+          description: Session details retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionDetails"
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/guest-screenshot:
+    get:
+      tags:
+        - Sessions
+      summary: Get guest screenshot
+      description: >
+        Retrieves the guest screenshot image data of the session corresponding
+        to the given identifier (GetSessionGuestScreenshotContentAsync).
+      operationId: getSessionGuestScreenshotContent
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      responses:
+        "200":
+          description: Screenshot content retrieved successfully.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+    put:
+      tags:
+        - Sessions
+      summary: Update guest screenshot
+      description: >
+        Modifies the guest screenshot associated with the indicated session
+        (UpdateSessionAsync by screenshotContent). The screenshot is a byte
+        array converted to a base64 string and rendered as a data URI on the
+        Host page.
+      operationId: updateSessionGuestScreenshot
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "204":
+          description: Screenshot updated successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/guest-info:
+    put:
+      tags:
+        - Sessions
+      summary: Update session guest info
+      description: >
+        Modifies information about the guest of a session
+        (UpdateSessionAsync by sessionGuestInfo). Machine and activity records
+        for the session may be changed.
+      operationId: updateSessionGuestInfo
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionGuestInfo"
+      responses:
+        "204":
+          description: Guest info updated successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/host:
+    put:
+      tags:
+        - Sessions
+      summary: Transfer session host
+      description: >
+        Modifies the host of a session (UpdateSessionAsync by toHost). Used to
+        reflect changes or transfer the user responsible for a given session.
+      operationId: updateSessionHost
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - name: byHost
+          in: query
+          description: User name of the host performing the update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - toHost
+              properties:
+                toHost:
+                  type: string
+                  description: User name of the newly-assigned session host.
+      responses:
+        "204":
+          description: Session host updated successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/logon-sessions:
+    put:
+      tags:
+        - Session Connections
+      summary: Set session logon sessions
+      description: >
+        Sets the available logon sessions for the indicated Session
+        (SetSessionLogonSessionsAsync).
+      operationId: setSessionLogonSessions
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/LogonSessionInfo"
+      responses:
+        "204":
+          description: Logon sessions set successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/connections:
+    post:
+      tags:
+        - Session Connections
+      summary: Connect a session connection
+      description: >
+        Attempts to activate the given SessionConnection for the indicated
+        Session (ConnectSessionConnectionAsync).
+      operationId: connectSessionConnection
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionConnection"
+      responses:
+        "204":
+          description: Session connection activated successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/connections/{connectionId}:
+    delete:
+      tags:
+        - Session Connections
+      summary: Disconnect a session connection
+      description: >
+        Attempts to deactivate the indicated SessionConnection for the indicated
+        Session (DisconnectSessionConnectionAsync).
+      operationId: disconnectSessionConnection
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - name: connectionId
+          in: path
+          required: true
+          description: Identifier of the SessionConnection to deactivate.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Session connection deactivated successfully.
+        "404":
+          description: Session or connection not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/events:
+    post:
+      tags:
+        - Session Events
+      summary: Add a session event
+      description: >
+        Adds the provided SessionEvent to the indicated Session
+        (AddSessionEventAsync).
+      operationId: addSessionEvent
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionEvent"
+      responses:
+        "204":
+          description: Session event added successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/captures:
+    get:
+      tags:
+        - Session Captures
+      summary: Get session captures
+      description: >
+        Obtains a list of all SessionCapture objects for the indicated Session
+        (GetSessionCapturesAsync).
+      operationId: getSessionCaptures
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+      responses:
+        "200":
+          description: Session captures retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionCapture"
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/{sessionId}/captures/{captureId}:
+    get:
+      tags:
+        - Session Captures
+      summary: Get session capture content
+      description: >
+        Obtains the specified content from the indicated session capture
+        (GetSessionCaptureContentAsync).
+      operationId: getSessionCaptureContent
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - name: captureId
+          in: path
+          required: true
+          description: Identifier of the specific capture for the indicated session.
+          schema:
+            type: string
+            format: uuid
+        - name: offset
+          in: query
+          required: false
+          description: Offset from the beginning of the stream from which to obtain the capture content.
+          schema:
+            type: integer
+            format: int64
+            default: 0
+        - name: desiredLength
+          in: query
+          required: false
+          description: Number of bytes of content to obtain.
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Capture content retrieved successfully.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Session or capture not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+    post:
+      tags:
+        - Session Captures
+      summary: Append session capture content
+      description: >
+        Appends the supplied data to a session capture, creating a new capture
+        file if one matching the given IDs does not exist
+        (AppendSessionCaptureContentAsync).
+      operationId: appendSessionCaptureContent
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - name: captureId
+          in: path
+          required: true
+          description: Identifier of the specific capture for the indicated session.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "204":
+          description: Capture content appended successfully.
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/sessions/audit:
+    get:
+      tags:
+        - Session Audit
+      summary: Get session audit entries
+      description: >
+        Retrieves the SessionAuditEntry objects from within the indicated time
+        range, filtered by session name and optional event type
+        (GetSessionAuditEntriesAsync).
+      operationId: getSessionAuditEntries
+      parameters:
+        - name: minTime
+          in: query
+          required: true
+          description: Beginning of the time range of interest (pull entries occurring after this time).
+          schema:
+            type: string
+            format: date-time
+        - name: maxTime
+          in: query
+          required: true
+          description: End of the time range of interest (pull entries occurring before this time).
+          schema:
+            type: string
+            format: date-time
+        - name: sessionNameFilter
+          in: query
+          required: true
+          description: The name of the session from which the audit entries should be obtained.
+          schema:
+            type: string
+        - name: sessionEventTypesFilter
+          in: query
+          required: false
+          description: >
+            Optional comma-separated list of event type filters to apply to the
+            audit entries.
+          schema:
+            type: string
+        - name: shouldIncludeSessionCaptures
+          in: query
+          required: false
+          description: Whether or not to include Session Capture files in the results.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Session audit entries retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionAuditEntry"
+        "400":
+          description: Bad request (e.g., invalid date range)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-groups:
+    get:
+      tags:
+        - Session Groups
+      summary: Get all session groups
+      description: >
+        Retrieves the SessionGroup objects for all existing session groups
+        (GetSessionGroupsAsync).
+      operationId: getSessionGroups
+      responses:
+        "200":
+          description: Session groups retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionGroup"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+    put:
+      tags:
+        - Session Groups
+      summary: Save session groups
+      description: >
+        Replaces any currently-defined session groups with the supplied
+        SessionGroup objects, overwriting the corresponding XML file
+        (SaveSessionGroupsAsync).
+      operationId: saveSessionGroups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SessionGroup"
+      responses:
+        "204":
+          description: Session groups saved successfully.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-groups/root-summaries:
+    get:
+      tags:
+        - Session Groups
+      summary: Get root session group summaries
+      description: >
+        Obtains the summaries of the root session groups
+        (GetRootSessionGroupSummariesAsync). Optionally filter by session type
+        and session group path.
+      operationId: getRootSessionGroupSummaries
+      parameters:
+        - name: sessionType
+          in: query
+          required: false
+          description: Session type filter for the root session group query.
+          schema:
+            $ref: "#/components/schemas/SessionType"
+        - name: sessionGroupPath
+          in: query
+          required: false
+          description: Session group path to filter the root session groups.
+          schema:
+            type: string
+        - name: variables
+          in: query
+          required: false
+          description: >
+            JSON-encoded dictionary of filtering variable names and values to be
+            substituted into the filter expression.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Root session group summaries retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionGroupSummary"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-groups/summaries:
+    get:
+      tags:
+        - Session Groups
+      summary: Get session group summaries by path
+      description: >
+        Obtains the summaries of the session groups on the given path
+        (GetSessionGroupSummariesAsync).
+      operationId: getSessionGroupSummaries
+      parameters:
+        - name: sessionGroupPath
+          in: query
+          required: true
+          description: Path from which to retrieve session groups.
+          schema:
+            type: string
+        - name: sessionGroupPathFilter
+          in: query
+          required: false
+          description: Filter to include or exclude session group paths.
+          schema:
+            type: string
+        - name: variables
+          in: query
+          required: false
+          description: >
+            JSON-encoded dictionary of filtering variable names and values.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session group summaries retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionGroupSummary"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-groups/find-first-with-session:
+    post:
+      tags:
+        - Session Groups
+      summary: Find first session group containing a session
+      description: >
+        Retrieves the first session group among the supplied session group paths
+        of which the indicated session is a member
+        (FindFirstSessionGroupWithSessionAsync). Returns the integer index of
+        the first matching group, or -1 if not found.
+      operationId: findFirstSessionGroupWithSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionGroupPaths
+                - sessionId
+              properties:
+                sessionGroupPaths:
+                  type: array
+                  items:
+                    type: string
+                  description: Paths of the session groups to search.
+                variables:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: Names and values of filtering variables.
+                sessionId:
+                  type: string
+                  format: uuid
+                  description: Identifier of the session of interest.
+      responses:
+        "200":
+          description: >
+            Index of the first matching session group, or -1 if not found.
+          content:
+            application/json:
+              schema:
+                type: integer
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-groups/containing-session/{sessionId}:
+    get:
+      tags:
+        - Session Groups
+      summary: Get session groups containing a session
+      description: >
+        Retrieves a list of the session group names containing the given session
+        identifier (GetSessionGroupsContainingSessionAsync).
+      operationId: getSessionGroupsContainingSession
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - name: variables
+          in: query
+          required: false
+          description: >
+            JSON-encoded dictionary of filtering variables.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session groups containing the session retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-groups/is-session-in-group:
+    get:
+      tags:
+        - Session Groups
+      summary: Check if a session is in a group
+      description: >
+        Indicates membership of the given session identifier in the given
+        session group (IsSessionInGroupAsync).
+      operationId: isSessionInGroup
+      parameters:
+        - name: sessionId
+          in: query
+          required: true
+          description: Identifier of the session to locate in the given group.
+          schema:
+            type: string
+            format: uuid
+        - name: sessionGroupPath
+          in: query
+          required: true
+          description: Path of the session group to check.
+          schema:
+            type: string
+        - name: variables
+          in: query
+          required: false
+          description: >
+            JSON-encoded dictionary of filtering variables.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Boolean indicating membership of the session in the group.
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-groups/distinct-custom-property-values:
+    get:
+      tags:
+        - Session Groups
+      summary: Get distinct custom property values
+      description: >
+        Retrieves the values of specific custom properties for specific session
+        groups (GetDistinctCustomPropertyValuesAsync).
+      operationId: getDistinctCustomPropertyValues
+      parameters:
+        - name: customPropertyIndices
+          in: query
+          required: true
+          description: >
+            Comma-separated indices of the custom properties to query
+            (valid range: 0-7).
+          schema:
+            type: string
+        - name: sessionGroupPathFilter
+          in: query
+          required: false
+          description: Filter to include or exclude session group paths.
+          schema:
+            type: string
+        - name: variables
+          in: query
+          required: false
+          description: >
+            JSON-encoded dictionary of variable substitutions for session group names.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: >
+            2D string array representing all distinct values of each specified
+            custom property index.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: string
+        "400":
+          description: Bad request (e.g., invalid property index)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/session-event-triggers:
+    get:
+      tags:
+        - Session Events
+      summary: Get all session event triggers
+      description: >
+        Retrieves all currently-defined SessionEventTrigger objects
+        (GetSessionEventTriggersAsync).
+      operationId: getSessionEventTriggers
+      responses:
+        "200":
+          description: Session event triggers retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionEventTrigger"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+    put:
+      tags:
+        - Session Events
+      summary: Save session event triggers
+      description: >
+        Saves all specified SessionEventTrigger objects, overwriting the
+        corresponding XML file (SaveSessionEventTriggersAsync). Can be used as
+        the programmatic equivalent of manually adding session event triggers.
+      operationId: saveSessionEventTriggers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/SessionEventTrigger"
+      responses:
+        "204":
+          description: Session event triggers saved successfully.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/hosts:
+    get:
+      tags:
+        - Hosts
+      summary: Get eligible hosts
+      description: >
+        Obtains the list of users currently eligible to host sessions
+        (GetEligibleHostsAsync).
+      operationId: getEligibleHosts
+      responses:
+        "200":
+          description: Eligible hosts retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: User name eligible to host sessions.
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/hosts/{host}/ensure-eligible:
+    post:
+      tags:
+        - Hosts
+      summary: Ensure host eligibility
+      description: >
+        Refreshes the eligibility (ability to host sessions) of the named host
+        (EnsureEligibleHostAsync).
+      operationId: ensureEligibleHost
+      parameters:
+        - name: host
+          in: path
+          required: true
+          description: Name of the host whose eligibility timeout should be refreshed.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Host eligibility refreshed successfully.
+        "404":
+          description: Host not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/changes/wait:
+    get:
+      tags:
+        - Sessions
+      summary: Wait for SessionManager state change
+      description: >
+        Waits for a change to the SessionManager state, with an optional
+        duration limit (WaitForChangeAsync).
+      operationId: waitForChange
+      parameters:
+        - name: version
+          in: query
+          required: true
+          description: Initial value of the SessionManager state.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: >
+            Long value representing the SessionManager state after either a
+            change or the timeout period.
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/licenses:
+    get:
+      tags:
+        - Licensing
+      summary: Get license parameters
+      description: >
+        Obtains the licensing information of the server, including a summary of
+        all available capabilities (GetLicenseParametersAsync).
+      operationId: getLicenseParameters
+      responses:
+        "200":
+          description: License parameters retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseParameters"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+    post:
+      tags:
+        - Licensing
+      summary: Add a license
+      description: >
+        Adds a license to the instance (AddLicenseAsync).
+      operationId: addLicense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userString
+              properties:
+                userString:
+                  type: string
+                  description: The license to add as a string encoding of a LicenseEnvelope.
+      responses:
+        "204":
+          description: License added successfully.
+        "400":
+          description: Bad request (e.g., invalid license string)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/licenses/runtime-info:
+    get:
+      tags:
+        - Licensing
+      summary: Get license runtime information
+      description: >
+        Obtains the detailed information about active licenses
+        (GetLicenseRuntimeInfosAsync).
+      operationId: getLicenseRuntimeInfos
+      responses:
+        "200":
+          description: License runtime information retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LicenseRuntimeInfo"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/licenses/{licenseId}:
+    delete:
+      tags:
+        - Licensing
+      summary: Remove a license
+      description: >
+        Removes the indicated license from the instance (RemoveLicenseAsync).
+      operationId: removeLicense
+      parameters:
+        - name: licenseId
+          in: path
+          required: true
+          description: Identifier of the license to remove.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: License removed successfully.
+        "404":
+          description: License not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/reports:
+    post:
+      tags:
+        - Reports
+      summary: Run a report
+      description: >
+        Obtains information from the application database as specified by the
+        given definition (RunReportAsync).
+      operationId: runReport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportDefinition"
+      responses:
+        "200":
+          description: Report results retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+        "400":
+          description: Bad request (e.g., invalid report definition)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+  /api/v1/extensions/{extensionId}/settings/{name}:
+    put:
+      tags:
+        - Extensions
+      summary: Set an extension setting
+      description: >
+        Programmatically sets an extension setting (SetExtensionSettingAsync).
+      operationId: setExtensionSetting
+      parameters:
+        - name: extensionId
+          in: path
+          required: true
+          description: Unique identifier of the extension.
+          schema:
+            type: string
+            format: uuid
+        - name: name
+          in: path
+          required: true
+          description: The name of the setting to set.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - value
+              properties:
+                value:
+                  type: string
+                  description: The value of the setting to set.
+      responses:
+        "204":
+          description: Extension setting updated successfully.
+        "404":
+          description: Extension not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"
+
+components:
+  parameters:
+    sessionId:
+      name: sessionId
+      in: path
+      required: true
+      description: Unique identifier of the session.
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    SessionType:
+      type: string
+      enum:
+        - Support
+        - Meeting
+        - Access
+      description: >
+        Indicates the type of session. Note: only Support and Meeting are valid
+        for CreateSessionAsync; Access sessions use CreateSession.
+
+    Session:
+      type: object
+      description: Represents a ConnectWise Control remote session.
+      properties:
+        sessionID:
+          type: string
+          format: uuid
+          description: Unique identification for a given session; the primary method of identification and cannot be changed.
+        name:
+          type: string
+          description: Display name for the session; visible on the Host page and in the public sessions dropdown on the Guest page.
+        sessionType:
+          $ref: "#/components/schemas/SessionType"
+        host:
+          type: string
+          description: The name of the session creator/host.
+        isPublic:
+          type: boolean
+          description: Determines if the session is publicly available for joining and listed in the dropdown menu on the Guest page.
+        code:
+          type: string
+          description: The code that a Guest must enter on the Guest page to join the session.
+        customPropertyValues:
+          type: array
+          items:
+            type: string
+            nullable: true
+          maxItems: 8
+          description: Values for the eight possible custom properties (indices 0-7).
+        activeConnections:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionConnection"
+          description: List of currently active connections on this session.
+        lastAlteredVersion:
+          type: integer
+          format: int64
+          description: The SessionManager state version when this session was last altered.
+        guestInfo:
+          $ref: "#/components/schemas/SessionGuestInfo"
+        guestInfoUpdateTime:
+          type: string
+          format: date-time
+          description: The time when guest info was last updated.
+        guestLastActivityTime:
+          type: string
+          format: date-time
+          description: The time of the guest's last activity.
+        hostConnectedCount:
+          type: integer
+          description: Number of host connections currently active.
+        guestConnectedCount:
+          type: integer
+          description: Number of guest connections currently active.
+
+    SessionDetails:
+      type: object
+      description: >
+        Detailed information about a session, including screenshot content,
+        events, and connections.
+      properties:
+        sessionID:
+          type: string
+          format: uuid
+          description: Unique identifier for the session.
+        screenshotContent:
+          type: string
+          description: Base64-encoded screenshot thumbnail.
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionEvent"
+        connections:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionConnection"
+
+    SessionGuestInfo:
+      type: object
+      description: >
+        Information pertaining to the guest machine, including details on
+        activity, system information, and screenshots.
+      properties:
+        operatingSystemName:
+          type: string
+          description: Name of the guest's operating system.
+        operatingSystemVersion:
+          type: string
+          description: Version of the guest's operating system.
+        processorName:
+          type: string
+          description: Name of the guest's processor.
+        processorVirtualCount:
+          type: integer
+          description: Number of virtual processors on the guest machine.
+        systemMemoryTotalMegabytes:
+          type: integer
+          description: Total system memory in megabytes.
+        systemMemoryAvailableMegabytes:
+          type: integer
+          description: Available system memory in megabytes.
+        machineName:
+          type: string
+          description: Name of the guest machine.
+        screenCapture:
+          type: string
+          description: Base64-encoded screenshot thumbnail from the guest.
+
+    SessionConnection:
+      type: object
+      description: Represents an active connection within a session.
+      properties:
+        connectionID:
+          type: string
+          format: uuid
+          description: Unique identifier for this connection.
+        processType:
+          type: string
+          enum:
+            - Host
+            - Guest
+            - Other
+          description: The type of process that established this connection.
+        addressString:
+          type: string
+          description: Network address of the connection.
+        connectedTime:
+          type: string
+          format: date-time
+          description: Time when this connection was established.
+
+    SessionEvent:
+      type: object
+      description: Represents a session event.
+      properties:
+        eventType:
+          type: string
+          description: Type of the session event.
+        data:
+          type: string
+          description: Additional data associated with the event.
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the event.
+        host:
+          type: string
+          description: Name of the host associated with the event.
+        connectionID:
+          type: string
+          format: uuid
+          description: Identifier of the connection associated with the event.
+
+    SessionGroup:
+      type: object
+      description: Represents a session group configuration.
+      properties:
+        name:
+          type: string
+          description: Display name of the session group.
+        sessionType:
+          $ref: "#/components/schemas/SessionType"
+        sessionFilter:
+          type: string
+          description: >
+            SQL-like expression describing which sessions belong to this group.
+        isSystem:
+          type: boolean
+          description: Indicates if this is a system-defined session group.
+        subGroups:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionGroup"
+          description: Nested child session groups.
+
+    SessionGroupSummary:
+      type: object
+      description: Summary information about a session group.
+      properties:
+        name:
+          type: string
+          description: Display name of the session group.
+        sessionType:
+          $ref: "#/components/schemas/SessionType"
+        sessionCount:
+          type: integer
+          description: Number of sessions in this group.
+        path:
+          type: string
+          description: Full path of the session group.
+
+    SessionEventTrigger:
+      type: object
+      description: Represents a session event trigger configuration.
+      properties:
+        name:
+          type: string
+          description: Display name of the trigger.
+        eventFilter:
+          type: string
+          description: >
+            SQL-like expression describing which events should activate this
+            trigger (e.g., "Event.EventType = 'Connected' AND
+            Connection.ProcessType = 'Host'").
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TriggerAction"
+          description: Actions to perform when the trigger fires.
+
+    TriggerAction:
+      type: object
+      description: Represents an action performed by a session event trigger.
+      properties:
+        actionType:
+          type: string
+          description: Type of action to perform (e.g., Smtp, Http).
+        subject:
+          type: string
+          description: Subject line for email-type triggers.
+        body:
+          type: string
+          description: Message body for email/HTTP-type triggers.
+        url:
+          type: string
+          description: URL for HTTP-type triggers.
+
+    SessionCapture:
+      type: object
+      description: Represents a session capture recording.
+      properties:
+        captureID:
+          type: string
+          format: uuid
+          description: Unique identifier for this capture.
+        sessionID:
+          type: string
+          format: uuid
+          description: Identifier of the session this capture belongs to.
+        startTime:
+          type: string
+          format: date-time
+          description: Time when the capture started.
+        endTime:
+          type: string
+          format: date-time
+          nullable: true
+          description: Time when the capture ended; null if still in progress.
+        length:
+          type: integer
+          format: int64
+          description: Total byte length of the capture content.
+
+    SessionAuditEntry:
+      type: object
+      description: Represents an audit log entry for a session.
+      properties:
+        sessionID:
+          type: string
+          format: uuid
+          description: Identifier of the session.
+        sessionName:
+          type: string
+          description: Name of the session at the time of the entry.
+        time:
+          type: string
+          format: date-time
+          description: Timestamp of the audit entry.
+        entryID:
+          type: string
+          format: uuid
+          description: Unique identifier for this audit entry.
+        eventType:
+          type: string
+          description: Type of event recorded in this audit entry.
+        host:
+          type: string
+          description: Host associated with this audit entry.
+        data:
+          type: string
+          description: Additional data or message for this audit entry.
+
+    LogonSessionInfo:
+      type: object
+      description: Information about an available logon session on the guest machine.
+      properties:
+        sessionId:
+          type: integer
+          description: Session ID of a logon user.
+        sessionName:
+          type: string
+          description: Session name of a logon user.
+        userName:
+          type: string
+          description: User name of the logged-on user.
+        domainName:
+          type: string
+          description: Domain name of the logged-on user.
+
+    LicenseParameters:
+      type: object
+      description: Licensing information for the server instance.
+      properties:
+        maxSessionCount:
+          type: integer
+          nullable: true
+          description: Maximum number of concurrent sessions allowed.
+        allowedSessionTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionType"
+          description: Session types permitted under current licensing.
+        licenseCount:
+          type: integer
+          description: Total number of licenses applied.
+        supportedFeatures:
+          type: array
+          items:
+            type: string
+          description: List of feature names enabled by the current licensing.
+
+    LicenseRuntimeInfo:
+      type: object
+      description: Runtime information about an active license.
+      properties:
+        licenseID:
+          type: string
+          description: Unique identifier for this license.
+        expirationDate:
+          type: string
+          format: date-time
+          nullable: true
+          description: Expiration date of the license; null if perpetual.
+        maxSessionCount:
+          type: integer
+          nullable: true
+          description: Maximum number of concurrent sessions for this license.
+        licenseType:
+          type: string
+          description: Type/tier of this license.
+
+    ReportDefinition:
+      type: object
+      description: Specifies parameters for a database query report.
+      required:
+        - reportType
+      properties:
+        reportType:
+          type: string
+          description: >
+            Type of report to run (e.g., "SessionEvent", "Session",
+            "AuditEntry").
+        groupFieldNames:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Field names to group by; null for no grouping.
+        selectFieldNames:
+          type: array
+          items:
+            type: string
+          description: Field names to include in the report results.
+        filterExpression:
+          type: string
+          nullable: true
+          description: >
+            SQL-like filter expression for rows to include
+            (e.g., "SessionID='guid' AND EventType='SentMessage'").
+        aggregateFilterExpression:
+          type: string
+          nullable: true
+          description: Filter expression applied after grouping.
+        itemLimit:
+          type: integer
+          format: int64
+          nullable: true
+          description: Maximum number of items to return.
+
+    Report:
+      type: object
+      description: Represents the results of a report query.
+      properties:
+        fieldNames:
+          type: array
+          items:
+            type: string
+          description: Names of the fields in the result set.
+        items:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          description: >
+            2D array of report items. Each inner array represents one row;
+            values correspond to the fields in fieldNames.
+
+    CreateSessionRequest:
+      type: object
+      description: Request body for creating a Support or Meeting session.
+      required:
+        - sessionType
+        - name
+        - host
+      properties:
+        sessionType:
+          $ref: "#/components/schemas/SessionType"
+        name:
+          type: string
+          description: >
+            Display name for the session; visible on the Host page and in the
+            public sessions dropdown on the Guest page.
+        host:
+          type: string
+          description: >
+            The name of the session creator. Note: this does not cause the user
+            to automatically join the session.
+        isPublic:
+          type: boolean
+          default: false
+          description: >
+            Determines if the session is publicly available for joining and
+            listed in the dropdown menu on the Guest page.
+        code:
+          type: string
+          nullable: true
+          description: The code that a Guest must enter on the Guest page to join the session.
+        customPropertyValues:
+          type: array
+          items:
+            type: string
+            nullable: true
+          maxItems: 8
+          description: Values for the eight possible custom properties (indices 0-7).
+
+    CreateAccessSessionRequest:
+      type: object
+      description: Request body for creating an Access session.
+      required:
+        - sessionID
+        - encryptionKey
+        - name
+        - host
+      properties:
+        sessionID:
+          type: string
+          format: uuid
+          description: Unique identification for the session; the primary method of identification and cannot be changed.
+        encryptionKey:
+          type: string
+          description: Encryption key for securing the access session.
+        name:
+          type: string
+          description: Display name for the session; visible on the Host page.
+        host:
+          type: string
+          description: >
+            The name of the session creator. Note: this does not cause the user
+            to automatically join the session.
+
+    UpdateSessionRequest:
+      type: object
+      description: Request body for updating a session.
+      properties:
+        name:
+          type: string
+          description: Updated display name for the session.
+        isPublic:
+          type: boolean
+          description: Updated public availability setting.
+        code:
+          type: string
+          nullable: true
+          description: Updated join code for the session.
+        customPropertyValues:
+          type: array
+          items:
+            type: string
+            nullable: true
+          maxItems: 8
+          description: Updated values for the eight possible custom properties.
+
+    ErrorMessage:
+      type: object
+      description: Standard error response.
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type: string
+          description: Error code identifier.
