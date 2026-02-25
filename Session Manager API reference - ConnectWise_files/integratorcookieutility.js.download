@@ -1,0 +1,302 @@
+﻿/*  INTEGRATOR COOKIE UTILITY
+	
+This JavaScript is a utility for manipulating the IntegratorCookie and dotCom cookies generated through form submissions.
+	
+It contains specific methods for working with the Integrator/dotCom cookie,
+and has generic methods useful for working with any cookie client-side.
+
+Integrator Cookie Unique Processing
+
+1.) Reading The Cookie
+
+The cookie is read and processed like a standard cookie:
+- Read from document.cookie
+- URL Decode
+- Base 64 Decode 
+
+2.) Cleansing The Cookie
+
+2.1) Remove Non-Ascii characters
+The integrator cookie has the format seen below when fully decoded (URL & base64)(without quotes):
+"þûï¾tFName:Timothy;LName:Gonzalez;Email:tgonzalez@connectwise.com;Company:ConnectWise;CompanyId:CW;UserType:Administrator"
+	
+The issue is the beginning and ending characters.
+These were added during creation somewhere in .NET code,
+and have no known meaning at the time of writing this.
+	
+These characters make it difficult to parse the cookie reliably,
+so it undergoes a very simple scrubbing process to remove non-ascii characters.
+		
+The final resultant format is shown below:
+"tFName:Timothy;LName:Gonzalez;Email:tgonzalez@connectwise.com;Company:ConnectWise;CompanyId:CW;UserType:Administrator"
+
+2.2) Remove leading characters
+Lastly the beginning of the string should always start with FName.  There remains characters before it which
+sporadically change.  Trim any characters before "FName:"
+
+Now the cookie will look as shown below:
+The final resultant format is shown below:
+"FName:Timothy;LName:Gonzalez;Email:tgonzalez@connectwise.com;Company:ConnectWise;CompanyId:CW;UserType:Administrator"
+	
+3.) Parsing The Cookie
+	
+At this point the cookie can be parsed just as any other cookie.
+
+4.) Cookie Field Retrieval
+
+Fields existing in the integrator cookie at the time of writing this have been provided with helper methods.
+This is all a caller should ever have to access.
+
+However to retrieve any value from the integrator cookie use:
+findCookieIntegratorValue(COOKIE_KEY_TO_FIND);
+
+*/
+
+/* TEST COOKIE - REMOVE FOR BETA & PRODUCTION */
+//var univCookie = "__utma=266785052.17190249.1315843923.1319728387.1319801550.44; __utmz=266785052.1319801550.44.42.utmcsr=bing|utmccn=(organic)|utmcmd=organic|utmctr=wwww.connectwise.com%2Funiversity; is_returning=1; __utmx=266785052.00016369301760523853:1:0; __utmxx=266785052.00016369301760523853:1318419745:2592000; phpbb3_paqpm_u=49439; phpbb3_paqpm_sid=b0ef360abbd7adca87e15c52f7b6bfff; phpbb3_mdeca_u=1603; phpbb3_mdeca_sid=0297e9fccab22fb13876434039eb47c0; style_cookie=null; SessionCookie=AAEAAAD%2f%2f%2f%2f%2fAQAAAAAAAAAMAgAAAEdVbml2ZXJzaXR5Lk1vZGVsLCBWZXJzaW9uPTEuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49bnVsbAUBAAAAIlVuaXZlcnNpdHkuTW9kZWwuV2ViLlNlc3Npb25Db29raWUCAAAABUVtYWlsDlBhc3N3b3JkQ2lwaGVyAQECAAAABgMAAAAZdGdvbnphbGV6QGNvbm5lY3R3aXNlLmNvbQYEAAAAE8K1wrDDgcKxwqrCscK3wqLCsHkL; hubspotdt=2011-10-24%2014%3A40%3A17; hubspotutk=4fb6f56a5f3042e2bfc576ddf20cd289; tid=VSULTQYGQFAARCMU; cw_referrer=http%3A%2F%2Flocalhost%2FAdmin%2Fevents%2Flist.aspx; hubspotvm=4fb6f56a5f3042e2bfc576ddf20cd289; AdminCookie=AAEAAAD%2f%2f%2f%2f%2fAQAAAAAAAAAMAgAAAEhDb25uZWN0V2lzZS5Nb2RlbCwgVmVyc2lvbj0xLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPW51bGwFAQAAACFDb25uZWN0V2lzZS5Nb2RlbC5XZWIuQWRtaW5Db29raWUCAAAABUVtYWlsCFBhc3N3b3JkAQECAAAABgMAAAAZdGdvbnphbGV6QGNvbm5lY3R3aXNlLmNvbQYEAAAAB3RpbW90aHkL; DashboardPortal=%7B%22state%22%3A%7B%22PortletColumnLayout%22%3A%22s%3AMyMajors%2CContent1%2CBulletins%2CTwitter-MyNewCourses%2CContent2%2CContent5%2CContent3-Forums%2CCalendar%2CContent4%2CNewCourses%22%2C%20%222011-07-27-1334%22%3A%22s%3A2011-07-27-1334%22%7D%7D; IntegratorCookie=AAEAAAD%2f%2f%2f%2f%2fAQAAAAAAAAAGAQAAAHRGTmFtZTpUaW1vdGh5O0xOYW1lOkdvbnphbGV6O0VtYWlsOnRnb256YWxlekBjb25uZWN0d2lzZS5jb207Q29tcGFueTpDb25uZWN0V2lzZTtDb21wYW55SWQ6Q1c7VXNlclR5cGU6QWRtaW5pc3RyYXRvcgs%3d";
+
+var univCookie = document.cookie;
+
+var INTEGRATOR_COOKIE = "IntegratorCookie";
+
+// dotCom lead cookie's
+var DOT_COM_COOKIE_FIRST_NAME = "FirstName";
+var DOT_COM_COOKIE_LAST_NAME = "LastName";
+var DOT_COM_COOKIE_COMPANY = "Company";
+var DOT_COM_COOKIE_EMAIL = "EMail";
+
+
+
+function getFullName(firstName, lastName) {
+    var name = "";
+
+    // Craft name
+    name = firstName;
+    name += " ";
+    name += lastName;
+
+    return name;
+}
+
+/*
+* Integrator Getter Convenience Methods
+*/
+
+function getIntegratorFirstName() {
+    var FIRST_NAME = "FName";
+
+    return findCookieIntegratorValue(FIRST_NAME);
+}
+
+function getIntegratorLastName() {
+    var LAST_NAME = "LName";
+
+    return findCookieIntegratorValue(LAST_NAME);
+}
+
+function getIntegratorEmail() {
+    var EMAIL = "Email";
+
+    return findCookieIntegratorValue(EMAIL);
+}
+
+function getIntegratorCompany() {
+    var COMPANY = "Company";
+
+    return findCookieIntegratorValue(COMPANY);
+}
+
+function getIntegratorCompanyId() {
+    var COMPANY_ID = "CompanyId";
+
+    return findCookieIntegratorValue(COMPANY_ID);
+}
+
+function getIntegratorUserType() {
+    var USER_TYPE = "UserType";
+
+    return findCookieIntegratorValue(USER_TYPE);
+}
+
+function getIntegratorCompanyTypes() {
+    return findCookieIntegratorValue('CompanyTypes');
+}
+
+function getIntegratorState() {
+    return findCookieIntegratorValue('State');
+}
+
+function getIntegratorCountry() {
+    return findCookieIntegratorValue('Country');
+}
+
+/*
+* dotCom Getter Convenience Methods
+*/
+function getDotComEmail() {
+    return getCookieByKey(DOT_COM_COOKIE_EMAIL);
+}
+
+function getDotComFirstName() {
+    return getCookieByKey(DOT_COM_COOKIE_FIRST_NAME);
+}
+
+function getDotComLastName() {
+    return getCookieByKey(DOT_COM_COOKIE_LAST_NAME);
+}
+
+function getDotComCompany() {
+    return getCookieByKey(DOT_COM_COOKIE_COMPANY);
+}
+
+/*
+* Internal Cookie Getters
+*/
+
+// Find a stored key value in the cookie
+function findCookieIntegratorValue(keyIn) {
+    // Get cookie KVP
+    var KVP = getIntegratorCookieKVP();
+
+    // Search cookie KVP
+    for (var currentKey = 0; currentKey < KVP.length; currentKey++) {
+        if (KVP[currentKey][0].match(keyIn)) // If key is found
+            return KVP[currentKey][1]; // Return value
+    }
+
+    // If nothing was found return empty string
+    return "";
+}
+
+// Get cookie as a key value pair in a 2-D array
+function getIntegratorCookieKVP() {
+    // Coupled KVP's
+    var cKVP = getIntegratorCookie().split(';');
+
+    // Uncoupled KVP's
+    var uncKVP = new Array(cKVP.length);
+
+    // Uncouple KVP's
+    for (var currentPair = 0; currentPair < cKVP.length; currentPair++) {
+        // Split by : (colon)
+        uncKVP[currentPair] = cKVP[currentPair].split(':');
+    }
+    
+    return uncKVP;
+}
+
+/*
+* Cookie Retrieval
+*/
+
+/*
+* Convenience
+*/
+
+// Check for cookie
+function integratorCookieExists() {
+    // Retrieve existing data in cookie
+    var presentCookie = getCookieByKey(INTEGRATOR_COOKIE);
+
+    // Validate cookie data
+    return (presentCookie.length > 0);
+}
+
+// Check for dotCom cookie
+function dotComCookieExists() {
+
+    // Retrieve existing data in cookie
+    var presentCookie = getCookieByKey(DOT_COM_COOKIE_EMAIL); // Check is based upon the most relevant field
+
+    // Validate cookie data
+    return (presentCookie.length > 0);
+}
+
+// Check for cookie
+function isSessionCookieExists() {
+    // Retrieve existing data in cookie
+    var presentCookie = getCookieByKey("SessionCookie");
+
+    // Validate cookie data
+    return (presentCookie.length > 0);
+}
+
+// Get processed Integrator cookie
+function getIntegratorCookie() {
+
+    // Get "IntegratorCookie" available to this domain
+    var rawIntCookie = getCookieByKey(INTEGRATOR_COOKIE);
+
+    // Base 64 decode
+    var base64DecodedIntCookie = decodeBase64(rawIntCookie);
+
+    // Scrubbed cookie
+    var scrubbedCookie = scrubCookie(base64DecodedIntCookie);
+
+    // Trimmed cookie
+    var trimmedCookie = trimCookie(scrubbedCookie);
+
+    return trimmedCookie;
+}
+
+/*
+* Generic
+*/
+
+// Get ANY raw cookie
+function getCookieByKey(key) {
+    /* Code From: http://web.enavu.com/tutorials/working-with-cookies-using-jquery-and-javascript/ */
+    var keyValue = univCookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+
+    // Fail gracefully
+    keyValue = keyValue ? keyValue[2] : "";
+
+    // Automatically decode
+    keyValue = decodeURIComponent(keyValue);
+
+    return keyValue;
+}
+
+/*
+* Cookie Processing
+*/
+
+function decodeBase64(s) {
+    var e = {}, i, k, v = [], r = '', w = String.fromCharCode;
+    var n = [[65, 91], [97, 123], [48, 58], [47, 48], [43, 44]];
+
+    for (z in n) { for (i = n[z][0]; i < n[z][1]; i++) { v.push(w(i)); } }
+    for (i = 0; i < 64; i++) { e[v[i]] = i; }
+
+    for (i = 0; i < s.length; i += 72) {
+        var b = 0, c, x, l = 0, o = s.substring(i, i + 72);
+        for (x = 0; x < o.length; x++) {
+            c = e[o.charAt(x)]; b = (b << 6) + c; l += 6;
+            while (l >= 8) { r += w((b >>> (l -= 8)) % 256); }
+        }
+    }
+    return r;
+}
+
+// Remove all non ascii characters.  Originally found at: http://www-01.ibm.com/support/docview.wss?uid=swg21453096
+function scrubCookie(toScrub) {
+    return toScrub.replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, '');
+}
+
+// Take the substring from FName: to the end of the string
+function trimCookie(toTrim) {
+
+    // The beginning of the string, semi-colon ensures it's a key not a value
+    var strStart = "FName:";
+
+    // Find the position of this string in the cookie
+    var intStart = toTrim.indexOf(strStart);
+
+    // Go till the end of the string
+    var intEnd = toTrim.length;
+
+    // Trim based on start and end
+    var trimmed = toTrim.substring(intStart, intEnd);
+
+    return trimmed;
+}

@@ -1,0 +1,606 @@
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["CoveoConnectWiseExtension"] = factory();
+	else
+		root["CoveoConnectWiseExtension"] = factory();
+})(window, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/assets/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */,
+/* 1 */,
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Webpack output a library target with a temporary name.
+// It does not take care of merging the namespace if the global variable already exists.
+// If another piece of code in the page use the Coveo namespace (eg: extension), then they get overwritten
+// This code swap the current module to the "real" Coveo variable, without overwriting the whole global var.
+// This is to allow end user to put CoveoPSComponents.js before or after the main CoveoJsSearch.js, without breaking
+Object.defineProperty(exports, "__esModule", { value: true });
+function swapVar(scope) {
+    if (window['Coveo'] == undefined) {
+        window['Coveo'] = scope;
+    }
+    else {
+        _.each(_.keys(scope), function (k) {
+            window['Coveo'][k] = scope[k];
+        });
+    }
+}
+exports.swapVar = swapVar;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/cultures/en.js";
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/cultures/fr.js";
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "js/cultures/es-es.js";
+
+/***/ }),
+/* 6 */,
+/* 7 */,
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Component = Coveo.Component;
+var Initialization = Coveo.Initialization;
+var ComponentOptions = Coveo.ComponentOptions;
+var analyticsActionCauseList = Coveo.analyticsActionCauseList;
+/**
+ * This component
+ */
+var Deflection = /** @class */ (function (_super) {
+    __extends(Deflection, _super);
+    function Deflection(element, options, bindings, result) {
+        var _this = _super.call(this, element, Deflection.ID, bindings) || this;
+        _this.element = element;
+        _this.options = options;
+        _this.result = result;
+        _this.onPause = false;
+        _this.HIDDEN_CLASS = 'coveo-hidden';
+        _this.chatSubmitButton = {
+            name: 'submitButton',
+            type: 'chat'
+        };
+        _this.chatCancelButton = {
+            name: 'cancelButton',
+            type: 'chat'
+        };
+        _this.chatInputChange = {
+            name: 'inputChange',
+            type: 'chat'
+        };
+        _this.options = ComponentOptions.initComponentOptions(element, Deflection, options);
+        // Initialization Events
+        _this.bind.onRootElement(Coveo.InitializationEvents.afterComponentsInitialization, function () { return _this.handleAfterComponentsInit(); });
+        // Query events
+        _this.bind.onRootElement(Coveo.QueryEvents.querySuccess, function (args) { return _this.handleQuerySucess(args); });
+        _this.bind.onRootElement(Coveo.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
+        return _this;
+    }
+    Deflection.prototype.handleAfterComponentsInit = function () {
+        var _this = this;
+        Coveo.$$(document.body).findClass(this.options.inputFieldSelector).forEach(function (el) { return Coveo.$$(el).on('input', function () { return _this.handleFieldChange(el); }); });
+        Coveo.$$(document.body).findClass(this.options.submitButtonSelector).forEach(function (el) { return Coveo.$$(el).on('click', function () { return _this.handleSubmitButton(el); }); });
+        Coveo.$$(document.body).findClass(this.options.cancelButtonSelector).forEach(function (el) { return Coveo.$$(el).on('click', function () { return _this.handleCancelButton(el); }); });
+    };
+    Deflection.prototype.executeQuery = function (cause) {
+        var _this = this;
+        if (this.onPause != true) {
+            this.searchInterface.queryController.deferExecuteQuery({
+                beforeExecuteQuery: function () {
+                    _this.searchInterface.usageAnalytics.logSearchEvent(cause, {});
+                }
+            });
+        }
+    };
+    Deflection.prototype.pauseQuery = function () {
+        this.onPause = true;
+        Coveo.$$(this.root).addClass(this.HIDDEN_CLASS);
+    };
+    Deflection.prototype.unPauseQuery = function () {
+        this.onPause = false;
+    };
+    Deflection.prototype.togglePauseQuery = function () {
+        this.onPause ? this.unPauseQuery() : this.pauseQuery();
+    };
+    Deflection.prototype.getPauseQueryState = function () {
+        return this.onPause;
+    };
+    Deflection.prototype.handleSubmitButton = function (el) {
+        if (this.options.type == 'case') {
+            var cause = analyticsActionCauseList.caseCreationSubmitButton;
+        }
+        else {
+            var cause = this.chatSubmitButton;
+        }
+        this.searchInterface.usageAnalytics.logCustomEvent(cause, {}, el);
+    };
+    Deflection.prototype.handleCancelButton = function (el) {
+        if (this.options.type == 'case') {
+            var cause = analyticsActionCauseList.caseCreationCancelButton;
+        }
+        else {
+            var cause = this.chatCancelButton;
+        }
+        this.searchInterface.usageAnalytics.logCustomEvent(cause, {}, el);
+    };
+    Deflection.prototype.handleFieldChange = function (el) {
+        if (this.options.type == 'case') {
+            var cause = analyticsActionCauseList.caseCreationInputChange;
+        }
+        else {
+            var cause = this.chatInputChange;
+        }
+        var that = this;
+        el.onkeyup = function (e) {
+            that.cancelAnyPendingSearchTimeout();
+            that.searchTimeout = setTimeout(function () {
+                that.executeQuery(cause);
+            }, that.options.refreshDelay);
+        };
+    };
+    Deflection.prototype.cancelAnyPendingSearchTimeout = function () {
+        if (Coveo.Utils.exists(this.searchTimeout)) {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = undefined;
+        }
+    };
+    Deflection.prototype.handleQuerySucess = function (args) {
+        if (args.results.totalCount == 0 || args.query.context["issuesummary"] == "") {
+            Coveo.$$(this.root).addClass(this.HIDDEN_CLASS);
+        }
+        else {
+            Coveo.$$(this.root).removeClass(this.HIDDEN_CLASS);
+        }
+    };
+    Deflection.prototype.handleBuildingQuery = function (args) {
+        args.queryBuilder.context = {};
+        Coveo.$$(document.body).findClass(this.options.inputFieldSelector).forEach(function (el) {
+            if (el instanceof HTMLTextAreaElement) {
+                var txtArea = el;
+                if (txtArea.value.toLocaleLowerCase() != 'none') {
+                    args.queryBuilder.context[txtArea.attributes['data-coveo-id'].value.toLowerCase()] = txtArea.value;
+                }
+            }
+            else if (el instanceof HTMLSpanElement) {
+                var spanEl = el;
+                if (spanEl.textContent.toLowerCase() != 'none') {
+                    args.queryBuilder.context[spanEl.attributes['data-coveo-id'].value.toLowerCase()] = spanEl.textContent;
+                }
+            }
+            else if (el instanceof HTMLSelectElement) {
+                var selectEl = el;
+                args.queryBuilder.context[selectEl.attributes['data-coveo-id'].value.toLowerCase()] = selectEl.value;
+            }
+            else if (el instanceof HTMLInputElement) {
+                var inputEl = el;
+                args.queryBuilder.context[inputEl.attributes['data-coveo-id'].value.toLowerCase()] = inputEl.value;
+            }
+        });
+        for (var val in this.options.context) {
+            args.queryBuilder.context[val] = this.options.context[val];
+        }
+    };
+    Deflection.ID = 'Deflection';
+    Deflection.options = {
+        context: ComponentOptions.buildJsonObjectOption(),
+        type: ComponentOptions.buildStringOption({ defaultValue: 'case' }),
+        refreshDelay: ComponentOptions.buildNumberOption({ defaultValue: 1500 }),
+        inputFieldSelector: ComponentOptions.buildStringOption({ defaultValue: 'coveo-query' }),
+        submitButtonSelector: ComponentOptions.buildStringOption({ defaultValue: 'coveo-submit' }),
+        cancelButtonSelector: ComponentOptions.buildStringOption({ defaultValue: 'coveo-cancel' }),
+    };
+    return Deflection;
+}(Component));
+exports.Deflection = Deflection;
+Initialization.registerAutoCreateComponent(Deflection);
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var CustomEvents = /** @class */ (function () {
+    function CustomEvents() {
+    }
+    CustomEvents.InsightAttachResult = 'InsightAttachResult';
+    return CustomEvents;
+}());
+exports.CustomEvents = CustomEvents;
+
+
+/***/ }),
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(23);
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(24));
+// your custo component
+__export(__webpack_require__(29));
+// your ui components here
+__export(__webpack_require__(8));
+var SwapVar_1 = __webpack_require__(2);
+SwapVar_1.swapVar(this);
+// cultures for webpack
+__webpack_require__(3);
+__webpack_require__(4);
+__webpack_require__(5);
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+__webpack_require__(25);
+var UrlUtils_1 = __webpack_require__(26);
+exports.UrlUtils = UrlUtils_1.UrlUtils;
+var HttpUtils_1 = __webpack_require__(27);
+exports.HttpUtils = HttpUtils_1.HttpUtils;
+var CustomEvents_1 = __webpack_require__(9);
+exports.CustomEvents = CustomEvents_1.CustomEvents;
+var ConnectWiseHelper_1 = __webpack_require__(28);
+exports.ConnectWiseHelper = ConnectWiseHelper_1.ConnectWiseHelper;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+String.prototype.getInitials = function (glue) {
+    if (glue === void 0) { glue = true; }
+    var initials = this.replace(/[^a-zA-Z- ]/g, '').match(/\b\w/g) || [];
+    if (glue) {
+        return initials.join('');
+    }
+    return initials;
+};
+String.prototype.capitalize = function () {
+    return this.toLowerCase().replace(/\b\w/g, function (m) {
+        return m.toUpperCase();
+    });
+};
+/**
+* Camelize a string, cutting the string by multiple separators like
+* hyphens, underscores and spaces.
+*
+* @return string Camelized text
+*/
+String.prototype.camelize = function () {
+    return this.replace(/^([A-Z])|[\s-_]+(\w)/g, function (match, p1, p2, offset) {
+        if (p2)
+            return p2.toUpperCase();
+        return p1.toLowerCase();
+    });
+};
+/**
+ * Decamelizes a string with/without a custom separator (underscore by default).
+ *
+ * @param str String in camelcase
+ * @param separator Separator for the new decamelized string.
+ */
+String.prototype.decamelize = function (separator) {
+    separator = typeof separator === 'undefined' ? '_' : separator;
+    return this
+        .replace(/([a-z\d])([A-Z])/g, '$1' + separator + '$2')
+        .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1' + separator + '$2')
+        .toLowerCase();
+};
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
+    }
+    UrlUtils.getUrlParams = function (query) {
+        if (!query) {
+            return {};
+        }
+        var parser = document.createElement('a');
+        var search = '';
+        parser.href = query;
+        var hash = parser.hash.substring(1);
+        if (hash) {
+            var hashParser = document.createElement('a');
+            hashParser.href = hash;
+            search = hashParser.search.substring(1);
+        }
+        else {
+            search = parser.search.substring(1);
+        }
+        search = search || query;
+        return (/^[?#]/.test(search) ? search.slice(1) : search)
+            .split('&')
+            .reduce(function (params, param) {
+            var _a = param.split('='), key = _a[0], value = _a[1];
+            params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+            return params;
+        }, {});
+    };
+    UrlUtils.getLocationFromUri = function (query) {
+        if (!query) {
+            return {};
+        }
+        var anchor = document.createElement('a');
+        anchor.href = query;
+        var retVal = {
+            href: anchor.href,
+            pathname: anchor.pathname,
+            hostname: anchor.hostname,
+            host: anchor.host,
+            search: anchor.search,
+            protocol: anchor.protocol,
+            hash: anchor.hash
+        };
+        return retVal;
+    };
+    return UrlUtils;
+}());
+exports.UrlUtils = UrlUtils;
+;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var HttpUtils = /** @class */ (function () {
+    function HttpUtils() {
+    }
+    HttpUtils.get = function (aUrl, aCallback) {
+        var anHttpRequest = new XMLHttpRequest();
+        anHttpRequest.onreadystatechange = function () {
+            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                aCallback(anHttpRequest.responseText);
+        };
+        anHttpRequest.open("GET", aUrl, true);
+        anHttpRequest.send(null);
+    };
+    return HttpUtils;
+}());
+exports.HttpUtils = HttpUtils;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConnectWiseHelper = /** @class */ (function () {
+    function ConnectWiseHelper() {
+    }
+    ConnectWiseHelper.yourHelperMethod = function () {
+        return '';
+    };
+    return ConnectWiseHelper;
+}());
+exports.ConnectWiseHelper = ConnectWiseHelper;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Component = Coveo.Component;
+var Initialization = Coveo.Initialization;
+var ComponentOptions = Coveo.ComponentOptions;
+/**
+ * Required customization specifically applied for your implementation
+ */
+var ConnectWiseCusto = /** @class */ (function (_super) {
+    __extends(ConnectWiseCusto, _super);
+    function ConnectWiseCusto(element, options, bindings) {
+        var _this = _super.call(this, element, ConnectWiseCusto.ID, bindings) || this;
+        _this.element = element;
+        _this.options = options;
+        _this.bindings = bindings;
+        _this.options = ComponentOptions.initComponentOptions(element, ConnectWiseCusto, options);
+        _this.setupPipelineContext(_this.options.pipelineContext);
+        _this.bind.onRootElement(Coveo.QueryEvents.buildingQuery, _this.handleBuildingQuery);
+        _this.bind.onRootElement(Coveo.InitializationEvents.afterComponentsInitialization, _this.handleAfterComponentsInit);
+        return _this;
+    }
+    ConnectWiseCusto.prototype.setupPipelineContext = function (data) {
+        this.context = _.pick(data, _.identity) || {};
+    };
+    ConnectWiseCusto.prototype.getPipelineContext = function () {
+        return this.context;
+    };
+    ConnectWiseCusto.prototype.handleBuildingQuery = function (data) {
+        data.queryBuilder.addContext(this.context);
+    };
+    ConnectWiseCusto.prototype.handleAfterComponentsInit = function () {
+        Coveo.TemplateHelpers.registerTemplateHelper("mapSource", function (value, options) {
+            return Coveo.l(value);
+        });
+    };
+    ConnectWiseCusto.ID = 'ConnectWiseCusto';
+    ConnectWiseCusto.options = {
+        pipelineContext: Coveo.ComponentOptions.buildJsonOption()
+    };
+    return ConnectWiseCusto;
+}(Component));
+exports.ConnectWiseCusto = ConnectWiseCusto;
+;
+Initialization.registerAutoCreateComponent(ConnectWiseCusto);
+
+
+/***/ })
+/******/ ]);
+});

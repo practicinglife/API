@@ -1,0 +1,66 @@
+String.toLocaleString({
+  'en': {
+    'ShowingResultsOf': 'We found {2} result<pl>s</pl>',
+    'ShowingResultsOfWithQuery': 'We found {0}<pl>-{1}</pl> of {2} result<pl>s</pl> for {3}',
+    'INT Product Page': 'Model Information',
+    'INT Issue': 'Issue',
+    'Category': 'Category',
+    'Article Type': 'Article Type',
+    'Content Type': 'Content Type',
+    'Views': 'Views',
+    'Updated On': 'Updated On',
+    'Facet_dropdownHeaderLabel': 'Refine results',
+    'SearchBox_placeholder': 'Enter your Model # or search term here.',
+    'CaseDeflection_EmailUsTitle': 'Suggested Content',
+    'CaseDeflection_SelfServiceTitle': 'Related Articles',
+    'ConnectWise Marketplace': 'Marketplace',
+    'ConnectWise Coursework': 'University Lesson',
+    'ConnectWise Discussion Forums': 'Forums',
+    'ConnectWise Known Issues': 'Known Issues',
+    'ConnectWise Business Knowledge': 'ConnectWise Business Knowledge Documentation',
+    'ConnectWise Automate Internal Wiki': 'Automate Knowledge Base Article',
+    'ConnectWise Control Internal Wiki': 'Control Knowledge Base Article',
+    'ConnectWise Manage Internal Wiki': 'Manage Knowledge Base Article',
+    'ConnectWise Sell Internal Wiki': 'Sell Knowledge Base Article',
+    'ConnectWise BrightGauge Support Wiki': 'BrightGauge Knowledge Base Article',
+    'Connectwise Command Support Wiki': 'Command Knowledge Base Article',
+    'ConnectWise Fortify Support Wiki': 'Fortify Knowledge Base Article',
+    'ConnectWise University': 'ConnectWise University',
+    'Video Library': 'Videos and Webinars',
+    'YouTube videos': 'Videos and Webinars'
+  }
+});
+
+if(!window.Coveo){window.Coveo = {};}
+Coveo.setCustomLanguageDict = function () {
+  String.toLocaleString({
+    'en': {
+      'ShowingResultsOf': 'We found  {2} result<pl>s</pl>',
+      'INT Product Page': 'Model Information',
+      'INT Issue': 'Issue',
+      'Category': 'Category',
+      'Article Type': 'Article Type',
+      'Content Type': 'Content Type',
+      'Views': 'Views',
+      'Updated On': 'Updated On',
+      'Facet_dropdownHeaderLabel': 'Refine results',
+      'SearchBox_placeholder': 'Enter your Model # or search term here.',
+      'CaseDeflection_EmailUsTitle': 'Suggested Content',
+      'CaseDeflection_SelfServiceTitle': 'Related Articles',
+      'ConnectWise Coursework': 'University Lesson',
+      'ConnectWise Discussion Forums': 'Forums',
+      'ConnectWise Known Issues': 'Known Issues',
+      'ConnectWise Marketplace': 'Marketplace',
+      'ConnectWise Control Internal Wiki': 'Control Knowledge Base Article',
+      'ConnectWise Automate Internal Wiki': 'Automate Knowledge Base Article',
+      'ConnectWise Manage Internal Wiki': 'Manage Knowledge Base Article',
+      'ConnectWise Sell Internal Wiki': 'Sell Knowledge Base Article',
+      'ConnectWise BrightGauge Support Wiki': 'BrightGauge Knowledge Base Article',
+      'Connectwise Command Support Wiki': 'Command Knowledge Base Article',
+      'ConnectWise Fortify Support Wiki': 'Fortify Knowledge Base Article',
+      'ConnectWise University': 'University Documentation',
+      'Video Library': 'Videos and Webinars',
+      'YouTube videos': 'Videos and Webinars'
+    }
+  });
+};
