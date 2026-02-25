@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://developer.connectwise.com/Products/ConnectWise_PSA/SDK -->
+<html lang="en" class="js csstransitions wf-proximanova-n7-active wf-proximanova-i7-active wf-proximanova-n6-active wf-proximanova-n4-active wf-proximanova-i4-active wf-proximanova-n3-active wf-active"><head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="MindTouch">
+        <meta name="robots" content="index,follow">
+        <meta property="og:title" content="SDK">
+        <meta property="og:site_name" content="Developer Network">
+        <meta property="og:type" content="article">
+        <meta property="og:locale" content="en_US">
+        <meta property="og:url" content="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK">
+        <meta property="og:image" content="https://a.mtstatic.com/@public/production/site_8263/1680273416-logo.png">
+        <meta property="og:description" content="">
+        <meta property="article:published_time" content="2014-10-31T19:46:53Z">
+        <meta property="article:modified_time" content="2026-01-27T13:23:35Z">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="SDK">
+        <meta name="twitter:description" content="">
+        <meta name="twitter:image" content="https://a.mtstatic.com/@public/production/site_8263/1680273416-logo.png">
+        <meta name="description" content="">
+        <link rel="canonical" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK">
+        <link rel="search" type="application/opensearchdescription+xml" title="Developer Network Search" href="https://developer.connectwise.com/@api/deki/site/opensearch/description">
+        <link rel="apple-touch-icon" href="https://a.mtstatic.com/@public/production/site_8263/1680273491-apple-touch-icon.png">
+        <link rel="shortcut icon" href="https://a.mtstatic.com/@public/production/site_8263/1680273592-favicon.ico">
+
+
+        <title>SDK - Developer Network</title>
+
+
+    <style type="text/css">/*<![CDATA[*/
+.cw-footer {
+    background: #5d5d5d;
+    width: 100%;
+    color: #00aeef;
+    font-size: 11px;
+    clear: both;
+}
+
+.footer-wrapper {
+    position: relative;              
+    max-width: 1050px!important;
+    width: 90%;
+    margin: 0 auto;
+    padding: 40px 0 75px 0;
+    overflow: hidden;
+}
+
+.cw-footer ul {
+    position: relative;
+    overflow: hidden;
+    list-style-type: none;
+    margin: 0 0 5px 0;
+    padding: 0;
+}
+
+.cw-footer ul li {
+    float: left;
+    border-right: 1px solid #00aeef;
+    margin: 0 6px 0 0;
+    padding: 0 6px 0 0;
+    list-style-type: none;
+    font-size: 11px;
+    line-height: 11px;
+    text-transform: uppercase;
+}
+
+.cw-footer ul li:last-child {
+    border: 0;
+}
+
+.cw-footer .social-links {
+    position: absolute;
+    top: 40px;
+    right: 0;
+}
+
+    @media screen and (max-width:650px) {
+        .cw-footer .social-links {
+            position: static;
+            }
+    }
+
+.cw-footer .social-links li {
+    border: 0;
+    font-size: 28px;
+    padding: 0;
+}
+
+.cw-footer p {
+    color: #fff;
+}
+
+.cw-footer a,
+.cw-footer a.link-https,
+.cw-footer a.mt-self-link {
+    color: #fff!important;
+}
+
+.cw-footer span.white-text {
+    color: #fff!important;
+}
+
+
+.elm-footer {
+bottom: 0!important;
+}
+
+.elm-footer-custom p:last-child {
+display: none;
+}/*]]>*/</style><style type="text/css">/*<![CDATA[*/
+/* Header Styles */
+
+.header-blue {
+    background: #004b71;
+
+       height: 85px;
+       width: 100%;
+       position: relative;
+        }
+
+#Version1_5 {
+display:none;
+}
+.cw-wrapper {
+    max-width: 1050px;
+    height: 100%;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 90%;
+    }
+
+.header-wrapper {
+    max-width: 1050px;
+    height: 100%;
+    position: relative;
+    margin: 0 auto;
+    width: 90%;
+    z-index:500;
+    }
+
+a#cw-logo {
+    display: block;
+    float: left;
+    width: 200px;
+    position: relative;
+    top: 10px;
+    z-index: 99999999;
+    }
+
+.mt-logo {
+    display: none;
+    }
+
+.action-items {
+    height: 40px;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    }
+
+    @media screen and (max-width: 1050px) {
+        .action-items {
+            display: none;
+            }
+    }
+
+.action-items a {
+    display: inline-block;
+    color: #fff;
+    padding: 8px 12px;
+    margin: 4px;
+    font-size: 13px;
+    }
+
+.action-items a:visited {
+    color: #fff!important;
+    }
+    
+.action-items a:nth-child(2) {
+    background: #F18021;
+    }
+
+.action-items a:last-child {
+    background: #F18021;
+    }
+
+button#toggleSearch {
+    background: transparent;
+    border: 0;
+    outline: 0;
+    border-radius: 0;
+    padding: 0 .8em;
+    }
+
+button#toggleSearch:focus,
+button#toggleSearch:active:focus,
+button#toggleSearch:active {
+    background: transparent!important;
+    outline: none!important;
+    outline-color: transparent!important;
+    outline-style: none!important;
+    box-shadow: none!important;
+    border-radius: 0!important;
+    padding: 0 .8em!important;
+    }
+
+#toggleSearch i.fa-search {
+    color: white;
+    font-size: 17px;
+    position: relative;
+    top: 2px;
+    }
+
+#search-cw {
+    max-width: 1050px;
+    margin: 0px auto;
+    position: relative;
+    display: block;
+    z-index:9999;
+    }
+
+#search-cw form {
+    position: absolute;
+    width: 250px;
+    bottom: -40px;
+    right: 22px;
+    z-index: 99;
+    }
+
+#search-cw input.mt-text {
+    border-radius: 0;
+    padding: 10px 10px 11px 10px;
+    border-color: #e7e7e8;
+    }
+
+#search-cw button.mt-button {
+    position: absolute;
+    top: 0;
+    right: -21px;
+    background: #3fa85f;
+    border-radius: 0;
+    padding: 12px 10px 11px 11px;
+    color: #fff;
+    }
+
+/* Mobile Nav */
+.dl-menuwrapper {
+    width: 100%;
+    position: relative;
+    top: 20px;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+    -webkit-perspective-origin: 50% 200%;
+    perspective-origin: 50% 200%;
+}
+
+.dl-menuwrapper:first-child {
+    margin-right: 100px;
+}
+
+.dl-menuwrapper button {
+    background: #1468b1;
+    border: none;
+    width: 48px;
+    height: 45px;
+    text-indent: -900em;
+    overflow: hidden;
+    position: absolute;
+    cursor: pointer;
+    outline: none;
+    top: 0;
+    right: 0;
+    visibility: hidden;
+    }
+
+    @media screen and (max-width: 1050px) {
+        .dl-menuwrapper button {
+            visibility: visible;
+        }
+    }
+
+.dl-menuwrapper button:hover,
+.dl-menuwrapper button.dl-active,
+.dl-menuwrapper ul {
+    background: #1468b1;
+    }
+
+.dl-menuwrapper button:after {
+    content: '';
+    position: absolute;
+    width: 68%;
+    height: 5px;
+    background: #fff;
+    top: 10px;
+    left: 16%;
+    box-shadow:
+        0 10px 0 #fff,
+        0 20px 0 #fff;
+    }
+
+.dl-menuwrapper ul {
+    padding: 0;
+    list-style: none;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    }
+
+.dl-menuwrapper li {
+    position: relative;
+    text-align: center;
+    border-bottom: 1px solid #007ac6;
+    }
+
+.dl-menuwrapper li:last-child {
+    border-bottom: 0;
+    }
+
+.dl-menuwrapper li a {
+    display: block;
+    position: relative;
+    padding: 15px 20px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 300;
+    color: #fff;
+    outline: none;
+    }
+
+.no-touch .dl-menuwrapper li a:hover {
+    opacity: 0.8;
+    }
+    
+.dl-menuwrapper li.dl-back > a {
+    padding-left: 30px;
+    background: rgba(0,0,0,0.1);
+    }
+
+.dl-menuwrapper li.dl-back:after,
+.dl-menuwrapper li > a:not(:only-child):after {
+    position: absolute;
+    top: 0;
+    line-height: 50px;
+    font-family: 'icomoon';
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    content: "\e000";
+    }
+
+.dl-menuwrapper li.dl-back:after {
+    left: 10px;
+    color: rgba(212,204,198,0.3);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    }
+
+.dl-menuwrapper li > a:after {
+    right: 10px;
+    color: rgba(0,0,0,0.15);
+    }
+
+.dl-menuwrapper .dl-menu {
+    margin: 5px 0 0 0;
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    }
+
+.dl-menuwrapper .dl-menu.dl-menu-toggle {
+    transition: all 0.3s ease;
+    }
+    
+.dl-menuwrapper .dl-menu.dl-menuopen {
+    opacity: 1;
+    pointer-events: auto;
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+    }
+
+/* Hide the inner submenus */
+.dl-menuwrapper li .dl-submenu {
+    display: none;
+    }
+
+/*
+When a submenu is openend, we will hide all li siblings.
+For that we give a class to the parent menu called "dl-subview".
+We also hide the submenu link.
+The opened submenu will get the class "dl-subviewopen".
+All this is done for any sub-level being entered.
+*/
+.dl-menu.dl-subview li,
+.dl-menu.dl-subview li.dl-subviewopen > a,
+.dl-menu.dl-subview li.dl-subview > a {
+    display: none;
+    }
+    
+.dl-menu.dl-subview li.dl-subview,
+.dl-menu.dl-subview li.dl-subview .dl-submenu,
+.dl-menu.dl-subview li.dl-subviewopen,
+.dl-menu.dl-subview li.dl-subviewopen > .dl-submenu,
+.dl-menu.dl-subview li.dl-subviewopen > .dl-submenu > li {
+    display: block;
+    }
+
+/* Dynamically added submenu outside of the menu context */
+.dl-menuwrapper > .dl-submenu {
+    position: absolute;
+    width: 100%;
+    top: 50px;
+    left: 0;
+    margin: 0;
+    }
+
+/* Animation classes for moving out and in */
+
+.dl-menu.dl-animate-out-1 {
+    -webkit-animation: MenuAnimOut1 0.4s;
+    animation: MenuAnimOut1 0.4s;
+    }
+    
+.dl-menu.dl-animate-out-2 {
+    -webkit-animation: MenuAnimOut2 0.3s ease-in-out;
+    animation: MenuAnimOut2 0.3s ease-in-out;
+    }
+
+.dl-menu.dl-animate-out-3 {
+    -webkit-animation: MenuAnimOut3 0.4s ease;
+    animation: MenuAnimOut3 0.4s ease;
+    }
+
+.dl-menu.dl-animate-out-4 {
+    -webkit-animation: MenuAnimOut4 0.4s ease;
+    animation: MenuAnimOut4 0.4s ease;
+    }
+
+.dl-menu.dl-animate-out-5 {
+    -webkit-animation: MenuAnimOut5 0.4s ease;
+    animation: MenuAnimOut5 0.4s ease;
+    }
+    
+@-webkit-keyframes MenuAnimOut1 {
+    0% { }
+    50% {
+        -webkit-transform: translateZ(-250px) rotateY(30deg);
+    }
+    75% {
+        -webkit-transform: translateZ(-372.5px) rotateY(15deg);
+        opacity: .5;
+    }
+    100% {
+        -webkit-transform: translateZ(-500px) rotateY(0deg);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes MenuAnimOut2 {
+    0% { }
+    100% {
+        -webkit-transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes MenuAnimOut3 {
+    0% { }
+    100% {
+        -webkit-transform: translateZ(300px);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes MenuAnimOut4 {
+    0% { }
+    100% {
+        -webkit-transform: translateZ(-300px);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes MenuAnimOut5 {
+    0% { }
+    100% {
+        -webkit-transform: translateY(40%);
+        opacity: 0;
+    }
+}
+
+@keyframes MenuAnimOut1 {
+    0% { }
+    50% {
+        -webkit-transform: translateZ(-250px) rotateY(30deg);
+        transform: translateZ(-250px) rotateY(30deg);
+    }
+    75% {
+        -webkit-transform: translateZ(-372.5px) rotateY(15deg);
+        transform: translateZ(-372.5px) rotateY(15deg);
+        opacity: .5;
+    }
+    100% {
+        -webkit-transform: translateZ(-500px) rotateY(0deg);
+        transform: translateZ(-500px) rotateY(0deg);
+        opacity: 0;
+    }
+}
+
+@keyframes MenuAnimOut2 {
+    0% { }
+    100% {
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes MenuAnimOut3 {
+    0% { }
+    100% {
+        -webkit-transform: translateZ(300px);
+        transform: translateZ(300px);
+        opacity: 0;
+    }
+}
+
+@keyframes MenuAnimOut4 {
+    0% { }
+    100% {
+        -webkit-transform: translateZ(-300px);
+        transform: translateZ(-300px);
+        opacity: 0;
+    }
+}
+
+@keyframes MenuAnimOut5 {
+    0% { }
+    100% {
+        -webkit-transform: translateY(40%);
+        transform: translateY(40%);
+        opacity: 0;
+    }
+}
+
+.dl-menu.dl-animate-in-1 {
+    -webkit-animation: MenuAnimIn1 0.3s;
+    animation: MenuAnimIn1 0.3s;
+}
+
+.dl-menu.dl-animate-in-2 {
+    -webkit-animation: MenuAnimIn2 0.3s ease-in-out;
+    animation: MenuAnimIn2 0.3s ease-in-out;
+}
+
+.dl-menu.dl-animate-in-3 {
+    -webkit-animation: MenuAnimIn3 0.4s ease;
+    animation: MenuAnimIn3 0.4s ease;
+}
+
+.dl-menu.dl-animate-in-4 {
+    -webkit-animation: MenuAnimIn4 0.4s ease;
+    animation: MenuAnimIn4 0.4s ease;
+}
+
+.dl-menu.dl-animate-in-5 {
+    -webkit-animation: MenuAnimIn5 0.4s ease;
+    animation: MenuAnimIn5 0.4s ease;
+}
+
+@-webkit-keyframes MenuAnimIn1 {
+    0% {
+        -webkit-transform: translateZ(-500px) rotateY(0deg);
+        opacity: 0;
+    }
+    20% {
+        -webkit-transform: translateZ(-250px) rotateY(30deg);
+        opacity: 0.5;
+    }
+    100% {
+        -webkit-transform: translateZ(0px) rotateY(0deg);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes MenuAnimIn2 {
+    0% {
+        -webkit-transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes MenuAnimIn3 {
+    0% {
+        -webkit-transform: translateZ(300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes MenuAnimIn4 {
+    0% {
+        -webkit-transform: translateZ(-300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes MenuAnimIn5 {
+    0% {
+        -webkit-transform: translateY(40%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes MenuAnimIn1 {
+    0% {
+        -webkit-transform: translateZ(-500px) rotateY(0deg);
+        transform: translateZ(-500px) rotateY(0deg);
+        opacity: 0;
+    }
+    20% {
+        -webkit-transform: translateZ(-250px) rotateY(30deg);
+        transform: translateZ(-250px) rotateY(30deg);
+        opacity: 0.5;
+    }
+    100% {
+        -webkit-transform: translateZ(0px) rotateY(0deg);
+        transform: translateZ(0px) rotateY(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes MenuAnimIn2 {
+    0% {
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0px);
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes MenuAnimIn3 {
+    0% {
+        -webkit-transform: translateZ(300px);
+        transform: translateZ(300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes MenuAnimIn4 {
+    0% {
+        -webkit-transform: translateZ(-300px);
+        transform: translateZ(-300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes MenuAnimIn5 {
+    0% {
+        -webkit-transform: translateY(40%);
+        transform: translateY(40%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-in-1 {
+    -webkit-animation: SubMenuAnimIn1 0.4s ease;
+    animation: SubMenuAnimIn1 0.4s ease;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-in-2 {
+    -webkit-animation: SubMenuAnimIn2 0.3s ease-in-out;
+    animation: SubMenuAnimIn2 0.3s ease-in-out;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-in-3 {
+    -webkit-animation: SubMenuAnimIn3 0.4s ease;
+    animation: SubMenuAnimIn3 0.4s ease;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-in-4 {
+    -webkit-animation: SubMenuAnimIn4 0.4s ease;
+    animation: SubMenuAnimIn4 0.4s ease;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-in-5 {
+    -webkit-animation: SubMenuAnimIn5 0.4s ease;
+    animation: SubMenuAnimIn5 0.4s ease;
+}
+
+
+@-webkit-keyframes SubMenuAnimIn1 {
+    0% {
+        -webkit-transform: translateX(50%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimIn2 {
+    0% {
+        -webkit-transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimIn3 {
+    0% {
+        -webkit-transform: translateZ(-300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimIn4 {
+    0% {
+        -webkit-transform: translateZ(300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimIn5 {
+    0% {
+        -webkit-transform: translateZ(-200px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+@keyframes SubMenuAnimIn1 {
+    0% {
+        -webkit-transform: translateX(50%);
+        transform: translateX(50%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0px);
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes SubMenuAnimIn2 {
+    0% {
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateX(0px);
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes SubMenuAnimIn3 {
+    0% {
+        -webkit-transform: translateZ(-300px);
+        transform: translateZ(-300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+
+@keyframes SubMenuAnimIn4 {
+    0% {
+        -webkit-transform: translateZ(300px);
+        transform: translateZ(300px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes SubMenuAnimIn5 {
+    0% {
+        -webkit-transform: translateZ(-200px);
+        transform: translateZ(-200px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-out-1 {
+    -webkit-animation: SubMenuAnimOut1 0.4s ease;
+    animation: SubMenuAnimOut1 0.4s ease;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-out-2 {
+    -webkit-animation: SubMenuAnimOut2 0.3s ease-in-out;
+    animation: SubMenuAnimOut2 0.3s ease-in-out;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-out-3 {
+    -webkit-animation: SubMenuAnimOut3 0.4s ease;
+    animation: SubMenuAnimOut3 0.4s ease;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-out-4 {
+    -webkit-animation: SubMenuAnimOut4 0.4s ease;
+    animation: SubMenuAnimOut4 0.4s ease;
+}
+
+.dl-menuwrapper > .dl-submenu.dl-animate-out-5 {
+    -webkit-animation: SubMenuAnimOut5 0.4s ease;
+    animation: SubMenuAnimOut5 0.4s ease;
+}
+
+@-webkit-keyframes SubMenuAnimOut1 {
+    0% {
+        -webkit-transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateX(50%);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimOut2 {
+    0% {
+        -webkit-transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimOut3 {
+    0% {
+        -webkit-transform: translateZ(0px);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateZ(-300px);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimOut4 {
+    0% {
+        -webkit-transform: translateZ(0px);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateZ(300px);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes SubMenuAnimOut5 {
+    0% {
+        -webkit-transform: translateZ(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateZ(-200px);
+        opacity: 0;
+    }
+}
+
+@keyframes SubMenuAnimOut1 {
+    0% {
+        -webkit-transform: translateX(0%);
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateX(50%);
+        transform: translateX(50%);
+        opacity: 0;
+    }
+}
+
+@keyframes SubMenuAnimOut2 {
+    0% {
+        -webkit-transform: translateX(0%);
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes SubMenuAnimOut3 {
+    0% {
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateZ(-300px);
+        transform: translateZ(-300px);
+        opacity: 0;
+    }
+}
+
+
+@keyframes SubMenuAnimOut4 {
+    0% {
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateZ(300px);
+        transform: translateZ(300px);
+        opacity: 0;
+    }
+}
+
+@keyframes SubMenuAnimOut5 {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateZ(-200px);
+        transform: translateZ(-200px);
+        opacity: 0;
+    }
+}
+
+
+/* No JS Fallback */
+.no-js .dl-menuwrapper .dl-menu {
+    position: relative;
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+}
+
+.no-js .dl-menuwrapper li .dl-submenu {
+    display: block;
+}
+
+.no-js .dl-menuwrapper li.dl-back {
+    display: none;
+}
+
+.no-js .dl-menuwrapper li > a:not(:only-child) {
+    background: rgba(0,0,0,0.1);
+}
+
+.no-js .dl-menuwrapper li > a:not(:only-child):after {
+    content: '';
+}
+
+
+/* Main Nav */
+
+nav#main-nav {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 205px;
+    }
+    
+    @media screen and (max-width:1050px) {
+        nav#main-nav {
+        display: none;
+        }
+    }
+
+nav#main-nav ul {
+    list-style: none;
+    }
+    
+nav#main-nav ul li {
+    float: left;
+    margin: 0 0 0 25px;
+    }
+
+    nav#main-nav ul li a {
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 13px;
+        }
+
+    body.elm-user-anonymous .show-loggedin {
+        display: none;
+        }
+
+    body.elm-user-pro-member .show-public {
+        display: none;
+        }
+nav#elm-header-user-nav {
+z-index:1000;
+}/*]]>*/</style>
+
+        <link media="screen" type="text/css" rel="stylesheet" href="./SDK - Developer Network_files/viewer.css" id="mt-screen-css">
+
+    
+        <link media="print" type="text/css" rel="stylesheet" href="./SDK - Developer Network_files/print.css" id="mt-print-css">
+
+
+    <script async="" src="./SDK - Developer Network_files/analytics.js.download"></script><script type="application/json" nonce="" id="mt-localizations-draft">
+{"Draft.JS.alert.cancel.button":"OK","Draft.JS.alert.cancel.message":"You can not cancel a draft when the live page is unpublished.","Draft.JS.alert.cancel.title":"This draft cannot be canceled","Draft.JS.alert.publish.button":"OK","Draft.JS.alert.publish.message":"You can not publish a draft of a page with an unpublished parent","Draft.JS.alert.publish.title":"This draft cannot be published","Draft.JS.alert.unpublish.button":"OK","Draft.JS.alert.unpublish.message":"You can not unpublish a page when published subpages are present.","Draft.JS.alert.unpublish.title":"This page cannot be unpublished","Draft.JS.success.cancel":"The draft was successfully deleted.","Draft.JS.success.schedule.publish":"Publication schedule successfully created.","Draft.JS.success.publish":"The draft was successfully published.","Draft.JS.success.unpublish":"The page was successfully unpublished.","Draft.JS.success.unpublish.inherits-schedule\n        Draft.JS.success.unpublish.scheduled-to-publish":"[MISSING: draft.js.success.unpublish.inherits-schedule\n        draft.js.success.unpublish.scheduled-to-publish]","Draft.JS.success.update.schedule.publish":"Publication schedule successfully updated.","Draft.JS.success.update.schedule.unpublish":"[MISSING: draft.js.success.update.schedule.unpublish]","Draft.JS.success.delete.schedule\n        Draft.JS.success.delete.schedule.with.subpages\n        Draft.error.cancel":"[MISSING: draft.js.success.delete.schedule\n        draft.js.success.delete.schedule.with.subpages\n        draft.error.cancel]","Draft.error.publish":"There was an error publishing the draft.","Draft.error.unpublish":"There was an error unpublishing the page.","Draft.message.at":"at","Dialog.ConfirmSave.StrictIdf.title":"Oops!","Dialog.ConfirmSave.StrictIdf.error.missing-template-reference":"This article type requires a template reference widget. Not having one may negatively impact your site and SEO. Please contact CXone Expert support.","Dialog.ConfirmSave.StrictIdf.label.continue":"Proceed anyway","Dialog.ConfirmSave.StrictIdf.label.cancel":"Cancel","Dialog.ConfirmSave.StrictIdf.label.missing-template-reference-help-link":"Learn more about required references","Dialog.ConfirmSave.StrictIdf.error.invalid-idf":"This type of article should not exist at the requested location in the site hierarchy. Proceeding with the requested move may negatively impact site navigation and SEO.","Dialog.ConfirmSave.StrictIdf.label.invalid-idf-help-link":"Learn more about IDF structure","Dialog.EditDraft.page-title":"Create draft","Dialog.Scheduler.Common.label.am":"{0} AM","Dialog.Scheduler.Common.label.pm":"{0} PM","Dialog.Scheduler.Publish.alert-create-draft":"Create","Dialog.Scheduler.Publish.alert-existing-publication-scheduled":"This location has an existing publication schedule applied.  The new page will inherit this new schedule.","Dialog.Scheduler.Publish.alert-modify-message":"This draft is scheduled to be published {0} at {1}. A schedule cannot be modified or deleted less than 15 minutes from its start time.","Dialog.Scheduler.Publish.alert-modify-title":"This schedule cannot be modified","Dialog.Scheduler.Publish.button-close":"Close","Dialog.Scheduler.Publish.button-save":"Save publish schedule","Dialog.Scheduler.Publish.button-go-to-parent":"Go to parent","Dialog.Scheduler.Publish.do-not-have-permission-message":"This page will be published {0} with another page scheduled by {1}. You do not have permission to view this page. Please see {1} to resolve scheduling conflicts.","Dialog.Scheduler.Publish.go-to-parent-message":"This draft will be published {0}, scheduled by {1}. A schedule can only be modified where it was created.","Dialog.Scheduler.Publish.label.f1-link":"Learn about scheduled publishing","Dialog.Scheduler.Publish.page-title":"Publish","Dialog.Scheduler.Unpublish.button-save":"Save unpublish schedule","Dialog.Scheduler.Unpublish.alert-modify-message":"This page is scheduled to be unpublished {0} at {1}. A schedule cannot be modified or deleted less than 15 minutes from its start time.","Dialog.Scheduler.Unpublish.do-not-have-permission-message":"This page will be unpublished {0} with another page scheduled by {1}. You do not have permission to view this page. Please see {1} to resolve scheduling conflicts.","Dialog.Scheduler.Unpublish.go-to-parent-message":"This page will be unpublished {0}, scheduled by {1}. A schedule can only be modified where it was created.","Dialog.Scheduler.Unpublish.page-title":"Unpublish","Page.Dashboard.page-title":"Dashboard"}    </script>    <script type="application/json" nonce="" id="mt-localizations-editor">
+{"Article.Attach.file.upload.toobig":"The file \"{1}\" is too large.  The maximum allowed file size is {0}.","Article.Attach.file.upload.notAllowed":"The selected file can not be uploaded because you do not have permission to upload files of that type.","Article.Attach.file.upload.fileExtension":"You picked a file with an unsupported extension.  Please try again with a valid file.","Article.Common.page-is-restricted-login":"You do not have permission to view this page - please try signing in.","Article.Common.page-save-conflict":"You may have overwritten a concurrent editor's changes. Use this page's <a title=\"Revision History\" target=\"_blank\" href=\"{0}\" >Revision History<\/a> to review.","Article.Error.page-couldnt-be-loaded":"The requested page's contents could not be loaded.","Article.Error.page-save-conflict":"A page already exists at {0}. Navigate to the existing page and edit the page if you wish to modify its contents.","Article.Error.page-save-forbidden":"Your session has expired or you do not have permission to edit this page.","Article.Error.page-title-required":"A page title is required.","Article.edit.summary":"Edit summary","Article.edit.summary-reason":"Why are you making this edit?","Article.edit.enter-reason":"Enter reason (viewable in Site History Report)","Component.YoutubeSearch.error.key-invalid":"Your YouTube API Key was improperly configured. Please review the article at the","Component.YoutubeSearch.error.key-missing":"Your CXone Expert deployment needs to update your YouTube API Key. Details on how to update can be found at the","Component.YoutubeSearch.error.search-failed":"Search failed","Component.YoutubeSearch.info.not-found":"No videos found","Component.YoutubeSearch.label.video-url":"Video URL","Component.YoutubeSearch.placeholder.query":"Video URL or YouTube search query","Dialog.ConfirmCancel.button.continue-editing":"Continue editing","Dialog.ConfirmCancel.button.discard-changes":"Discard changes","Dialog.ConfirmCancel.message.changes-not-saved":"Your changes have not been saved to MindTouch.","Dialog.ConfirmCancel.title":"Discard changes?","Dialog.ConfirmDeleteRedirects.label.delete-redirects-help-link":"Learn more about deleting redirects","Dialog.ConfirmSave.error.redirect":"A redirect exists at this location and will be deleted if you continue. This may negatively impact your site and SEO. Please contact CXone Expert support.","Dialog.ConfirmSave.label.cancel":"Cancel","Dialog.ConfirmSave.label.continue":"Continue","Dialog.ConfirmSave.title":"Delete redirect?","Dialog.ConfirmSave.StrictIdf.error.invalid-idf":"This type of article should not exist at the requested location in the site hierarchy. Proceeding with the requested move may negatively impact site navigation and SEO.","Dialog.ConfirmSave.StrictIdf.error.missing-template-reference-insert":"You've removed the template reference, which is required for this page. Click Insert to reinsert the template reference.","Dialog.ConfirmSave.StrictIdf.label.cancel":"Cancel","Dialog.ConfirmSave.StrictIdf.label.continue":"Proceed anyway","Dialog.ConfirmSave.StrictIdf.label.insert":"Insert","Dialog.ConfirmSave.StrictIdf.label.missing-template-reference-help-link":"Learn more about required references","Dialog.ConfirmSave.StrictIdf.label.invalid-idf-help-link":"Learn more about IDF structure","Dialog.ConfirmSave.StrictIdf.title":"Oops!","Dialog.JS.wikibits-edit-section":"Edit section","Dialog.SaveRequired.button.cancel":"Cancel","Dialog.SaveRequired.button.save":"Save and continue","Dialog.SaveRequired.label.change-title-start":"This page needs a different title than","Dialog.SaveRequired.label.change-title-end":"Please make the correction and try again.","Dialog.SaveRequired.label.new-page-alert":"This operation can not be performed on a page that has not yet been created. In order to do that, we need to quickly save what you have.","Dialog.SaveRequired.title":"Save required","Draft.error.save-unpublished":"You cannot save an unpublished draft at {0}. A published page already exists at that location.","GUI.Editor.alert-changes-made-without-saving":"You have made changes to the content without saving your changes. Are you sure you want to exit this page?","GUI.Editor.error.copy-hint":"To avoid losing your work, copy the page contents to a new file and retry saving again.","GUI.Editor.error.server-error":"A server error has occurred.","GUI.Editor.error.unable-to-save":"We are unable to save this page","Redist.CKE.mt-save.save-to-file-link":"Save the page content to a file","Redist.CKE.mt-autosave.contents-autosaved":"The page contents were autosaved to the browser's local storage {0}","System.API.Error.invalid-redirect":"Cannot create a redirect on a page with sub-pages.","System.API.Error.invalid-redirect-target":"The redirect does not point at a valid page."}    </script>    <script type="application/json" nonce="" id="mt-localizations-file-uploader">
+{"Dialog.Attach.allowed-types":"Allowed file types:","Dialog.Attach.button.upload":"Upload","Dialog.Attach.choose-files-dad":"Choose files to upload or drag and drop files into this window.","Dialog.Attach.max-size":"Maximum upload file size: {0}"}    </script>    <script type="application/json" nonce="" id="mt-localizations-grid-widget">
+{"Article.Common.page-is-restricted-login":"You do not have permission to view this page - please try signing in.","MindTouch.Help.Page.search-unavailable":"Sorry, search is currently unavailable.","MindTouch.Reports.data.empty-grid-text":"No Data Available.","Page.StructuredTags.error-update":"An unknown error occurred."}    </script>    <script type="application/json" nonce="" id="mt-localizations-tree-widget">
+{"Skin.Common.home":"Home","Dialog.Common.error.path-not-found":"The requested page or section could not be loaded. Please update the link.","Dialog.JS.loading":"Loading...","Dialog.JS.loading.copy":"Copying page(s)...","Dialog.JS.loading.insertImage":"Inserting image...","Dialog.JS.loading.move":"Moving page(s)...","Dialog.JS.loading.moveFile":"Moving file...","Dialog.JS.loading.search":"Searching...","MindTouch.Help.Page.in":"in","MindTouch.Help.Page.no-search-results":"Sorry, we can't find what you are looking for.","MindTouch.Help.Page.no-search-try":"Try searching for something else, selecting a category, or try creating a ticket.","MindTouch.Help.Page.retrysearch":"Click here to search the whole site.","MindTouch.Help.Page.search-error-try":"Please try again later.","MindTouch.Help.Page.search-unavailable":"Sorry, search is currently unavailable."}    </script>    <script type="application/json" nonce="" id="mt-localizations-dialog">
+{"Dialog.Common.button.cancel":"Cancel","Dialog.Common.button.ok":"OK","Dialog.Common.label.home":"Home"}    </script>
+    <script type="text/javascript" data-mindtouch-module="true" nonce="" src="./SDK - Developer Network_files/globals.jqueryv2.2.4.js.download"></script><script type="application/json" id="mt-global-settings" nonce="">{"articleType":"topic-guide","attachFileMax":1000,"baseHref":"https:\/\/developer.connectwise.com","cacheFingerprint":"d89e5e423025dc277842b47553c17b4045ce4a88:site_8263","canFileBeAttached":false,"cdnHostname":"a.mtstatic.com","clientSideWarnings":false,"dntEditorConfig":false,"draftEditable":false,"followRedirects":1,"idfHideTemplateTags":false,"idfVersion":"IDF3","isAiOptimizationTemplateEnabled":false,"isArticleReviewCommunityMembersEnabled":false,"isDraftAllowed":false,"isDraftManagerReportDownloadEnabled":false,"isDraftRequest":false,"isFindAndReplaceUndoEnabled":false,"isGenerativeSearchEnabled":false,"isGenerativeSearchDisclaimerEnabled":false,"isGenerativeSearchStreamResponseToggleEnabled":false,"isGenerativeSearchSearchIconEnabled":false,"isContentAdequacyEnabled":false,"isGenerativeSearchOnDemandEvaluationEnabled":false,"isEditorAiAssistantShortcutsEnabled":false,"isFileDescriptionCaptionableByLlmEnabled":false,"isGoogleAnalyticsEnabled":true,"isGuideTabMultipleClassificationsEnabled":false,"isHawthornThemeEnabled":false,"isIframeSandboxEnabled":false,"isImportExportEnhancementsEnabled":false,"isImportExportMediaEnabled":false,"isExternalImportEnabled":false,"isInteractionAnalyticsDebugEnabled":false,"isDevelopmentModeEnabled":false,"isInteractionAnalyticsEnabled":true,"isKcsEnabledOnPage":false,"isMediaManagerEnabled":false,"isPinnedPagesEnabled":true,"isPinnedPagesEnhancementsEnabled":true,"isReportDownloadEnabled":false,"isSchedulePublishEnabled":true,"isSearchAsYouTypeEnabled":true,"isTinymceAiAssistantEnabled":false,"isSearchInsightsDownloadEnabled":true,"isSentimentAnalysisEnabled":true,"isShowMoreChildrenNodesEnabled":false,"isShowTerminalNodesEnabled":false,"isSkinResponsive":true,"isSmoothScrollEnabled":true,"isTinyMceEnabled":false,"isTreeArticleIconsEnabled":false,"isXhrF1WebWidgetEnabled":true,"isXhrIEMode":false,"kcsEnabled":false,"kcsV2Enabled":false,"kcsV2GuidePrivacySetting":"Semi-Public","learningPathsEnabled":true,"maxFileSize":268435456,"moduleMode":"global","pageEditable":false,"pageId":686,"pageIsRedirect":false,"pageLanguageCode":"en-US","pageName":"SDK","pageNamespace":"","pageOrderLimit":1000,"pagePermissions":["LOGIN","BROWSE","READ","SUBSCRIBE"],"pageRevision":"161","pageSectionEditable":false,"pageTitle":"Products\/ConnectWise PSA\/SDK","pageViewId":"2c93d88a-ae45-4591-a48e-ac5280b939f1","siteId":"site_8263","pathCommon":"\/@style\/common","pathSkin":"\/@style\/elm","relatedArticlesDetailed":true,"removeBlankTemplate":false,"removeDeleteCheckbox":true,"cidWarningOnDelete":true,"scriptParser":2,"sessionId":"NzgwNzI1NjItMWM1Ny00Yjc0LTgwMTQtNTRkZTBiMzI0NDk3fDIwMjYtMDItMjBUMTQ6MTU6NDM=","showAllTemplates":true,"siteAuthoringPageThumbnailManagementEnabled":true,"skinStyle":"columbia.elm","spaceballs2Enabled":false,"strictIdfEnabled":false,"uiLanguage":"en-us","userId":36242,"isPageRedirectPermanent":false,"userIsAdmin":false,"userIsAnonymous":false,"userIsSeated":false,"userName":"Dale Cooper","userPermissions":["LOGIN","BROWSE","READ","SUBSCRIBE"],"userSystemName":"dale@personalized-computers.com","userTimezone":"-04:00","webFontConfig":{"google":{"families":null}},"apiToken":"xhr_36242_1772046938_548843393c9ff54a6cdb4d1b5e897971a2d3bbfcbbe6228ea5c777a73afeffaf","displayGenerativeSearchDisclaimer":false}</script><script type="text/javascript" data-mindtouch-module="true" nonce="" src="./SDK - Developer Network_files/deki.legacy.js.download"></script><script type="text/javascript" data-mindtouch-module="true" nonce="" src="./SDK - Developer Network_files/community.js.download"></script><script type="text/javascript" data-mindtouch-module="true" nonce="" src="./SDK - Developer Network_files/skin_elm.js.download"></script><script type="text/javascript" data-mindtouch-module="true" nonce="" src="./SDK - Developer Network_files/pageBootstrap.js.download"></script>
+
+    
+        <link type="text/css" rel="stylesheet" href="./SDK - Developer Network_files/shCore.min.css"><link type="text/css" rel="stylesheet" href="./SDK - Developer Network_files/shThemeCedar.min.css"><script type="text/javascript" src="./SDK - Developer Network_files/shCore.min.js.download"></script><script type="text/javascript" src="./SDK - Developer Network_files/shBrushCSharp.min.js.download"></script><script type="text/javascript">/*<![CDATA[*/SyntaxHighlighter.all();/*]]>*/</script><script type="text/javascript" src="./SDK - Developer Network_files/modernizr.js.download"></script><link href="./SDK - Developer Network_files/font-awesome.min.css" rel="stylesheet"><style type="text/css">.tk-proxima-nova{font-family:"proxima-nova",sans-serif;}</style><style type="text/css">@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/7d485b/00000000000000003b9ad1b1/27/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/7d485b/00000000000000003b9ad1b1/27/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/7d485b/00000000000000003b9ad1b1/27/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/347aea/00000000000000003b9ad1b2/27/l?subset_id=2&fvd=i7&v=3) format("woff2"),url(https://use.typekit.net/af/347aea/00000000000000003b9ad1b2/27/d?subset_id=2&fvd=i7&v=3) format("woff"),url(https://use.typekit.net/af/347aea/00000000000000003b9ad1b2/27/a?subset_id=2&fvd=i7&v=3) format("opentype");font-weight:700;font-style:italic;font-stretch:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/04b81b/00000000000000003b9ad1bb/27/l?subset_id=2&fvd=n6&v=3) format("woff2"),url(https://use.typekit.net/af/04b81b/00000000000000003b9ad1bb/27/d?subset_id=2&fvd=n6&v=3) format("woff"),url(https://use.typekit.net/af/04b81b/00000000000000003b9ad1bb/27/a?subset_id=2&fvd=n6&v=3) format("opentype");font-weight:600;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/c9cde8/00000000000000003b9ad1b9/27/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.net/af/c9cde8/00000000000000003b9ad1b9/27/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.net/af/c9cde8/00000000000000003b9ad1b9/27/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;font-stretch:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/4ba64f/00000000000000003b9ad1ba/27/l?subset_id=2&fvd=i4&v=3) format("woff2"),url(https://use.typekit.net/af/4ba64f/00000000000000003b9ad1ba/27/d?subset_id=2&fvd=i4&v=3) format("woff"),url(https://use.typekit.net/af/4ba64f/00000000000000003b9ad1ba/27/a?subset_id=2&fvd=i4&v=3) format("opentype");font-weight:400;font-style:italic;font-stretch:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/3333ef/00000000000000003b9ad1b5/27/l?subset_id=2&fvd=n3&v=3) format("woff2"),url(https://use.typekit.net/af/3333ef/00000000000000003b9ad1b5/27/d?subset_id=2&fvd=n3&v=3) format("woff"),url(https://use.typekit.net/af/3333ef/00000000000000003b9ad1b5/27/a?subset_id=2&fvd=n3&v=3) format("opentype");font-weight:300;font-style:normal;font-stretch:normal;font-display:auto;}</style><script src="./SDK - Developer Network_files/puk4twq.js.download"></script><script>/*<![CDATA[*/try{Typekit.load();}catch(e){}/*]]>*/</script><script type="text/javascript" src="./SDK - Developer Network_files/jquery.cookie.js.download"></script><script type="text/javascript" src="./SDK - Developer Network_files/devnet.js.download"></script><script type="text/javascript" src="./SDK - Developer Network_files/responsive-tables.js.download"></script><script type="text/javascript" src="./SDK - Developer Network_files/jquery.dlmenu.js.download"></script>
+    
+<script type="text/javascript" nonce="">(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-3249818-20','developer.connectwise.com',{allowLinker:true});ga('send','pageview');ga('create','UA-65721316-4','auto',{name:'mtTracker',allowLinker:true});ga('mtTracker.require','linker');ga('mtTracker.set', 'anonymizeIp', true);ga('mtTracker.send','pageview');document.addEventListener('mindtouch-web-widget:f1:loaded',function(e){var t=e.data||{},d=t.widget;d&&''!==t.embedId&&document.addEventListener('mindtouch-web-widget:f1:clicked',function(e){var t=(e.data||{}).href;if(t){var n=document.createElement('a');n.setAttribute('href',t),'expert-help.nice.com'===n.hostname&&(e.preventDefault(),ga('linker:decorate',n),d.open(n.href))}})});</script>
+<style id="mt-fixed-header-styles"></style></head>
+<body class="elm-user-community columbia-page-main columbia-article-topic-guide columbia-browser-chrome columbia-platform-windows columbia-breadcrumb-home-products-connectwisepsa-sdk columbia-live no-touch columbia-lang-en-us columbia-skin-elm columbia-group-developer columbia-group-connectwise-developer columbia-group-labtech-developer columbia-group-screenconnect-developer columbia-group-asio-partner">
+<a class="elm-skip-link" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#elm-main-content" title="Press enter to skip to the main content">Skip to main content</a><main class="elm-skin-container" data-ga-category="Community | page">
+    <header class="elm-header">
+        <div class="elm-header-custom"><div class="header-blue"><div class="header-wrapper"><a id="cw-logo" href="https://developer.connectwise.com/" rel="internal"><img class="internal" alt="CWLogo-R-Reg_Horz-White.png" loading="lazy" src="./SDK - Developer Network_files/CWLogo-R-Reg_Horz-White.png"></a><div id="dl-menu" class="dl-menuwrapper"><button class="dl-trigger">Open Menu</button><ul class="dl-menu"><li><a href="https://developer.connectwise.com/Best_Practices/Getting_Started" rel="internal">Get Started</a></li><li><a href="https://developer.connectwise.com/Products" rel="internal">Documentation</a></li><li class="show-loggedin"><a href="https://developer.connectwise.com/Special:ClientId" rel="internal">ClientId</a></li><li class="show-public"><a href="https://virtualcommunity.connectwise.com/community-home?CommunityKey=b91ec22c-a6ca-4ae3-bedb-018a5199538b" target="_blank" rel="external noopener nofollow" class="link-https">Developer Community</a></li><li class="show-loggedin"><a href="https://developer.connectwise.com/Special:faq" rel="internal">FAQ</a></li><li><a href="https://marketplace.connectwise.com/" target="_blank" rel="external noopener nofollow" class="link-https">Marketplace</a></li><li class="show-public"><a href="https://developer.connectwise.com/Special:Userlogin" rel="internal">Login</a></li><li class="show-public"><a href="https://register.developer.connectwise.com/" target="_blank" rel="external noopener nofollow" class="link-https">Register</a></li><li class="show-loggedin"><a href="https://developer.connectwise.com/Special:Preferences" rel="internal">Preferences</a></li><li class="show-loggedin"><a href="https://developer.connectwise.com/Special:Userlogout" rel="internal">Logout</a></li></ul></div><nav id="main-nav"><ul><li><a href="https://developer.connectwise.com/Best_Practices/Getting_Started" rel="internal">Get Started</a></li><li><a href="https://developer.connectwise.com/Products" rel="internal">Documentation</a></li><li class="show-loggedin"><a href="https://developer.connectwise.com/ClientID" rel="internal">ClientId</a></li><li><a href="https://virtualcommunity.connectwise.com/community-home?CommunityKey=b91ec22c-a6ca-4ae3-bedb-018a5199538b" target="_blank" rel="external noopener nofollow" class="link-https">Developer Community</a></li><li><a href="https://marketplace.connectwise.com/" target="_blank" rel="external noopener nofollow" class="link-https">Marketplace</a></li></ul></nav><div class="action-items anonymous-user"><button id="toggleSearch"><i class="fa fa-search"></i></button><a href="https://developer.connectwise.com/Special:Userlogin" rel="internal">Login</a><a href="https://register.developer.connectwise.com/" target="_blank" rel="external noopener nofollow" class="link-https">Register</a></div><div class="action-items confirmed-user"><button id="toggleSearch"><i class="fa fa-search"></i></button><a href="https://developer.connectwise.com/Special:Preferences" rel="internal">Preferences</a><a href="https://developer.connectwise.com/Special:Userlogout" rel="internal">Logout</a></div></div></div><div id="search-cw" style="display:none;"><form action="https://developer.connectwise.com/Special:Search"><input name="qid" id="mt-qid-skin" type="hidden" value=""><input name="fpid" id="mt-search-filter-id" type="hidden" value=""><input name="fpth" id="mt-search-filter-path" type="hidden"><input name="path" id="mt-search-path" type="hidden" value=""><input class="mt-text mt-search search-field" name="search" id="mt-site-search-input" placeholder="Search..." tabindex="1" type="search"><button class="mt-button ui-button-icon mt-icon-site-search-button search-button" tabindex="2" type="submit">Search</button></form></div><div class="style-wrap" style="display: none;"><div id="mt-useremail">dale@personalized-computers.com</div></div>
+
+
+
+<script type="text/javascript">/*<![CDATA[*/
+$(document).ready(function(){
+    $("button#toggleSearch").click(function(){
+        $("#search-cw").toggle();
+    });
+    $( '#dl-menu' ).dlmenu();
+});
+$(document).ready(function(){
+        $('li:contains("API Version 1.5")').remove();
+});/*]]>*/</script>
+
+
+
+<div class="style-wrap"><input id="mt-manage" type="hidden" value="1"></div>
+
+<div class="style-wrap"><input id="mt-automate" type="hidden" value="1"></div>
+
+
+
+<div class="style-wrap"><input id="mt-control" type="hidden" value="1"></div>
+</div>
+        <div class="elm-nav mt-translate-module" hidden="true">
+            <div class="elm-nav-container mt-translate-container"></div>
+        </div>
+        <div class="elm-header-logo-container">
+            <a href="https://developer.connectwise.com/" title="Developer Network" aria-label="Link to home"><img src="./SDK - Developer Network_files/1680273416-logo.png" alt="Developer Network"></a>
+        </div>
+        
+        <nav class="elm-header-user-nav elm-nav" role="navigation">
+            <div class="elm-nav-container">
+                <ol>
+                    <li class="elm-global-search" data-ga-action="Header search"><a class="mt-icon-site-search mt-toggle-form" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#" title="Search site">Search site</a>
+<div class="mt-quick-search-container mt-toggle-form-container">
+    <form action="https://developer.connectwise.com/Special:Search">
+        <input name="qid" id="mt-qid-skin" type="hidden" value="">
+        <input name="fpid" id="mt-search-filter-id" type="hidden" value="230">
+        <input name="fpth" id="mt-search-filter-path" type="hidden">
+        <input name="path" id="mt-search-path" type="hidden" value="">
+
+        <label class="mt-label" for="mt-site-search-input">
+            Search
+        </label>
+        <input class="mt-text mt-search search-field" name="q" id="mt-site-search-input" placeholder="How can we help you?" type="search">
+        <button class="mt-button ui-button-icon mt-icon-site-search-button search-button" type="submit">
+            Search
+        </button>
+    </form>
+</div>
+<div class="elm-search-back"><a class="mt-icon-browser-back" data-ga-label="Browse back" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#" id="mt-browser-back" title="Go back to previous article">Go back to previous article</a></div>
+</li>
+                    <li class="elm-user-menu"><ol class="mt-user-menu">
+    <li class="mt-user-menu-user">
+        <a class="mt-icon-user-menu mt-dropdown-link" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#" title="">Dale Cooper</a>
+        <ol class="mt-user-menu-container mt-dropdown">
+                <li class="mt-user-menu-preferences">
+                    <a class="mt-icon-user-preferences" href="https://developer.connectwise.com/Special:Preferences" title="Click to change your user preferences">My preferences</a>
+                </li>
+            <li class="mt-user-menu-signout">
+                <a class="mt-icon-user-sign-out" href="https://developer.connectwise.com/Special:UserLogout?returntotitle=Products%2FConnectWise_PSA%2FSDK" title="Click to sign out of this site">Sign out</a>
+            </li>
+        </ol>
+    </li>
+</ol></li>
+                </ol>
+            </div>
+        </nav>
+        <nav class="elm-header-global-nav elm-nav" data-ga-action="Elm Navigation">
+            <div class="elm-nav-container">
+                <button class="elm-hierarchy-trigger mt-hierarchy-trigger ui-button-icon mt-icon-hierarchy-trigger-closed" title="Expand/collapse global hierarchy" data-ga-label="Hierarchy Toggle - Tree View">
+                    Expand/collapse global hierarchy
+                </button>
+                <ol class="mt-breadcrumbs" data-ga-action="Breadcrumbs">
+                        <li>
+                            <a href="https://developer.connectwise.com/" data-ga-label="Breadcrumb category">
+                                <span class="mt-icon-article-category mt-icon-article-home"></span>
+                                    Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://developer.connectwise.com/Products" data-ga-label="Breadcrumb category">
+                                <span class="mt-icon-article-category"></span>
+                                    Products
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://developer.connectwise.com/Products/ConnectWise_PSA" data-ga-label="Breadcrumb category">
+                                <span class="mt-icon-article-category"></span>
+                                    ConnectWise PSA
+                            </a>
+                        </li>
+                        <li class="mt-breadcrumbs-current-page">
+                            <span class="mt-icon-article-guide"></span>
+                            SDK
+                        </li>
+                </ol>
+                <button class="mt-icon-hierarchy-mobile-view-trigger ui-button-icon mt-icon-hierarchy-mobile-trigger-closed" title="Expand/collapse global location" data-ga-label="Hierarchy Toggle - Breadcrumb Expand/Collapse">
+                    Expand/collapse global location
+                </button>
+            </div>
+        </nav>
+        <nav class="elm-nav elm-header-hierarchy">
+            <div class="elm-nav-container">
+                <div class="elm-hierarchy mt-hierarchy"></div>
+            </div>
+        </nav>        <div class="elm-nav mt-review-banner" hidden="true"></div>
+    </header>
+    <article class="elm-content-container" id="elm-main-content" tabindex="-1">
+        <header>
+            <div id="flash-messages"><div class="dekiFlash"></div></div>
+            
+                
+<h1 id="title" data-title-editor-available="false">
+        SDK
+</h1>
+
+                
+
+                
+                    <ol class="elm-meta-data elm-meta-top" data-ga-action="Page actions">
+                        <li class="elm-last-modified"><dl class="mt-last-updated-container">
+    <dt class="mt-last-updated-label">Last updated</dt>
+    <dd>
+        <span class="mt-last-updated" data-timestamp="2026-01-12T15:31:40Z">Jan 12, 2026</span>
+    </dd>
+</dl>
+</li>
+                        <li class="elm-pdf-export"><a data-ga-label="PDF" href="https://developer.connectwise.com/@api/deki/pages/686/pdf/SDK.pdf" rel="nofollow" target="_blank" title="Export page as a PDF">
+    <span class="mt-icon-article-pdf"></span>Save as PDF
+</a></li>
+                        <li class="elm-social-share"></li>
+                    </ol>
+                
+            
+        </header>
+                <header class="mt-content-header"></header>
+                <aside class="mt-content-side"></aside>
+            <aside id="mt-toc-container" data-title="Table of contents" data-collapsed="false" class="mt-toggle-container"><button class="mt-toggle mt-summary-toggle ui-button-icon mt-toggle-collapse" type="button">Table of contents</button>
+                <nav class="mt-toc-content mt-collapsible-section">
+                    <ol><li><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#REST_SDK_(New_Format)" rel="internal">REST SDK (New Format)</a></li><li><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#REST_SDK_Sample_App" rel="internal">REST SDK Sample App</a></li><li><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#REST_SDK_Definitions" rel="internal">REST SDK Definitions</a><ol><li><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#Methods" rel="internal">Methods</a></li><li><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#Properties" rel="internal">Properties</a></li></ol></li></ol>
+                </nav>
+            </aside>
+            <section class="mt-content-container">
+                <p>The below downloads are provided by the ConnectWise PSA development team to aid in the adoption of the APIs. &nbsp;Please select the version you would like to use from the available options. &nbsp;The SDK versions correspond to the minimum ConnectWise PSA version in order to be utilized. &nbsp;Some ConnectWise PSA versions may not have an SDK associated. &nbsp;Please select an SDK version that is on a previous version.</p>
+
+<table style="width: 100%;">
+    <tbody>
+        <tr>
+            <td style="width:381px;">
+            <div mt-section-origin="Products/ConnectWise_PSA/SDK" class="mt-section"><span id="REST_SDK_(New_Format)"></span><h4 class="editable">REST SDK (New Format)</h4>
+
+            <ul>
+                <li><a title="Connectwise-SDK-2025_16.zip" rel="internal" class="iconitext-16 ext-zip" href="https://developer.connectwise.com/@api/deki/files/2455/Connectwise-SDK-2025_16.zip?revision=2">2025.16 SDK Bundle</a></li>
+                <li><a title="Connectwise-SDK-2024.8.zip" rel="internal" class="iconitext-16 ext-zip" href="https://developer.connectwise.com/@api/deki/files/2226/Connectwise-SDK-2024.8.zip?revision=1">2025.8&nbsp;SDK Bundle</a></li>
+                <li><a title="Connectwise-SDK-2025.1.zip" rel="internal" class="iconitext-16 ext-zip" href="https://developer.connectwise.com/@api/deki/files/2350/Connectwise-SDK-2025.1.zip?revision=1">2025.1&nbsp;SDK Bundle</a></li>
+            </ul>
+            </div></td>
+            <td style="width:461px;">
+            <div mt-section-origin="Products/ConnectWise_PSA/SDK" class="mt-section"><span id="REST_SDK_Sample_App"></span><h4 class="editable">REST SDK Sample App</h4>
+
+            <ul>
+            </ul>
+            <a title="Connectwise-SDK-Sample-App.zip" rel="internal" class="internal iconitext-16 ext-zip" href="https://developer.connectwise.com/@api/deki/files/826/Connectwise-SDK-Sample-App.zip?revision=1">Connectwise-SDK-Sample-App</a></div></td>
+        </tr>
+    </tbody>
+</table>
+
+<div mt-section-origin="Products/ConnectWise_PSA/SDK" class="mt-section" id="section_1"><span id="REST_SDK_Definitions"></span><h2 class="editable">REST SDK Definitions</h2>
+
+<div mt-section-origin="Products/ConnectWise_PSA/SDK" class="mt-section" id="section_2"><span id="Methods"></span><h3 class="editable">Methods</h3>
+
+<p><strong>ResetCookieAuthentication - </strong>Wipes out the member password hash to reset from new username and password in the next invoke request</p>
+
+<p><strong>SetCompanyName – </strong>Sets the target company name, must match the company name in login database</p>
+
+<p><strong>SetCookieAuthentication – </strong>Sets the member’s username and member’s password hash values.</p>
+
+<p><strong>SetPublicPrivateKey – </strong>Sets the private and public key values used for authentication.</p>
+
+<p><strong>SetSite – </strong>The target URL of the ConnectWise PSA application</p>
+
+<p><strong>SetTimeout – </strong>Set the max length to wait for an executed http request to respond</p>
+
+<p><strong>SetupForCookieAuthentication - </strong>Sets the username and password of the member. The client will automatically grab the password hash when the first request happens.</p>
+
+<p><strong>SetUserAgent – </strong>Sets the user-agent value for incoming http requests. Defaults to “ConnectWise-DotNet-SDK”.</p>
+
+<p><strong>UseHttp – </strong>Set this method to configure the client to use http protocol (Defaults to https)</p>
+
+</div><div mt-section-origin="Products/ConnectWise_PSA/SDK" class="mt-section" id="section_3"><span id="Properties"></span><h3 class="editable">Properties</h3>
+
+<p><strong>DateFormat - </strong>Use ISO 8601 format for date and datetime. [yyyy-MM-ddTHH:mm:ssZ]</p>
+
+<p><strong>ConnectwiseAppId – </strong>The integrator’s ConnectWise PSA Application Id</p>
+
+<p><strong>Site – </strong>The ConnectWise PSA Application URL</p>
+
+<p><strong>CodeBase – </strong>The preferred code base to be used when executing the request</p>
+
+<p><strong>Username – </strong>The memberIdentifier of the ConnectWise PSA User being impersonated</p>
+
+<p><strong>Password – </strong>The ConnectWise PSA Member’s application password</p>
+
+<p><strong>MemberHash – </strong>The ConnectWise PSA Member’s password hash value</p>
+
+<p><strong>PublicKey – </strong>Alternative method of authentication. *Can be deleted through UI</p>
+
+<p><strong>PrivateKey – </strong>Used with Public Key for authentication.</p>
+
+<p><strong>Scheme – </strong>Defaults to Https:// unless UseHttp() is invoked<strong>.</strong></p>
+
+<p><strong>UsingCookieAuth – </strong>Set to true if using cookie authentication for requests</p>
+
+<div id="highlighter_831411" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>001</code></td><td class="content"><code class="keyword">using</code> <code class="plain">Newtonsoft.Json;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>002</code></td><td class="content"><code class="keyword">using</code> <code class="plain">Newtonsoft.Json.Converters;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>003</code></td><td class="content"><code class="keyword">using</code> <code class="plain">Newtonsoft.Json.Linq;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>004</code></td><td class="content"><code class="keyword">using</code> <code class="plain">System.Collections.Generic;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>005</code></td><td class="content"><code class="keyword">using</code> <code class="plain">System.Net;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>006</code></td><td class="content"><code class="keyword">using</code> <code class="plain">System.Net.Http;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>007</code></td><td class="content"><code class="keyword">using</code> <code class="plain">System.Net.Http.Formatting;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>008</code></td><td class="content"><code class="keyword">using</code> <code class="plain">System.Net.Http.Headers;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>009</code></td><td class="content"><code class="keyword">using</code> <code class="plain">System.Text;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>010</code></td><td class="content"><code class="keyword">using</code> <code class="plain">System.Threading.Tasks;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>011</code></td><td class="content"><code class="keyword">using</code> <code class="plain">TimeSpan = System.TimeSpan;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>012</code></td><td class="content"><code class="keyword">using</code> <code class="plain">StringComparison = System.StringComparison;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>013</code></td><td class="content"><code class="keyword">using</code> <code class="plain">Convert = System.Convert;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>014</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>015</code></td><td class="content"><code class="keyword">namespace</code> <code class="plain">ConnectWiseDotNetSDK.ConnectWise.Client</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>016</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>017</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">class</code> <code class="plain">ApiClient</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>018</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>019</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">readonly</code> <code class="plain">Dictionary&lt;</code><code class="keyword">string</code><code class="plain">, </code><code class="keyword">string</code><code class="plain">&gt; _defaultHeaders = </code><code class="keyword">new</code> <code class="plain">Dictionary&lt;</code><code class="keyword">string</code><code class="plain">, </code><code class="keyword">string</code><code class="plain">&gt;();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>020</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_connectwiseAppId; </code><code class="comments">//The integrator’s ConnectWise Application Id. <a href="https://developer.connectwise.com/ConnectWise/Cookies">https://developer.connectwise.com/ConnectWise/Cookies</a></code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>021</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_site; </code><code class="comments">//The ConnectWise Application URL.</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>022</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_codebase; </code><code class="comments">//The preferred code base to be used when executing the request.&nbsp; It is recommended to use v4_6_release or use the method for SetCodeBase.</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>023</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_companyName; </code><code class="comments">//The login company name for the ConnectWise Environment.</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>024</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_publicKey; </code><code class="comments">//Found on the API Key tab on a member record or under My Account.</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>025</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_privateKey; </code><code class="comments">//Found on the API Key tab on a member record or under My Account.</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>026</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_username; </code><code class="comments">//The memberIdentifier of the ConnectWise User being impersonated if using Cookie Authentication.&nbsp; This is not recommended.</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>027</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_password; </code><code class="comments">//The ConnectWise Member’s application password.</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>028</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_memberHash; </code><code class="comments">//The ConnectWise Member’s password hash value.</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>029</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">string</code> <code class="plain">_scheme = </code><code class="string">"<a href="https:">https://</a>"</code><code class="plain">; //Defaults to <a href="https:">Https://</a> unless UseHttp() </code><code class="keyword">is</code> <code class="plain">invoked.</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>030</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">bool</code> <code class="plain">_usingCookieAuth; </code><code class="comments">//Set to true if using cookie authentication for requests.&nbsp; It is recommended to use API Keys instead.</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>031</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>032</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="plain">TimeSpan? _timeout;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>033</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="keyword">static</code> <code class="keyword">string</code> <code class="plain">_dateFormat = </code><code class="string">"yyyy-MM-ddTHH:mm:ssZ"</code><code class="plain">; </code><code class="comments">//Use ISO 8601 format for date and datetime.</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>034</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>035</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>036</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Gets the supported date format</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>037</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>038</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">static</code> <code class="keyword">string</code> <code class="plain">DateFormat</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>039</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>040</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">get</code> <code class="plain">{ </code><code class="keyword">return</code> <code class="plain">_dateFormat; }</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>041</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>042</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>043</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>044</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Gets or sets the base path.</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>045</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>046</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;value&gt;The base path&lt;/value&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>047</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">string</code> <code class="plain">BasePath { </code><code class="keyword">get</code><code class="plain">; </code><code class="keyword">set</code><code class="plain">; }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>048</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>049</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>050</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Gets the default header.</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>051</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>052</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">Dictionary&lt;</code><code class="keyword">string</code><code class="plain">, </code><code class="keyword">string</code><code class="plain">&gt; DefaultHeaders</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>053</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>054</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">get</code> <code class="plain">{ </code><code class="keyword">return</code> <code class="plain">_defaultHeaders; }</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>055</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>056</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>057</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>058</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Gets the default content-type</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>059</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>060</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">string</code> <code class="plain">DefaultContentType</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>061</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>062</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">get</code> <code class="plain">{ </code><code class="keyword">return</code> <code class="string">"application/json"</code><code class="plain">; }</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>063</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>064</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>065</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>066</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Default initializer</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>067</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>068</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient(</code><code class="keyword">string</code> <code class="plain">connectwiseAppId) : </code><code class="keyword">this</code><code class="plain">(connectwiseAppId, </code><code class="keyword">null</code><code class="plain">, </code><code class="keyword">null</code><code class="plain">, </code><code class="keyword">null</code><code class="plain">)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>069</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>070</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>071</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>072</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>073</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Initializes api client with site</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>074</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>075</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient(</code><code class="keyword">string</code> <code class="plain">connectwiseAppId, </code><code class="keyword">string</code> <code class="plain">site) : </code><code class="keyword">this</code><code class="plain">(connectwiseAppId, site, </code><code class="keyword">null</code><code class="plain">, </code><code class="keyword">null</code><code class="plain">)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>076</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>077</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>078</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>079</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>080</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Initializes api client with site and companyName</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>081</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>082</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient(</code><code class="keyword">string</code> <code class="plain">connectwiseAppId, </code><code class="keyword">string</code> <code class="plain">site, </code><code class="keyword">string</code> <code class="plain">companyName) : </code><code class="keyword">this</code><code class="plain">(connectwiseAppId, site, companyName, </code><code class="keyword">null</code><code class="plain">)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>083</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>084</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>085</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>086</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>087</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Initializes api client with site, companyName, and codebase</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>088</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>089</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient(</code><code class="keyword">string</code> <code class="plain">connectwiseAppId, </code><code class="keyword">string</code> <code class="plain">site, </code><code class="keyword">string</code> <code class="plain">companyName, </code><code class="keyword">string</code> <code class="plain">codebase)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>090</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>091</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_connectwiseAppId = connectwiseAppId;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>092</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_site = site;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>093</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_companyName = companyName;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>094</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_codebase = codebase;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>095</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">SetUserAgent(</code><code class="string">"ConnectWise-DotNet-SDK"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>096</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>097</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>098</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetUserAgent(</code><code class="keyword">string</code> <code class="plain">userAgent)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>099</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>100</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var key = </code><code class="string">"User-Agent"</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>101</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(_defaultHeaders.ContainsKey(key))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>102</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_defaultHeaders[key] = userAgent;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>103</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">else</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>104</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_defaultHeaders.Add(key, userAgent);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>105</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>106</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>107</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>108</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>109</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Configures the client to use http protocol</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>110</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>111</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient UseHttp()</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>112</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>113</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_scheme = </code><code class="string">"<a href="http:">http://</a>"</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>114</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>115</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>116</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>117</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>118</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Sets the target site</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>119</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>120</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetSite(</code><code class="keyword">string</code> <code class="plain">site)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>121</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>122</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_site = site;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>123</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>124</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>125</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>126</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>127</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Sets the target codebase. If you do not set this, the client will automatically grab the correct codebase based on Site and CompanyName</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>128</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>129</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetCodeBase(</code><code class="keyword">string</code> <code class="plain">codebase)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>130</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>131</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_codebase = codebase;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>132</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>133</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>134</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>135</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>136</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Sets the target companyName</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>137</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>138</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetCompanyName(</code><code class="keyword">string</code> <code class="plain">companyName)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>139</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>140</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_companyName = companyName;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>141</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>142</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>143</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>144</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>145</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Sets the public and private keys</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>146</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>147</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetPublicPrivateKey(</code><code class="keyword">string</code> <code class="plain">publicKey, </code><code class="keyword">string</code> <code class="plain">privateKey)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>148</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>149</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_usingCookieAuth = </code><code class="keyword">false</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>150</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_publicKey = publicKey;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>151</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_privateKey = privateKey;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>152</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>153</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>154</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>155</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>156</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Sets the username and the member's password hash</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>157</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>158</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetCookieAuthenticatieon(</code><code class="keyword">string</code> <code class="plain">username, </code><code class="keyword">string</code> <code class="plain">memberHash)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>159</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>160</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_usingCookieAuth = </code><code class="keyword">true</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>161</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_username = username;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>162</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_memberHash = memberHash;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>163</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>164</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>165</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>166</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>167</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Sets the username and password of the member. The client will automatically grab the password hash when the first request happens</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>168</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>169</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetupForCookieAuthentication(</code><code class="keyword">string</code> <code class="plain">username, </code><code class="keyword">string</code> <code class="plain">password)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>170</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>171</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_usingCookieAuth = </code><code class="keyword">true</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>172</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_username = username;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>173</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_password = password;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>174</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>175</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>176</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>177</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>178</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Nulls out the member password hash to reset from new username and password in the next invoke request</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>179</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>180</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="keyword">void</code> <code class="plain">ResetCookieAuthentication()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>181</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>182</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_memberHash = </code><code class="keyword">null</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>183</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>184</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>185</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>186</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Sets the timeout for http requests</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>187</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>188</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">ApiClient SetTimeout(TimeSpan timeout)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>189</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>190</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_timeout = timeout;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>191</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">this</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>192</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>193</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>194</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>195</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Invoke a GET API request</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>196</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>197</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">async Task&lt;Response&gt; InvokeGETAsync(</code><code class="keyword">string</code> <code class="plain">fullPath)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>198</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>199</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">using</code><code class="plain">(var httpClient = await getHttpClient())</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>200</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>201</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var response = await httpClient.GetAsync(fullPath);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>202</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">new</code> <code class="plain">Response(response, </code><code class="keyword">this</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>203</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>204</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>205</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>206</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>207</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Invoke a GET API request</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>208</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>209</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">Response InvokeGET(</code><code class="keyword">string</code> <code class="plain">fullPath)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>210</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>211</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="plain">InvokeGETAsync(fullPath).Result;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>212</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>213</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>214</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>215</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Invoke an API request</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>216</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>217</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">async Task&lt;Response&gt; InvokeAPIAsync(</code><code class="keyword">string</code> <code class="plain">path, </code><code class="keyword">string</code> <code class="plain">method, Dictionary&lt;</code><code class="keyword">string</code><code class="plain">, </code><code class="keyword">string</code><code class="plain">&gt; queryParams, </code><code class="keyword">object</code> <code class="plain">body)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>218</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>219</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">using</code><code class="plain">(var httpClient = await getHttpClient())</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>220</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>221</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">HttpResponseMessage response;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>222</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var formatter = GetJsonMediaFormatter();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>223</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var upperMethod = method.ToUpper();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>224</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var fullPath = await getFullPath(path, queryParams);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>225</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(upperMethod.Equals(</code><code class="string">"GET"</code><code class="plain">, StringComparison.CurrentCultureIgnoreCase))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>226</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>227</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">response = httpClient.GetAsync(fullPath).Result;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>228</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>229</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">else</code> <code class="keyword">if</code> <code class="plain">(upperMethod.Equals(</code><code class="string">"POST"</code><code class="plain">, StringComparison.CurrentCultureIgnoreCase))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>230</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>231</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">response = httpClient.PostAsync(fullPath, body, formatter, DefaultContentType).Result;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>232</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>233</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">else</code> <code class="keyword">if</code> <code class="plain">(upperMethod.Equals(</code><code class="string">"PUT"</code><code class="plain">, StringComparison.CurrentCultureIgnoreCase))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>234</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>235</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">response = httpClient.PutAsync(fullPath, body, formatter, DefaultContentType).Result;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>236</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>237</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">else</code> <code class="keyword">if</code> <code class="plain">(upperMethod.Equals(</code><code class="string">"DELETE"</code><code class="plain">, StringComparison.CurrentCultureIgnoreCase))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>238</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>239</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">response = httpClient.DeleteAsync(fullPath).Result;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>240</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>241</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">else</code> <code class="keyword">if</code> <code class="plain">(upperMethod.Equals(</code><code class="string">"PATCH"</code><code class="plain">, StringComparison.CurrentCultureIgnoreCase))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>242</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>243</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var content = </code><code class="keyword">new</code> <code class="plain">ObjectContent&lt;</code><code class="keyword">object</code><code class="plain">&gt;(body, formatter, DefaultContentType);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>244</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">using</code> <code class="plain">(var request = </code><code class="keyword">new</code> <code class="plain">HttpRequestMessage(</code><code class="keyword">new</code> <code class="plain">HttpMethod(upperMethod), fullPath) { Content = content })</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>245</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">response = httpClient.SendAsync(request).Result;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>246</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>247</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">else</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>248</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>249</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">throw</code> <code class="keyword">new</code> <code class="plain">ApiException(400, </code><code class="string">"Unsupported HttpMethod: "</code> <code class="plain">+ upperMethod);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>250</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>251</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="keyword">new</code> <code class="plain">Response(response, </code><code class="keyword">this</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>252</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>253</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>254</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>255</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>256</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Invoke an API request</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>257</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>258</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">Response InvokeAPI(</code><code class="keyword">string</code> <code class="plain">path, </code><code class="keyword">string</code> <code class="plain">method, Dictionary&lt;</code><code class="keyword">string</code><code class="plain">, </code><code class="keyword">string</code><code class="plain">&gt; queryParams, </code><code class="keyword">object</code> <code class="plain">body)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>259</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>260</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="plain">InvokeAPIAsync(path, method, queryParams, body).Result;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>261</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>262</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>263</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>264</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// Get Json Media Formatter used by the client</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>265</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="color1">/// &lt;/summary&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>266</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">public</code> <code class="plain">JsonMediaTypeFormatter GetJsonMediaFormatter()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>267</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>268</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var formatter = </code><code class="keyword">new</code> <code class="plain">JsonMediaTypeFormatter { SerializerSettings = </code><code class="keyword">new</code> <code class="plain">JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } };</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>269</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">formatter.SerializerSettings.Converters.Add(</code><code class="keyword">new</code> <code class="plain">StringEnumConverter());</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>270</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">formatter.SerializerSettings.Converters.Add(</code><code class="keyword">new</code> <code class="plain">IsoDateTimeConverter() { DateTimeFormat = _dateFormat });</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>271</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="plain">formatter;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>272</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>273</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>274</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="plain">async Task&lt;</code><code class="keyword">string</code><code class="plain">&gt; getFullPath(</code><code class="keyword">string</code> <code class="plain">path, Dictionary&lt;</code><code class="keyword">string</code><code class="plain">, </code><code class="keyword">string</code><code class="plain">&gt; queryParams)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>275</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>276</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">StringBuilder b = </code><code class="keyword">new</code> <code class="plain">StringBuilder();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>277</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">b.Append(</code><code class="string">"?"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>278</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(queryParams != </code><code class="keyword">null</code> <code class="plain">&amp;&amp; queryParams.Count &gt; 0)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>279</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>280</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">foreach</code><code class="plain">(var queryParam </code><code class="keyword">in</code> <code class="plain">queryParams)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>281</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>282</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">b.Append(queryParam.Key);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>283</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">b.Append(</code><code class="string">"="</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>284</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">b.Append(queryParam.Value);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>285</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">b.Append(</code><code class="string">"&amp;"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>286</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>287</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>288</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>289</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var queryString = b.ToString();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>290</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">await setCodebase();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>291</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var fullPath = _scheme + _site + </code><code class="string">"/"</code> <code class="plain">+ _codebase + </code><code class="string">"apis/3.0"</code> <code class="plain">+&nbsp; path + queryString.Substring(0, queryString.Length - 1);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>292</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="plain">fullPath;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>293</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>294</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>295</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="plain">async Task&lt;HttpClient&gt; getHttpClient()</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>296</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>297</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var handler = </code><code class="keyword">new</code> <code class="plain">HttpClientHandler();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>298</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(!</code><code class="keyword">string</code><code class="plain">.IsNullOrEmpty(_connectwiseAppId))</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>299</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>300</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(handler.CookieContainer == </code><code class="keyword">null</code><code class="plain">) handler.CookieContainer = </code><code class="keyword">new</code> <code class="plain">CookieContainer();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>301</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">handler.CookieContainer.Add(</code><code class="keyword">new</code> <code class="plain">Cookie(</code><code class="string">"cw-app-id"</code><code class="plain">, _connectwiseAppId ?? </code><code class="string">"none"</code><code class="plain">, </code><code class="string">"/"</code><code class="plain">, _site));</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>302</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>303</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(_usingCookieAuth)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>304</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>305</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">await setMemberHash();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>306</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(handler.CookieContainer == </code><code class="keyword">null</code><code class="plain">) handler.CookieContainer = </code><code class="keyword">new</code> <code class="plain">CookieContainer();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>307</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">handler.CookieContainer.Add(</code><code class="keyword">new</code> <code class="plain">Cookie(</code><code class="string">"CompanyName"</code><code class="plain">, _companyName, </code><code class="string">"/"</code><code class="plain">, _site));</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>308</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">handler.CookieContainer.Add(</code><code class="keyword">new</code> <code class="plain">Cookie(</code><code class="string">"MemberID"</code><code class="plain">, _username, </code><code class="string">"/"</code><code class="plain">, _site));</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>309</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">handler.CookieContainer.Add(</code><code class="keyword">new</code> <code class="plain">Cookie(</code><code class="string">"MemberHash"</code><code class="plain">, _memberHash, </code><code class="string">"/"</code><code class="plain">, _site));</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>310</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>311</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">HttpClient httpClient = </code><code class="keyword">new</code> <code class="plain">HttpClient(handler, </code><code class="keyword">true</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>312</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(!_usingCookieAuth)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>313</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>314</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">httpClient.DefaultRequestHeaders.Authorization = </code><code class="keyword">new</code> <code class="plain">AuthenticationHeaderValue(</code><code class="string">"Basic"</code><code class="plain">,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>315</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">Convert.ToBase64String(Encoding.UTF8.GetBytes(</code><code class="keyword">string</code><code class="plain">.Format(</code><code class="string">"{0}+{1}:{2}"</code><code class="plain">, _companyName, _publicKey, _privateKey))));</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>316</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>317</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">httpClient.DefaultRequestHeaders.Accept.Clear();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>318</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">httpClient.DefaultRequestHeaders.Accept.Add(</code><code class="keyword">new</code> <code class="plain">MediaTypeWithQualityHeaderValue(DefaultContentType));</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>319</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(_defaultHeaders != </code><code class="keyword">null</code> <code class="plain">&amp;&amp; _defaultHeaders.Count &gt; 0)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>320</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">foreach</code><code class="plain">(var header </code><code class="keyword">in</code> <code class="plain">_defaultHeaders)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>321</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>322</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">httpClient.Timeout = _timeout ?? httpClient.Timeout;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>323</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="plain">httpClient;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>324</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>325</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>326</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="plain">async Task setMemberHash()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>327</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>328</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(</code><code class="keyword">string</code><code class="plain">.IsNullOrEmpty(_memberHash))</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>329</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>330</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">await setCodebase();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>331</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">using</code><code class="plain">(var httpClient = </code><code class="keyword">new</code> <code class="plain">HttpClient())</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>332</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>333</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var content = </code><code class="keyword">new</code> <code class="plain">MultipartFormDataContent();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>334</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">content.Add(</code><code class="keyword">new</code> <code class="plain">StringContent(_companyName), </code><code class="string">"CompanyName"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>335</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">content.Add(</code><code class="keyword">new</code> <code class="plain">StringContent(_username), </code><code class="string">"UserName"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>336</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">content.Add(</code><code class="keyword">new</code> <code class="plain">StringContent(_password), </code><code class="string">"Password"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>337</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">content.Add(</code><code class="keyword">new</code> <code class="plain">StringContent(</code><code class="string">"json"</code><code class="plain">), </code><code class="string">"Response"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>338</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var response = await httpClient.PostAsync(_scheme + _site + </code><code class="string">"/"</code> <code class="plain">+ _codebase + </code><code class="string">"login/Login.aspx"</code><code class="plain">, content);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>339</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var jsonResponse = await response.Content.ReadAsStringAsync();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>340</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(</code><code class="keyword">string</code><code class="plain">.IsNullOrEmpty(jsonResponse) || jsonResponse.Equals(</code><code class="string">"CompanyFAIL"</code><code class="plain">, StringComparison.CurrentCultureIgnoreCase))</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>341</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">throw</code> <code class="keyword">new</code> <code class="plain">ApiException(404, </code><code class="string">"Company not found: "</code> <code class="plain">+ _companyName);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>342</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var jobject = JObject.Parse(jsonResponse);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>343</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var successfull = Convert.ToBoolean(jobject[</code><code class="string">"Success"</code><code class="plain">]);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>344</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(!successfull)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>345</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">throw</code> <code class="keyword">new</code> <code class="plain">ApiException(401, </code><code class="string">"Invalid username and password"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>346</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_memberHash = Convert.ToString(jobject[</code><code class="string">"Hash"</code><code class="plain">]);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>347</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>348</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>349</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>350</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>351</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">private</code> <code class="plain">async Task setCodebase()</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>352</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>353</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(</code><code class="keyword">string</code><code class="plain">.IsNullOrEmpty(_codebase))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>354</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>355</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">using</code><code class="plain">(var httpClient = </code><code class="keyword">new</code> <code class="plain">HttpClient())</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>356</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>357</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">httpClient.DefaultRequestHeaders.Accept.Clear();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>358</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">httpClient.DefaultRequestHeaders.Accept.Add(</code><code class="keyword">new</code> <code class="plain">MediaTypeWithQualityHeaderValue(</code><code class="string">"application/json"</code><code class="plain">));</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>359</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var response = httpClient.GetAsync(_scheme + _site + </code><code class="string">"/login/companyinfo/"</code> <code class="plain">+ _companyName).Result;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>360</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>361</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Will throw an exception if not successful </code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>362</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">response.EnsureSuccessStatusCode();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>363</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>364</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var jsonResponse = await response.Content.ReadAsStringAsync();</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>365</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(</code><code class="keyword">string</code><code class="plain">.IsNullOrEmpty(jsonResponse) || jsonResponse.Equals(</code><code class="string">"null"</code><code class="plain">, StringComparison.CurrentCultureIgnoreCase))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>366</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">throw</code> <code class="keyword">new</code> <code class="plain">ApiException(404, </code><code class="string">"Company not found: "</code> <code class="plain">+ _companyName);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>367</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">var jobject = Task.Run(() =&gt; JObject.Parse(jsonResponse));</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>368</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">_codebase = Convert.ToString(jobject.Result[</code><code class="string">"Codebase"</code><code class="plain">]);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>369</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>370</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>371</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>372</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>373</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+</div></div>
+
+                    <footer class="mt-content-footer"></footer>
+            </section>
+
+        
+            <footer class="elm-content-footer">
+                <ol class="elm-meta-data elm-meta-article-navigation">
+                    <li class="elm-back-to-top"><a class="mt-icon-back-to-top" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK#title" id="mt-back-to-top" title="Jump back to top of this article">Back to top</a></li>
+                    <li class="elm-article-pagination"><ul class="mt-article-pagination" data-ga-action="Article pagination bottom">
+    <li class="mt-pagination-previous">
+
+            <a class="mt-icon-previous-article" data-ga-label="Previous page" href="https://developer.connectwise.com/Products/ConnectWise_PSA/Developer_Guide/Troubleshooting" title="Troubleshooting"><span>Troubleshooting</span></a>
+    </li>
+        <li class="mt-pagination-next">
+                <a class="mt-icon-next-article" data-ga-label="Next page" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK/Sample_Documents_Project" title="Sample Documents Project"><span>Sample Documents Project</span></a>
+        </li>
+</ul>
+</li>
+                </ol>
+                <div class="elm-article-feedback"><div class="mt-feedback-rating-container" data-ga-action="Page rating" data-page-revision="161" data-use-local-storage="false"><ul class="mt-feedback-rating-controls"><li class="mt-feedback-rating-message mt-feedback-rating-item">Was this article helpful?</li><li class="mt-rating-yes mt-feedback-rating-item"><button class="mt-rating-button-yes mt-feedback-rating-button ui-button-icon mt-icon-rating-yes" data-ga-label="Rate">Yes</button></li><li class="mt-rating-no mt-feedback-rating-item"><button class="mt-rating-button-no mt-feedback-rating-button ui-button-icon mt-icon-rating-no" data-ga-label="Rate">No</button></li><li class="mt-leave-feedback mt-feedback-rating-item"><button class="mt-feedback-button mt-feedback-rating-button ui-button-icon mt-icon-leave-feedback" data-ga-label="Feedback toggle">Leave feedback</button></li><li class="mt-last-rating-date mt-feedback-rating-item"></li></ul><div id="mt-feedback-flash-message"></div><div class="mt-feedback-form" data-path="Products/ConnectWise_PSA/SDK" data-user-email="dale@personalized-computers.com" data-page-title="SDK" data-site-url="https://developer.connectwise.com/"><fieldset class="ui-dform-fieldset"><legend class="ui-dform-legend">Leave feedback</legend><div class="mt-field"><label class="mt-feedback-improve-label ui-dform-label" for="textarea-feedback">How can we improve this article?</label><textarea autocomplete="off" class="mt-feedback-improve-description ui-dform-textarea" id="textarea-feedback" spellcheck="false"></textarea></div><div class="mt-field"><input class="mt-feedback-consent-checkbox ui-dform-checkbox" data-ga-label="Feedback consent" id="mt-feedback-consent" type="checkbox"><label class="mt-feedback-consent-label mt-label-checkbox" data-ga-label="Feedback consent" for="mt-feedback-consent">Yes, you may contact me about this feedback.</label></div><div class="mt-field mt-submit"><button class="mt-feedback-submit mt-disabled ui-button ui-button-primary" data-ga-label="Submit feedback" id="deki-feedback-send">Submit feedback</button></div></fieldset></div></div><script type="application/json" id="mt-localizations-feedback-rating">/*<![CDATA[*/{"Page.FeedbackRating.label.last-rated":"-- You last rated this article on {0}","Page.FeedbackRating.message.contact.no":"No","Page.FeedbackRating.message.contact.yes":"Yes","Page.FeedbackRating.message.submit.error":"An error occurred while attempting to send your feedback.  Please try again at a later time.","Page.FeedbackRating.message.submit.success":"Your feedback has been successfully submitted.  You can submit more feedback at any time."}/*]]>*/</script></div>
+                <div class="elm-related-articles-container"><h2 class="mt-related-articles-header">Recommended articles</h2>
+<ol class="mt-related-listings-container" data-ga-action="related">
+<li class="mt-related-listing mt-related-listing-detailed"><a class="mt-related-listing-link" href="https://developer.connectwise.com/Products/ConnectWise_PSA/SDK/Sample_Documents_Project" title="Sample Documents Project" data-ga-label="related-link-detailed-1"><span class="mt-related-listing-link-icon mt-icon-article-topic-category"></span><span class="mt-related-listing-link-text">Sample Documents Project</span></a></li><li class="mt-related-listing mt-related-listing-detailed"><a class="mt-related-listing-link" href="https://developer.connectwise.com/Products/ConnectWise_PSA/FAQ" title="ConnectWise PSA FAQ" data-ga-label="related-link-detailed-2"><span class="mt-related-listing-link-icon mt-icon-article-topic-guide"></span><span class="mt-related-listing-link-text">ConnectWise PSA FAQ</span></a></li><li class="mt-related-listing mt-related-listing-detailed"><a class="mt-related-listing-link" href="https://developer.connectwise.com/Products/ConnectWise_PSA/Getting_Started" title="Getting Started" data-ga-label="related-link-detailed-3"><span class="mt-related-listing-link-icon mt-icon-article-undefined"></span><span class="mt-related-listing-link-text">Getting Started</span></a></li><li class="mt-related-listing mt-related-listing-detailed"><a class="mt-related-listing-link" href="https://developer.connectwise.com/Products/ConnectWise_PSA/Change_Policy" title="Change Policy" data-ga-label="related-link-detailed-4"><span class="mt-related-listing-link-icon mt-icon-article-topic-category"></span><span class="mt-related-listing-link-text">Change Policy</span></a></li><li class="mt-related-listing mt-related-listing-detailed"><a class="mt-related-listing-link" href="https://developer.connectwise.com/Products/ConnectWise_PSA/Roadmap" title="Roadmap" data-ga-label="related-link-detailed-5"><span class="mt-related-listing-link-icon mt-icon-article-topic-guide"></span><span class="mt-related-listing-link-text">Roadmap</span></a></li></ol>
+<script type="application/json" nonce="" id="mt-localizations-related-pages">
+{"Skin.Columbia.label.no-recommended-articles":"There are no recommended articles."}</script></div>
+                <ol class="elm-meta-data elm-meta-bottom">
+                    <li class="elm-classifications">        <dl class="mt-classification mt-classification-article-guide" data-ga-action="Tag navigation">
+            <dt class="mt-classification-label">Article type</dt>
+            <dd class="mt-classification-value"><a href="https://developer.connectwise.com/Special:Search?tags=article%3Atopic-guide" data-ga-label="Classification">Guide</a></dd>
+        </dl>
+</li>
+                    <li class="elm-tags"><dl class="mt-tags">
+    <dt class="mt-tag-label">Tags</dt>
+    <dd class="mt-tag-value">
+        <ol class="mt-tags-list" data-ga-action="Tag navigation">
+        </ol>
+            This page has no tags.
+    </dd>
+</dl></li>
+                </ol>
+            </footer>
+        
+    </article>
+    <footer class="elm-footer">
+        <nav class="elm-footer-siteinfo-nav elm-nav">
+            <div class="elm-nav-container">
+                <ol>
+                    <li class="elm-footer-copyright">© Copyright 2026 Developer Network</li>
+                    <li class="elm-footer-powered-by"><a href="https://mindtouch.com/demo" class="mt-poweredby product " title="MindTouch" target="_blank">
+   Powered by CXone Expert
+   <span class="mt-registered">®</span>
+</a></li>
+                </ol>
+            </div>
+        </nav>
+        <div class="elm-footer-custom"><script>/*<![CDATA[*/ $('#spanYear').html(new Date().getFullYear());/*]]>*/</script>
+
+
+<div class="cw-footer"><div class="footer-wrapper"><ul class="show-loggedin"><li><a href="https://developer.connectwise.com/" rel="internal">Home</a></li><li><a href="https://developer.connectwise.com/Products/ConnectWise_PSA" rel="internal">ConnectWise PSA</a></li><li><a href="https://developer.connectwise.com/Products/ConnectWise_Automate" rel="internal">ConnectWise Automate</a></li><li><a href="https://docs.connectwise.com/ConnectWise_Control_Documentation/Developers/Integration_guide" target="_blank" rel="external noopener nofollow" class="link-https">ConnectWise ScreenConnect</a></li><li><a href="https://developer.connectwise.com/Products/ConnectWise_CPQ" rel="internal">ConnectWise CPQ</a></li><li><a href="https://virtualcommunity.connectwise.com/community-home?CommunityKey=b91ec22c-a6ca-4ae3-bedb-018a5199538b" target="_blank" rel="external noopener nofollow" class="link-https">Developer Community</a></li><li><a href="https://developer.connectwise.com/faq" rel="internal">FAQ</a></li><li><a href="https://developer.connectwise.com/ClientID" rel="internal">Client ID</a></li></ul><p>© 2024 ConnectWise. All Rights Reserved.</p><div class="social-links"><ul><li class="facebook"><a href="https://www.facebook.com/ConnectWise?ref=ts" target="_blank" rel="external noopener nofollow" class="link-https"><i class="fa fa-facebook-square"></i></a></li><li class="linkedin"><a href="https://www.linkedin.com/company/connectwise" target="_blank" rel="external noopener nofollow" class="link-https"><i class="fa fa-linkedin-square"></i></a></li><li class="twitter"><a href="https://twitter.com/connectwise" target="_blank" rel="external noopener nofollow" class="link-https"><i class="fa fa-twitter-square"></i></a></li><li class="youtube"><a href="https://www.youtube.com/user/connectwise#grid/uploads" target="_blank" rel="external noopener nofollow" class="link-https"><i class="fa fa-youtube-square"></i></a></li></ul></div></div></div>
+
+<div class="style-wrap">
+<script type="text/javascript" src="./SDK - Developer Network_files/devnetcookie.js.download"></script>
+</div>
+</div>
+    </footer>
+</main>
+<div id="mt-modal-container"></div>
+
+
+    <script type="text/javascript" async="async" nonce="" src="./SDK - Developer Network_files/f1.js.download"></script>
+
+<script type="text/javascript" data-mindtouch-module="true" nonce="" src="./SDK - Developer Network_files/serviceworker-unregister.js.download"></script><script type="text/javascript" data-mindtouch-module="true" nonce="" src="./SDK - Developer Network_files/pageLoaded.js.download"></script>
+
+
+
+
+
+<script type="text/javascript" data-mindtouch-module="true" src="./SDK - Developer Network_files/f1.widget.js.download"></script></body></html>
