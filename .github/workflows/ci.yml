@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test-linux:
+    name: Build & Test (Linux / portable projects)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore portable projects
+        run: |
+          dotnet restore src/CwAssetManager.Core/CwAssetManager.Core.csproj
+          dotnet restore src/CwAssetManager.Data/CwAssetManager.Data.csproj
+          dotnet restore src/CwAssetManager.Infrastructure/CwAssetManager.Infrastructure.csproj
+          dotnet restore src/CwAssetManager.ApiClients/CwAssetManager.ApiClients.csproj
+          dotnet restore tests/CwAssetManager.Tests.Unit/CwAssetManager.Tests.Unit.csproj
+          dotnet restore tests/CwAssetManager.Tests.Integration/CwAssetManager.Tests.Integration.csproj
+
+      - name: Build Core
+        run: dotnet build src/CwAssetManager.Core/CwAssetManager.Core.csproj --no-restore -c Release
+
+      - name: Build Data
+        run: dotnet build src/CwAssetManager.Data/CwAssetManager.Data.csproj --no-restore -c Release
+
+      - name: Build Infrastructure
+        run: dotnet build src/CwAssetManager.Infrastructure/CwAssetManager.Infrastructure.csproj --no-restore -c Release
+
+      - name: Build ApiClients
+        run: dotnet build src/CwAssetManager.ApiClients/CwAssetManager.ApiClients.csproj --no-restore -c Release
+
+      - name: Build Unit Tests
+        run: dotnet build tests/CwAssetManager.Tests.Unit/CwAssetManager.Tests.Unit.csproj --no-restore -c Release
+
+      - name: Build Integration Tests
+        run: dotnet build tests/CwAssetManager.Tests.Integration/CwAssetManager.Tests.Integration.csproj --no-restore -c Release
+
+      - name: Run Unit Tests
+        run: dotnet test tests/CwAssetManager.Tests.Unit/CwAssetManager.Tests.Unit.csproj --no-build -c Release --logger "trx;LogFileName=unit-results.trx" --results-directory ./test-results
+
+      - name: Run Integration Tests
+        run: dotnet test tests/CwAssetManager.Tests.Integration/CwAssetManager.Tests.Integration.csproj --no-build -c Release --logger "trx;LogFileName=integration-results.trx" --results-directory ./test-results
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-linux
+          path: ./test-results
+
+  build-windows:
+    name: Build WPF App (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore WPF App
+        run: dotnet restore src/CwAssetManager.App/CwAssetManager.App.csproj
+
+      - name: Build WPF App
+        run: dotnet build src/CwAssetManager.App/CwAssetManager.App.csproj --no-restore -c Release

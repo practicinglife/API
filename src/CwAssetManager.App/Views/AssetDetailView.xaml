@@ -1,0 +1,56 @@
+<UserControl x:Class="CwAssetManager.App.Views.AssetDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <TextBlock Text="Asset Detail" FontSize="22" FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,16"/>
+
+            <Border Background="{StaticResource SurfaceBrush}" CornerRadius="8"
+                    Padding="20" Visibility="{Binding Machine, Converter={x:Static converters:NullToVisibilityConverter.Instance}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Hostname:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Machine.Hostname}" Margin="0,4"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="IP Address:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Machine.IpAddress}" Margin="0,4"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="OS:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Machine.OperatingSystem}" Margin="0,4"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Status:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Machine.Status}" Margin="0,4"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Serial Number:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Machine.SerialNumber}" Margin="0,4"/>
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="MAC Address:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Machine.MacAddress}" Margin="0,4"/>
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="CW Manage ID:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Machine.CwManageDeviceId}" Margin="0,4"/>
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="CW Control ID:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Machine.CwControlSessionId}" Margin="0,4"/>
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="CW RMM ID:" FontWeight="SemiBold" Margin="0,4"/>
+                    <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Machine.CwRmmDeviceId}" Margin="0,4"/>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource ErrorBrush}"
+                       Visibility="{Binding ErrorMessage, Converter={x:Static converters:NullToVisibilityConverter.Instance}}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
