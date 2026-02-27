@@ -1,0 +1,169 @@
+/*
+ *
+ *  This file will embed the University menu into any external site.
+ *  The GetUniversityMenu webservice is called and builds html dom elements,
+ *  then appends the finished <div> to the domElement that the user supplies.
+ *  
+ *  To implement the University menu on an external site, follow these steps:
+ *  
+ *  1) Ensure jQuery is included in your html
+ *  
+ *  2) Create the html element that will contain the menu in your page
+ *    <div id="universityMenuContainer"/>
+ *  
+ *  3) Call the getUniversityMenu function and provide the ID of your html element from step 2.
+ *  <script type="text/javascript">
+ *		getUniversityMenu("universityMenuContainer","Community");
+ *	</script>
+ */
+
+var universityMenuBuilder = (function () {
+
+
+	var	navMainUL = $('<ul/>'),
+		menuComplete = false;
+
+	var pageHasChildren = function (item) {
+		return ((item.Level2Items != null && item.Level2Items.length > 0) || (item.Level3Items != null && item.level3MenuItems.length > 0));
+	};
+
+	function setTopNavSubMenuPosition(clientElementId) {
+	    $('#' + clientElementId).on('mouseenter', '.dropdown-submenu > a', function () {
+	        // Apply this positioning to elements that are under .nav class only
+	        if ($(this).closest('.nav').length == 0) {
+	            return;
+	        }
+
+	        var $popupMenu = $(this).next();
+
+	        // Reset position
+	        $popupMenu.css({ left: '', right: '' });
+
+	        // If the X coordinate of the parent menu + parent menu's width + popup menu width
+	        //    is greater than window's width, display the popup on the left
+	        if (($(this).offset().left + $(this).outerWidth() + $popupMenu.width()) > $(window).width()) {
+	            $popupMenu.css({ left: 'auto', right: '100%' });
+	        } else {
+	            $popupMenu.css({ left: '100%', right: 'auto' });
+	        }
+	    });
+	}
+
+	function makeTargetAttr(item) {
+	    return item.target && !pageHasChildren(item) ? ' target="' + item.target + '"' : '';
+	}
+
+	buildMenuHtml = function (data, clientElementId, source) {
+	    if (menuComplete) {
+	        return;
+	    }
+
+	    var menuItems = data.Level1Items;
+
+	    for (var i = 0; i < menuItems.length; i++) {
+	        // level 1
+	        var menuItemLI = $('<li/>');
+	        if (pageHasChildren(menuItems[i])) {
+	            menuItemLI.addClass('dropdownLI');
+	        }
+
+	        var menuItemText;
+	        menuItemText = '<a href="' + menuItems[i].href + '"' + makeTargetAttr(menuItems[i]) + ' class="';
+	        if (menuItems[i].text === source) {
+	            menuItemLI.addClass('active');
+	        }
+
+	        if (pageHasChildren(menuItems[i])) {
+	            menuItemText += 'dropdown-toggle" data-toggle="dropdown"';
+	        }
+	        else {
+	            menuItemText += '" data-toggle=""';
+	        }
+
+	        menuItemText += '>' + menuItems[i].text + '<b class="';
+	        if (pageHasChildren(menuItems[i])) {
+	            menuItemText += 'caret"';
+	        }
+
+	        menuItemText += '"></b></a>'
+	        menuItemLI.append(menuItemText);
+	        var menuItemLIUL = $('<ul class="dropdown-menu"/>');
+
+	        // level 2	
+	        if (arrayExists(menuItems[i].Level2Items)) {
+	            var level2MenuItems = menuItems[i].Level2Items;
+
+	            for (var j = 0; j < level2MenuItems.length; j++) {
+	                var level2MenuItemLI = $('<li/>');
+
+	                var level2MenuItemLIUL = $('<ul class="dropdown-menu"/>');
+
+	                // level 3
+	                if (arrayExists(level2MenuItems[j].Level3Items)) {
+	                    level2MenuItemLI.append('<a>' + level2MenuItems[j].text + '</a>');
+	                    var level3MenuItems = level2MenuItems[j].Level3Items;
+
+	                    for (var k = 0; k < level3MenuItems.length; k++) {
+	                        var level3MenuItemLI = $('<li/>');
+	                        level3MenuItemLI.append('<a href="' + level3MenuItems[k].href + '"' + makeTargetAttr(level3MenuItems[k]) + ' class="">' + level3MenuItems[k].text + '</a>');
+
+	                        level2MenuItemLIUL.append(level3MenuItemLI);
+	                    }
+	                    level2MenuItemLI.addClass('dropdown-submenu');
+	                    level2MenuItemLI.append(level2MenuItemLIUL);
+	                } else {
+	                    level2MenuItemLI.append('<a href ="' + level2MenuItems[j].href + '"' + makeTargetAttr(level2MenuItems[j]) + '>' + level2MenuItems[j].text + '</a>');
+	                }
+
+	                menuItemLIUL.append(level2MenuItemLI);
+	            }
+	            menuItemLI.append(menuItemLIUL);
+	        }
+	        navMainUL.append(menuItemLI);
+	    }
+
+	    navMainUL.addClass('nav navbar-nav');
+	    navMainUL.appendTo($('#' + clientElementId));
+	    menuComplete = true;
+
+	    setTopNavSubMenuPosition(clientElementId);
+	};
+
+
+	var arrayExists = function (arr) {
+		return (typeof arr != 'undefined' && arr instanceof Array);
+	};
+
+	var callBackFail = function (err) {
+		displayError(err);
+	};
+
+	var displayError = function (msg) {
+		alert('There was an error generating the University menu.\n\n Error description: ' + msg + '\n\n Click OK to continue.\n\n');
+	};
+
+
+
+
+	return {
+		getUniversityMenu : function (clientElementId, source) {
+			try {
+				$.ajax({
+					cache: false,
+					dataType: 'jsonp',
+					success: function (d) {
+						buildMenuHtml(d, clientElementId, source);
+					},
+					url: 'https://university.connectwise.com/university/PublicAPIs/MenuWebService.asmx/GetUniversityMenu?callback=buildMenuHtml&fail=callBackFail'
+				});
+			}
+			catch (err)
+			{
+				displayError(err.message);
+			}
+		}
+
+	};
+ 
+}());
+
