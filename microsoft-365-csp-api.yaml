@@ -1,0 +1,880 @@
+openapi: 3.0.3
+info:
+  title: Microsoft 365 CSP / Partner Center API
+  description: >
+    This specification covers the Microsoft Partner Center REST API and
+    Microsoft Graph API endpoints required for Cloud Solution Provider (CSP)
+    partners to manage customer Office 365/Microsoft 365 tenants, including
+    user management, password resets, license assignment, and service health.
+
+
+    ## Authentication
+
+    Authentication uses OAuth 2.0 via the Microsoft identity platform
+    (Azure AD). For most partner operations an **App+User** (delegated)
+    authentication flow is required, using an Azure AD app registration
+    combined with a CSP partner user who holds the appropriate roles in the
+    customer tenant (via GDAP or legacy DAP).
+
+
+    **Required Azure AD app permissions:**
+
+    - `https://api.partnercenter.microsoft.com/user_impersonation` (Partner
+      Center API)
+
+    - `User.ReadWrite.All`, `Directory.ReadWrite.All` (Microsoft Graph)
+
+
+    ## CSP Roles for Automated Password Resets
+
+    Under Granular Delegated Admin Privileges (GDAP), the partner user or
+    service principal assigned to the customer tenant must hold at least one
+    of the following Azure AD roles in that tenant:
+
+    - **User Administrator** – can reset passwords for non-admin users.
+
+    - **Privileged Authentication Administrator** – can reset passwords for
+      users including other admins.
+
+
+    Under legacy Delegated Admin Privileges (DAP), the **Admin Agent** role
+    in the CSP partner tenant grants Global Administrator access to customer
+    tenants. Microsoft recommends migrating to GDAP with least-privilege roles.
+
+  version: "1.0.0"
+  contact:
+    name: Microsoft Partner Center API Documentation
+    url: https://learn.microsoft.com/en-us/partner-center/develop/
+
+servers:
+  - url: https://api.partnercenter.microsoft.com
+    description: Microsoft Partner Center API
+  - url: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph API (customer tenant operations)
+
+tags:
+  - name: Authentication
+    description: Obtain OAuth 2.0 tokens for Partner Center or Graph API access
+  - name: Customers
+    description: List and manage CSP customer accounts
+  - name: Customer Users
+    description: Manage users within customer Office 365 tenants
+  - name: Password Reset
+    description: Reset passwords for customer tenant users
+  - name: Licenses
+    description: Assign and remove Microsoft 365 licenses for customer users
+  - name: Subscriptions
+    description: Manage Microsoft 365 subscriptions in customer tenants
+  - name: Service Health
+    description: Check Microsoft 365 service health for customer tenants
+
+security:
+  - oauth2: []
+
+paths:
+  /oauth/token:
+    post:
+      tags:
+        - Authentication
+      summary: Obtain OAuth 2.0 access token
+      description: >
+        Exchanges credentials for a Bearer access token to call Partner Center
+        or Microsoft Graph APIs.  In production, use the Microsoft identity
+        platform token endpoint:
+        `https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token`.
+
+
+        For CSP partner operations that affect customer tenants, use the
+        **App+User** (delegated) flow with your Azure AD app registration and
+        a partner user with appropriate GDAP or DAP roles.
+
+        The `scope` value for Partner Center is
+        `https://api.partnercenter.microsoft.com/.default`, and for Microsoft
+        Graph it is `https://graph.microsoft.com/.default`.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - grant_type
+                - client_id
+                - client_secret
+                - scope
+              properties:
+                grant_type:
+                  type: string
+                  enum: [client_credentials, password]
+                  description: >
+                    Use `client_credentials` for app-only (service principal)
+                    flows. The `password` grant (Resource Owner Password
+                    Credentials) is supported for legacy App+User automation
+                    scenarios but is **deprecated** by OAuth 2.0 best practices
+                    and Microsoft; prefer authorization code flow with a
+                    service account or device code flow for interactive
+                    scenarios. Only use `password` grant when no interactive
+                    redirect is feasible and document the justification.
+                client_id:
+                  type: string
+                  description: Azure AD application (client) ID
+                client_secret:
+                  type: string
+                  format: password
+                  description: Azure AD application client secret
+                username:
+                  type: string
+                  description: >
+                    Partner user UPN (required for `password` grant /
+                    App+User flow)
+                password:
+                  type: string
+                  format: password
+                  description: Partner user password (required for `password` grant)
+                scope:
+                  type: string
+                  description: Space-separated list of requested OAuth scopes
+                  example: "https://api.partnercenter.microsoft.com/.default"
+                tenant:
+                  type: string
+                  description: Partner Azure AD tenant ID or domain
+      responses:
+        "200":
+          description: Token issued successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        "401":
+          description: Invalid credentials or insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/customers:
+    get:
+      tags:
+        - Customers
+      summary: List CSP customers
+      description: >
+        Returns a paginated list of all customer accounts in the CSP partner
+        tenant. Each customer has a unique tenant ID (`id`) that is used for
+        all tenant-scoped API calls.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 300
+            maximum: 300
+          description: Number of records per page
+        - name: filter
+          in: query
+          schema:
+            type: string
+          description: >
+            OData-style filter, e.g.
+            `contains(CompanyProfile/CompanyName,'Contoso')`
+      responses:
+        "200":
+          description: List of customers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /v1/customers/{customerTenantId}:
+    get:
+      tags:
+        - Customers
+      summary: Get customer details
+      description: Returns details for a single CSP customer by tenant ID.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+      responses:
+        "200":
+          description: Customer details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /v1/customers/{customerTenantId}/users:
+    get:
+      tags:
+        - Customer Users
+      summary: List users in a customer tenant
+      description: >
+        Returns a paginated list of Azure AD users in the specified customer
+        tenant. Used to look up user IDs before performing password resets or
+        license assignments.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 500
+        - name: filter
+          in: query
+          schema:
+            type: string
+          description: >
+            OData-style filter, e.g.
+            `contains(UserPrincipalName,'john@contoso.com')`
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+    post:
+      tags:
+        - Customer Users
+      summary: Create a user in a customer tenant
+      description: >
+        Creates a new Azure AD user in the specified customer tenant. The
+        calling user or service principal must have User Administrator or
+        higher rights in that tenant.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateRequest"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /v1/customers/{customerTenantId}/users/{userId}:
+    get:
+      tags:
+        - Customer Users
+      summary: Get a customer user
+      description: Returns details for a single user in the customer tenant.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+        - $ref: "#/components/parameters/userId"
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags:
+        - Customer Users
+      summary: Delete a customer user
+      description: >
+        Deletes a user from the customer tenant. The user account is soft-
+        deleted and can be restored within 30 days.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+        - $ref: "#/components/parameters/userId"
+      responses:
+        "204":
+          description: User deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /v1/customers/{customerTenantId}/users/{userId}/resetpassword:
+    patch:
+      tags:
+        - Password Reset
+      summary: Reset a customer user password
+      description: >
+        Resets the password for a user in a customer Office 365 tenant via
+        the Partner Center API. The authenticated partner user must have the
+        **User Administrator** or **Privileged Authentication Administrator**
+        role assigned in the customer tenant via GDAP, or must be an Admin
+        Agent under legacy DAP.
+
+
+        The new password must meet the tenant's password complexity policy.
+        Set `forceChangePassword` to `true` to require the user to change the
+        password on next sign-in (recommended for security).
+
+
+        All password resets via this endpoint generate audit events in both
+        the Partner Center audit log and the customer Azure AD audit log.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+        - $ref: "#/components/parameters/userId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetRequest"
+      responses:
+        "200":
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasswordResetResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /v1/customers/{customerTenantId}/users/{userId}/usageLocation:
+    put:
+      tags:
+        - Customer Users
+      summary: Set user usage location
+      description: >
+        Sets the geographic usage location for a user, which is required
+        before assigning Microsoft 365 licenses.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+        - $ref: "#/components/parameters/userId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - usageLocation
+              properties:
+                usageLocation:
+                  type: string
+                  example: US
+                  description: Two-letter ISO 3166-1 country code
+      responses:
+        "200":
+          description: Usage location updated
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /v1/customers/{customerTenantId}/users/{userId}/licenses:
+    get:
+      tags:
+        - Licenses
+      summary: Get user assigned licenses
+      description: Returns all Microsoft 365 licenses assigned to a customer user.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+        - $ref: "#/components/parameters/userId"
+      responses:
+        "200":
+          description: List of licenses assigned to the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserLicenseListResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    post:
+      tags:
+        - Licenses
+      summary: Assign or remove licenses for a user
+      description: >
+        Assigns one or more Microsoft 365 product licenses to a customer user,
+        or removes existing license assignments. The customer tenant must have
+        active subscriptions with available seats.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+        - $ref: "#/components/parameters/userId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LicenseUpdateRequest"
+      responses:
+        "200":
+          description: License assignment updated
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /v1/customers/{customerTenantId}/subscriptions:
+    get:
+      tags:
+        - Subscriptions
+      summary: List customer subscriptions
+      description: >
+        Returns all Microsoft 365 (and other) subscriptions for a customer
+        tenant, including SKU, seat counts, and billing period details.
+      servers:
+        - url: https://api.partnercenter.microsoft.com
+      parameters:
+        - $ref: "#/components/parameters/customerTenantId"
+      responses:
+        "200":
+          description: List of subscriptions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionListResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /admin/serviceAnnouncement/healthOverviews:
+    get:
+      tags:
+        - Service Health
+      summary: Get Microsoft 365 service health overview (Graph)
+      description: >
+        Returns the health status of all Microsoft 365 services for the
+        authenticated tenant. When called with customer tenant credentials
+        (via GDAP/DAP), returns service health for that customer.
+        Requires `ServiceHealth.Read.All` Microsoft Graph permission.
+      servers:
+        - url: https://graph.microsoft.com/v1.0
+      responses:
+        "200":
+          description: Service health overviews
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceHealthListResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: >
+        OAuth 2.0 via Microsoft identity platform. Use App+User delegated
+        flow for Partner Center operations that require acting on behalf of a
+        CSP partner user with appropriate GDAP/DAP roles in customer tenants.
+        Store client secrets in Azure Key Vault or a secrets manager; never
+        hard-code credentials.
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            "https://api.partnercenter.microsoft.com/.default": >
+              Full Partner Center API access (App+User flow required for most
+              customer operations)
+            "https://graph.microsoft.com/.default": >
+              Full Microsoft Graph access for the authenticated tenant
+        password:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            "https://api.partnercenter.microsoft.com/user_impersonation": >
+              Delegated access to Partner Center API on behalf of a signed-in
+              user (required for password resets)
+
+  parameters:
+    customerTenantId:
+      name: customerTenantId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: The Azure AD tenant ID of the CSP customer
+
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: The Azure AD object ID of the user
+
+  responses:
+    Unauthorized:
+      description: Missing, expired, or invalid access token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: >
+        Insufficient permissions. Ensure the authenticated user has the
+        required GDAP role (User Administrator or Privileged Authentication
+        Administrator) or DAP Admin Agent role in the customer tenant.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Customer or user not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Token lifetime in seconds
+        access_token:
+          type: string
+          description: Bearer token for authenticated API calls
+        refresh_token:
+          type: string
+          nullable: true
+          description: Refresh token (present for delegated flows)
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Azure AD tenant ID of the customer
+        companyProfile:
+          type: object
+          properties:
+            tenantId:
+              type: string
+              format: uuid
+            domain:
+              type: string
+              description: Primary domain of the customer tenant
+            companyName:
+              type: string
+        relationshipToPartner:
+          type: string
+          enum: [reseller, none]
+
+    CustomerListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Customer"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Azure AD object ID of the user
+        displayName:
+          type: string
+        userPrincipalName:
+          type: string
+          format: email
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        usageLocation:
+          type: string
+          nullable: true
+          description: Two-letter ISO 3166-1 country code
+        accountEnabled:
+          type: boolean
+        lastDirectorySyncTime:
+          type: string
+          format: date-time
+          nullable: true
+
+    UserListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+
+    UserCreateRequest:
+      type: object
+      required:
+        - displayName
+        - userPrincipalName
+        - passwordProfile
+      properties:
+        displayName:
+          type: string
+        userPrincipalName:
+          type: string
+          format: email
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        usageLocation:
+          type: string
+          description: Two-letter ISO 3166-1 country code (required before license assignment)
+        passwordProfile:
+          $ref: "#/components/schemas/PasswordProfile"
+
+    PasswordProfile:
+      type: object
+      required:
+        - password
+      properties:
+        password:
+          type: string
+          format: password
+          description: >
+            The new password. Must meet the tenant password complexity policy.
+            Minimum 8 characters with a mix of upper, lower, digit, and symbol.
+        forceChangePassword:
+          type: boolean
+          default: true
+          description: >
+            Require the user to change their password on next sign-in.
+            Set to true for all automated password resets for security.
+
+    PasswordResetRequest:
+      type: object
+      required:
+        - passwordProfile
+      properties:
+        passwordProfile:
+          $ref: "#/components/schemas/PasswordProfile"
+
+    PasswordResetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Azure AD object ID of the user whose password was reset
+        userPrincipalName:
+          type: string
+        passwordResetAt:
+          type: string
+          format: date-time
+
+    License:
+      type: object
+      properties:
+        skuId:
+          type: string
+          format: uuid
+          description: Azure AD SKU ID of the product license
+        skuPartNumber:
+          type: string
+          description: License SKU part number, e.g., ENTERPRISEPACK (E3)
+        productName:
+          type: string
+          nullable: true
+
+    UserLicenseListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/License"
+
+    LicenseUpdateRequest:
+      type: object
+      properties:
+        licensesToAssign:
+          type: array
+          items:
+            type: object
+            required:
+              - skuId
+            properties:
+              skuId:
+                type: string
+                format: uuid
+                description: SKU ID of the license to assign
+              excludedPlans:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                description: Service plan IDs to exclude from the license assignment
+        licensesToRemove:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: SKU IDs of licenses to remove from the user
+
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        offerId:
+          type: string
+        offerName:
+          type: string
+        quantity:
+          type: integer
+          description: Total licensed seats
+        unitType:
+          type: string
+          example: Licenses
+        status:
+          type: string
+          enum: [active, suspended, deleted, expired]
+        autoRenewEnabled:
+          type: boolean
+        commitmentEndDate:
+          type: string
+          format: date-time
+
+    SubscriptionListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Subscription"
+
+    ServiceHealth:
+      type: object
+      properties:
+        id:
+          type: string
+        service:
+          type: string
+          description: Service name, e.g., Microsoft Exchange Online
+        status:
+          type: string
+          enum:
+            - serviceOperational
+            - investigating
+            - restoringService
+            - verifyingService
+            - serviceRestored
+            - postIncidentReviewPublished
+            - serviceDegradation
+            - serviceInterruption
+            - extendedRecovery
+            - falsePositive
+            - investigationSuspended
+          description: >
+            Current health status of the service:
+            `serviceOperational` – service is healthy and operating normally;
+            `investigating` – an issue has been detected and is under investigation;
+            `restoringService` – a fix has been identified and the service is being restored;
+            `verifyingService` – a fix has been applied and Microsoft is verifying the restoration;
+            `serviceRestored` – service has been fully restored;
+            `postIncidentReviewPublished` – a post-incident review for the event has been published;
+            `serviceDegradation` – service is available but with reduced functionality or performance;
+            `serviceInterruption` – service is unavailable for a broad set of customers;
+            `extendedRecovery` – service is operational for most customers but recovery is still in progress;
+            `falsePositive` – the reported issue was determined to not have any service impact;
+            `investigationSuspended` – investigation has been suspended pending more information.
+
+    ServiceHealthListResponse:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceHealth"
+
+    PaginationLinks:
+      type: object
+      properties:
+        next:
+          type: object
+          nullable: true
+          properties:
+            uri:
+              type: string
+            method:
+              type: string
+            headers:
+              type: array
+              items:
+                type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        description:
+          type: string
+          nullable: true
+        innererror:
+          type: object
+          nullable: true
+          additionalProperties: true
