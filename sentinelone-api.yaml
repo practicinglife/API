@@ -1,0 +1,787 @@
+openapi: 3.0.3
+info:
+  title: SentinelOne Endpoint Protection API
+  description: >
+    The SentinelOne Management API provides programmatic access to the
+    SentinelOne management console for endpoint security management, threat
+    monitoring and response, agent management, and policy enforcement.
+    Authentication uses a static API Token generated for a dedicated
+    integration user in the SentinelOne console. Use the lowest-privilege role
+    required for the intended operations (e.g., Viewer for read-only data
+    retrieval).
+  version: "2.1"
+  contact:
+    name: SentinelOne Developer Documentation
+    url: https://usea1.sentinelone.net/api-doc/
+
+servers:
+  - url: https://{tenant}.sentinelone.net/web/api/v2.1
+    variables:
+      tenant:
+        default: usea1
+        description: Your SentinelOne management console subdomain
+
+tags:
+  - name: Authentication
+    description: Validate API tokens and retrieve user info
+  - name: Agents
+    description: Manage SentinelOne endpoint agents
+  - name: Threats
+    description: Query and respond to endpoint threats
+  - name: Sites
+    description: Manage sites (logical groupings of endpoints)
+  - name: Groups
+    description: Manage endpoint groups within sites
+  - name: Policies
+    description: Manage site and group-level security policies
+  - name: Activities
+    description: Retrieve activity and audit log entries
+  - name: Exclusions
+    description: Manage threat exclusions
+
+security:
+  - apiTokenAuth: []
+
+paths:
+  /users/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login and retrieve API token
+      description: >
+        Authenticates with username and password to receive an API token.
+        Prefer generating a static API token via the management console for
+        automation use cases instead of calling this endpoint repeatedly.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  description: SentinelOne console user email
+                password:
+                  type: string
+                  format: password
+      responses:
+        "200":
+          description: Login successful, token returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /system/status:
+    get:
+      tags:
+        - Authentication
+      summary: Verify API token and connectivity
+      description: Returns system status; useful for validating that the API token is valid.
+      responses:
+        "200":
+          description: System is reachable and token is valid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemStatusResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /agents:
+    get:
+      tags:
+        - Agents
+      summary: List endpoint agents
+      description: >
+        Returns a paginated list of SentinelOne agents with filtering options.
+        Use this to query endpoint status, check agent version, and identify
+        unprotected or outdated devices.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+        - name: cursor
+          in: query
+          schema:
+            type: string
+          description: Pagination cursor from previous response
+        - name: siteIds
+          in: query
+          schema:
+            type: string
+          description: Comma-separated list of site IDs to filter by
+        - name: groupIds
+          in: query
+          schema:
+            type: string
+          description: Comma-separated list of group IDs to filter by
+        - name: isActive
+          in: query
+          schema:
+            type: boolean
+          description: Filter by agent active/inactive status
+        - name: isInfected
+          in: query
+          schema:
+            type: boolean
+          description: Filter to only agents with active threats
+        - name: computerName
+          in: query
+          schema:
+            type: string
+          description: Filter by partial or full computer hostname
+        - name: networkStatus
+          in: query
+          schema:
+            type: string
+            enum: [connected, disconnected, connecting, disconnecting]
+      responses:
+        "200":
+          description: List of agents
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /agents/{agentId}:
+    get:
+      tags:
+        - Agents
+      summary: Get agent details
+      description: Returns full details for a single SentinelOne endpoint agent.
+      parameters:
+        - $ref: "#/components/parameters/agentId"
+      responses:
+        "200":
+          description: Agent details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Agent"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /agents/actions/disconnect:
+    post:
+      tags:
+        - Agents
+      summary: Network isolate (disconnect) agents
+      description: >
+        Isolates one or more endpoints from the network as a containment
+        measure during incident response. Requires Admin API token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentFilterRequest"
+      responses:
+        "200":
+          description: Isolation initiated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AffectedAgentsResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /agents/actions/connect:
+    post:
+      tags:
+        - Agents
+      summary: Reconnect (un-isolate) agents
+      description: Restores network connectivity to previously isolated endpoints.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentFilterRequest"
+      responses:
+        "200":
+          description: Reconnection initiated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AffectedAgentsResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /agents/actions/initiateScan:
+    post:
+      tags:
+        - Agents
+      summary: Initiate malware scan on agents
+      description: Triggers a full malware scan on the specified endpoints.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentFilterRequest"
+      responses:
+        "200":
+          description: Scan initiated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AffectedAgentsResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /threats:
+    get:
+      tags:
+        - Threats
+      summary: List detected threats
+      description: >
+        Returns a paginated list of threats across all managed endpoints,
+        with filtering by site, severity, status, and time range. Used to
+        correlate threat data with helpdesk tickets.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: siteIds
+          in: query
+          schema:
+            type: string
+        - name: agentId
+          in: query
+          schema:
+            type: string
+          description: Filter threats to a specific agent ID
+        - name: resolved
+          in: query
+          schema:
+            type: boolean
+          description: Filter by resolved (true) or active (false) threats
+        - name: confidenceLevels
+          in: query
+          schema:
+            type: string
+            enum: [malicious, suspicious, not_applicable]
+        - name: createdAt__gte
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Return threats created on or after this timestamp
+        - name: createdAt__lte
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: List of threats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreatListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /threats/actions/markAsResolved:
+    post:
+      tags:
+        - Threats
+      summary: Mark threats as resolved
+      description: Marks one or more threats as resolved after remediation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThreatFilterRequest"
+      responses:
+        "200":
+          description: Threats marked as resolved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AffectedThreatsResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /threats/actions/remediateThreats:
+    post:
+      tags:
+        - Threats
+      summary: Remediate (remove/quarantine) threats
+      description: >
+        Triggers automated remediation (quarantine or delete) of specified
+        threats. Requires sufficient admin privileges.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThreatFilterRequest"
+      responses:
+        "200":
+          description: Remediation initiated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AffectedThreatsResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /sites:
+    get:
+      tags:
+        - Sites
+      summary: List sites
+      description: Returns all sites in the account (corresponding to MSP customer accounts).
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+          description: Filter sites by name
+      responses:
+        "200":
+          description: List of sites
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /groups:
+    get:
+      tags:
+        - Groups
+      summary: List groups
+      description: Returns all endpoint groups within a site.
+      parameters:
+        - name: siteId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Site ID to list groups for
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+        - name: cursor
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of groups
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /activities:
+    get:
+      tags:
+        - Activities
+      summary: List activity log entries
+      description: >
+        Returns a paginated audit/activity log. Useful for compliance tracking
+        and reviewing automated actions taken by the integration.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: agentIds
+          in: query
+          schema:
+            type: string
+          description: Comma-separated agent IDs to filter
+        - name: createdAt__gte
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: createdAt__lte
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: activityTypes
+          in: query
+          schema:
+            type: string
+          description: Comma-separated activity type IDs
+      responses:
+        "200":
+          description: List of activity entries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivityListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+components:
+  securitySchemes:
+    apiTokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >
+        Static API token in the format `ApiToken <token>`.
+        Generate the token for a dedicated integration user in the SentinelOne
+        management console under User > API Token. Use the lowest-privilege
+        role (e.g., Viewer) for read-only integrations.
+
+  parameters:
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The unique identifier of the SentinelOne agent
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid API token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: Insufficient privileges for this operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    LoginResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+              description: API token for subsequent requests
+
+    SystemStatusResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            health:
+              type: string
+              example: ok
+
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+        computerName:
+          type: string
+        uuid:
+          type: string
+        osName:
+          type: string
+        agentVersion:
+          type: string
+        isActive:
+          type: boolean
+        isInfected:
+          type: boolean
+        isUpToDate:
+          type: boolean
+        networkStatus:
+          type: string
+          enum: [connected, disconnected, connecting, disconnecting]
+        lastActiveDate:
+          type: string
+          format: date-time
+        siteId:
+          type: string
+        siteName:
+          type: string
+        groupId:
+          type: string
+        groupName:
+          type: string
+        threatCount:
+          type: integer
+          description: Number of active (unresolved) threats on this agent
+
+    AgentListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Agent"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
+    AgentFilterRequest:
+      type: object
+      required:
+        - filter
+      properties:
+        filter:
+          type: object
+          properties:
+            ids:
+              type: array
+              items:
+                type: string
+              description: List of agent IDs to target
+            siteIds:
+              type: array
+              items:
+                type: string
+            groupIds:
+              type: array
+              items:
+                type: string
+
+    AffectedAgentsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            affected:
+              type: integer
+              description: Number of agents affected by the action
+
+    Threat:
+      type: object
+      properties:
+        id:
+          type: string
+        agentId:
+          type: string
+        agentComputerName:
+          type: string
+        threatName:
+          type: string
+        classification:
+          type: string
+          enum: [Malware, PUA, Exploit, RansomWare, Trojan, Other]
+        confidenceLevel:
+          type: string
+          enum: [malicious, suspicious, not_applicable]
+        resolved:
+          type: boolean
+        mitigationStatus:
+          type: string
+          enum: [not_mitigated, mitigated, partially_mitigated]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        filePath:
+          type: string
+          nullable: true
+        siteId:
+          type: string
+        siteName:
+          type: string
+
+    ThreatListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Threat"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
+    ThreatFilterRequest:
+      type: object
+      required:
+        - filter
+      properties:
+        filter:
+          type: object
+          properties:
+            ids:
+              type: array
+              items:
+                type: string
+              description: Threat IDs to act on
+
+    AffectedThreatsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            affected:
+              type: integer
+
+    Site:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        state:
+          type: string
+          enum: [active, expired, deleted]
+        activeLicenses:
+          type: integer
+        totalLicenses:
+          type: integer
+        agentCount:
+          type: integer
+
+    SiteListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Site"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        siteId:
+          type: string
+        type:
+          type: string
+          enum: [static, dynamic, pinned]
+        agentCount:
+          type: integer
+
+    GroupListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Group"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
+    Activity:
+      type: object
+      properties:
+        id:
+          type: string
+        activityType:
+          type: integer
+        activityTypeText:
+          type: string
+        agentId:
+          type: string
+          nullable: true
+        description:
+          type: string
+        userId:
+          type: string
+          nullable: true
+        userName:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    ActivityListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Activity"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
+    Pagination:
+      type: object
+      properties:
+        nextCursor:
+          type: string
+          nullable: true
+          description: Cursor for the next page; null when no more pages
+        totalItems:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: integer
+              detail:
+                type: string
+              title:
+                type: string

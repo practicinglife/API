@@ -1,0 +1,635 @@
+openapi: 3.0.3
+info:
+  title: ESET Security Management API
+  description: >
+    The ESET Security Management API provides programmatic access to ESET
+    Business Account and ESET MSP Administrator console for managing endpoint
+    security, licenses, policies, and threat data across managed organizations.
+    Authentication uses OAuth 2.0 with access tokens obtained from the ESET
+    token endpoint using API user credentials created by a Superuser/Root in the
+    ESET MSP or Business Account console.
+  version: "1.0.0"
+  contact:
+    name: ESET Developer Resources
+    url: https://help.eset.com/ema/2/en-US/
+
+servers:
+  - url: https://edf.eset.com/v1
+    description: ESET Business Account / MSP API endpoint
+
+tags:
+  - name: Authentication
+    description: Obtain and refresh OAuth 2.0 access tokens
+  - name: Devices
+    description: Query and manage protected devices/endpoints
+  - name: Licenses
+    description: Manage endpoint security licenses
+  - name: Policies
+    description: Query and assign security policies
+  - name: Tasks
+    description: Create and monitor security tasks (scans, deployments)
+  - name: Threats
+    description: Retrieve detected threat and malware data
+  - name: Organizations
+    description: Manage sub-organizations (MSP customers)
+
+security:
+  - bearerAuth: []
+
+paths:
+  /oauth/token:
+    post:
+      tags:
+        - Authentication
+      summary: Obtain access token
+      description: >
+        Exchange API user credentials for an OAuth 2.0 Bearer access token.
+        The API user must be created in the ESET Business Account or ESET MSP
+        console by a Superuser/Root account.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - grant_type
+                - username
+                - password
+              properties:
+                grant_type:
+                  type: string
+                  enum: [password]
+                  description: OAuth 2.0 grant type
+                username:
+                  type: string
+                  description: ESET API integration user username
+                password:
+                  type: string
+                  format: password
+                  description: ESET API integration user password
+      responses:
+        "200":
+          description: Access token issued successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /devices:
+    get:
+      tags:
+        - Devices
+      summary: List all managed devices
+      description: >
+        Returns a paginated list of all endpoints managed under the current
+        organization. Use query parameters to filter by protection status,
+        device name, or last seen time.
+      parameters:
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+          description: Pagination cursor from previous response
+        - name: filter
+          in: query
+          schema:
+            type: string
+          description: >
+            OData-style filter expression, e.g.
+            `protectionStatus eq 'unprotected'`
+      responses:
+        "200":
+          description: List of devices
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeviceListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /devices/{deviceId}:
+    get:
+      tags:
+        - Devices
+      summary: Get device details
+      description: Returns detailed information for a single managed endpoint.
+      parameters:
+        - $ref: "#/components/parameters/deviceId"
+      responses:
+        "200":
+          description: Device details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /devices/{deviceId}/tasks:
+    post:
+      tags:
+        - Tasks
+      summary: Create a security task for a device
+      description: >
+        Triggers a security task on the specified endpoint, such as a malware
+        scan or ESET agent deployment.
+      parameters:
+        - $ref: "#/components/parameters/deviceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequest"
+      responses:
+        "202":
+          description: Task accepted and queued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /licenses:
+    get:
+      tags:
+        - Licenses
+      summary: List all licenses
+      description: >
+        Returns all ESET endpoint security licenses available in the account,
+        including seat usage and expiry information.
+      parameters:
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 100
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of licenses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /licenses/{licenseId}/seats:
+    post:
+      tags:
+        - Licenses
+      summary: Assign a license seat to a device
+      description: >
+        Provisions an ESET security seat for a specific endpoint, activating
+        protection under the given license.
+      parameters:
+        - name: licenseId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique identifier of the license
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeatAssignRequest"
+      responses:
+        "201":
+          description: Seat assigned successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeatAssignResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          description: Seat already assigned or license at capacity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /threats:
+    get:
+      tags:
+        - Threats
+      summary: List detected threats
+      description: >
+        Returns a list of threats detected across all managed endpoints within
+        the current organization. Filter by device, severity, or time range.
+      parameters:
+        - name: deviceId
+          in: query
+          schema:
+            type: string
+          description: Filter threats to a specific device
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Return threats detected on or after this ISO 8601 timestamp
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Return threats detected on or before this ISO 8601 timestamp
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 100
+        - name: pageToken
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of detected threats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreatListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /policies:
+    get:
+      tags:
+        - Policies
+      summary: List security policies
+      description: Returns all security policies defined in the management console.
+      responses:
+        "200":
+          description: List of policies
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /policies/{policyId}/assign:
+    post:
+      tags:
+        - Policies
+      summary: Assign a policy to devices
+      description: Applies a security policy to one or more managed endpoints.
+      parameters:
+        - name: policyId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PolicyAssignRequest"
+      responses:
+        "200":
+          description: Policy assigned successfully
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /organizations:
+    get:
+      tags:
+        - Organizations
+      summary: List MSP sub-organizations
+      description: >
+        Returns the list of customer organizations managed under the MSP
+        account (available only for MSP-level API users).
+      responses:
+        "200":
+          description: List of organizations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationListResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        Bearer token obtained from the /oauth/token endpoint using API user
+        credentials. Tokens are short-lived; refresh before expiry.
+
+  parameters:
+    deviceId:
+      name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The unique identifier of the managed endpoint
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: Insufficient permissions for this operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Bearer token for authenticated API calls
+        token_type:
+          type: string
+          example: bearer
+        expires_in:
+          type: integer
+          description: Token lifetime in seconds
+
+    Device:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          description: Unique device identifier
+        name:
+          type: string
+          description: Device hostname
+        osName:
+          type: string
+          description: Operating system name and version
+        protectionStatus:
+          type: string
+          enum: [protected, unprotected, inactive, unknown]
+          description: Current protection state of the endpoint
+        lastSeen:
+          type: string
+          format: date-time
+          description: Timestamp of last agent check-in
+        agentVersion:
+          type: string
+          description: ESET agent software version installed
+        policyId:
+          type: string
+          nullable: true
+          description: ID of the currently applied security policy
+        licenseId:
+          type: string
+          nullable: true
+          description: ID of the license seat assigned to this device
+        organizationId:
+          type: string
+          description: ID of the owning organization
+
+    DeviceListResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: "#/components/schemas/Device"
+        nextPageToken:
+          type: string
+          nullable: true
+          description: Pagination cursor; null when no more pages
+
+    TaskRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [scan, deploy_agent, update_modules, restart_service]
+          description: >
+            Type of security task to execute:
+            `scan` – triggers a full malware scan on the endpoint;
+            `deploy_agent` – installs or reinstalls the ESET endpoint agent;
+            `update_modules` – updates ESET detection engine modules (virus
+            database and program components) on the endpoint;
+            `restart_service` – restarts the ESET endpoint security service.
+        parameters:
+          type: object
+          additionalProperties: true
+          description: Task-type-specific parameters
+
+    TaskResponse:
+      type: object
+      properties:
+        taskId:
+          type: string
+          description: Unique identifier for the queued task
+        status:
+          type: string
+          enum: [queued, running, completed, failed]
+        createdAt:
+          type: string
+          format: date-time
+
+    License:
+      type: object
+      properties:
+        licenseId:
+          type: string
+        product:
+          type: string
+          description: ESET product name (e.g., ESET Endpoint Security)
+        totalSeats:
+          type: integer
+        usedSeats:
+          type: integer
+        expiresAt:
+          type: string
+          format: date-time
+
+    LicenseListResponse:
+      type: object
+      properties:
+        licenses:
+          type: array
+          items:
+            $ref: "#/components/schemas/License"
+        nextPageToken:
+          type: string
+          nullable: true
+
+    SeatAssignRequest:
+      type: object
+      required:
+        - deviceId
+      properties:
+        deviceId:
+          type: string
+          description: ID of the device to assign the license seat to
+
+    SeatAssignResponse:
+      type: object
+      properties:
+        seatId:
+          type: string
+        deviceId:
+          type: string
+        licenseId:
+          type: string
+        assignedAt:
+          type: string
+          format: date-time
+
+    Threat:
+      type: object
+      properties:
+        threatId:
+          type: string
+        deviceId:
+          type: string
+        name:
+          type: string
+          description: Malware or threat name
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        status:
+          type: string
+          enum: [detected, cleaned, quarantined, ignored]
+        detectedAt:
+          type: string
+          format: date-time
+        filePath:
+          type: string
+          nullable: true
+          description: Path of the affected file, if applicable
+
+    ThreatListResponse:
+      type: object
+      properties:
+        threats:
+          type: array
+          items:
+            $ref: "#/components/schemas/Threat"
+        nextPageToken:
+          type: string
+          nullable: true
+
+    Policy:
+      type: object
+      properties:
+        policyId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        product:
+          type: string
+        isDefault:
+          type: boolean
+
+    PolicyListResponse:
+      type: object
+      properties:
+        policies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Policy"
+
+    PolicyAssignRequest:
+      type: object
+      required:
+        - deviceIds
+      properties:
+        deviceIds:
+          type: array
+          items:
+            type: string
+          description: List of device IDs to assign the policy to
+
+    Organization:
+      type: object
+      properties:
+        organizationId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        licenseCount:
+          type: integer
+          description: Number of licenses allocated to this organization
+
+    OrganizationListResponse:
+      type: object
+      properties:
+        organizations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Organization"
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
+          nullable: true
