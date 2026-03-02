@@ -1,0 +1,13 @@
+{
+  "ConnectWiseAsio": {
+    "BaseUrl": "https://api.connectwise.com",
+    "Scopes": "platform.devices.read platform.companies.read platform.sites.read platform.custom_fields_definitions.read"
+  },
+  "ScreenConnect": {
+    "BaseUrl": "https://yourdomain.screenconnect.com"
+  },
+  "Application": {
+    "Title": "ConnectWise Manager",
+    "Version": "1.0.0"
+  }
+}

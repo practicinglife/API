@@ -1,0 +1,164 @@
+<Window x:Class="ConnectWiseManager.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ConnectWise Manager - Login" Height="820" Width="560"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="220"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="ConnectWise Manager" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Secure API Authentication" 
+                       FontSize="14" 
+                       Foreground="Gray" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Login Form -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- ConnectWise Asio Section -->
+                <GroupBox Header="ConnectWise Asio (OAuth2)" Padding="10" Margin="0,0,0,10">
+                    <StackPanel>
+                        <Label Content="Base URL:"/>
+                        <TextBox x:Name="AsioBaseUrlTextBox" 
+                                 Text="https://openapi.service.itsupport247.net"/>
+                        
+                        <Label Content="Client ID:"/>
+                        <TextBox x:Name="AsioClientIdTextBox"/>
+                        
+                        <Label Content="Client Secret:"/>
+                        <PasswordBox x:Name="AsioClientSecretPasswordBox"/>
+
+                        <Label Content="Audience (optional):"/>
+                        <TextBox x:Name="AsioAudienceTextBox"/>
+
+                        <Label Content="Scopes (space-separated, optional):"/>
+                        <TextBox x:Name="AsioScopeTextBox"
+                                 ToolTip="Override scopes if your tenant requires different permissions"/>
+
+                        <Label Content="Token Endpoint (optional):"/>
+                        <TextBox x:Name="AsioTokenEndpointTextBox"
+                                 ToolTip="If your server uses a custom token endpoint, specify it here. Otherwise the app will try /oauth2/token then /connect/token"/>
+
+                        <Label Content="Devices Endpoint (optional):"/>
+                        <TextBox x:Name="AsioDevicesEndpointTextBox"
+                                 ToolTip="Example: /v1/devices or full URL from vendor OpenAPI; leave blank for defaults"/>
+
+                        <Button x:Name="ConnectAsioButton" Content="Connect Asio" Margin="0,10,0,0" Width="140" Click="ConnectAsioButton_Click"/>
+                        
+                        <TextBlock Text="Required Scopes: platform.devices.read, platform.companies.read, platform.sites.read, platform.custom_fields_definitions.read" 
+                                   TextWrapping="Wrap" 
+                                   FontSize="10" 
+                                   Foreground="Gray" 
+                                   Margin="5,10,5,5"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- ScreenConnect Section -->
+                <GroupBox Header="ScreenConnect (Header Secret or Basic/PAT)" Padding="10">
+                    <StackPanel>
+                        <Label Content="Base URL:"/>
+                        <TextBox x:Name="ScreenConnectBaseUrlTextBox" 
+                                 Text="https://yourdomain.screenconnect.com"/>
+                        
+                        <!-- Header-secret auth for App_Extensions endpoints -->
+                        <Label Content="API Header Name (optional):"/>
+                        <TextBox x:Name="ScreenConnectHeaderNameTextBox" ToolTip="Default is AuthenticationSecret if left blank"/>
+
+                        <Label Content="API Header Secret (optional):"/>
+                        <PasswordBox x:Name="ScreenConnectHeaderSecretPasswordBox" ToolTip="Secret value for the App_Extensions API header (do not share)"/>
+
+                        <Label Content="Sessions Endpoint (optional):"/>
+                        <TextBox x:Name="ScreenConnectSessionsEndpointTextBox" ToolTip="Example: /Services/SessionService.ashx/GetSessions?sessionType=Access or a full URL"/>
+
+                        <Label Content="Username (Basic/PAT only):"/>
+                        <TextBox x:Name="ScreenConnectUsernameTextBox"/>
+                        
+                        <Label Content="Password (Basic/PAT only):"/>
+                        <PasswordBox x:Name="ScreenConnectPasswordBox"/>
+
+                        <Label Content="One-Time Password (MFA, when using Basic):"/>
+                        <TextBox x:Name="ScreenConnectOtpTextBox" ToolTip="Enter TOTP/OTP code when prompted by Basic auth with MFA"/>
+
+                        <Label Content="Personal Access Token (optional):"/>
+                        <PasswordBox x:Name="ScreenConnectPatPasswordBox"/>
+
+                        <CheckBox x:Name="ScreenConnectTrustCheckbox" Content="Trust this device (persist cookie session)" IsChecked="True"/>
+
+                        <WrapPanel Margin="0,8,0,0">
+                            <Button x:Name="ConnectScreenConnectButton" Content="Connect ScreenConnect" Margin="0,0,8,0" Width="190" Click="ConnectScreenConnectButton_Click"/>
+                            <Button x:Name="StartSessionLoginButton" Content="Start Session Login" Width="170" ToolTip="Use AuthenticationService login/try for cookie session" Click="StartSessionLoginButton_Click"/>
+                        </WrapPanel>
+
+                        <TextBlock Text="Use API Header Secret for App_Extensions endpoints when PAT/cookies are not available. For core services, PAT or cookie login may still be required." 
+                                   TextWrapping="Wrap" 
+                                   FontSize="10" 
+                                   Foreground="Gray" 
+                                   Margin="5,5,5,0"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Reporting API Section (IT Glue / Asio Reporting) -->
+                <GroupBox Header="Reporting API (IT Glue)" Padding="10" Margin="0,10,0,0">
+                    <StackPanel>
+                        <Label Content="API Key:"/>
+                        <PasswordBox x:Name="ReportingApiKeyPasswordBox" 
+                                     ToolTip="IT Glue / Asio Reporting API key. Stored securely via DPAPI with other credentials."/>
+
+                        <Label Content="Base URL (optional):"/>
+                        <TextBox x:Name="ReportingBaseUrlTextBox" 
+                                 Text="https://itsapi.itsupport247.net"
+                                 ToolTip="Override the Reporting API base URL if your tenant uses a different endpoint."/>
+
+                        <Button x:Name="TestReportingButton" Content="Test Reporting API" 
+                                Margin="0,10,0,0" Width="170" HorizontalAlignment="Left"
+                                Click="TestReportingButton_Click"/>
+
+                        <TextBlock Text="Uses Basic auth with blank username. Only the API key is required - no client ID/secret." 
+                                   TextWrapping="Wrap" 
+                                   FontSize="10" 
+                                   Foreground="Gray" 
+                                   Margin="5,8,5,0"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Status Message -->
+                <TextBlock x:Name="StatusTextBlock" 
+                           TextWrapping="Wrap" 
+                           Foreground="Red" 
+                           Margin="5,10,5,0" 
+                           Visibility="Collapsed"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Basic Logging at bottom -->
+        <GroupBox Grid.Row="2" Header="Log" Padding="6" Margin="0,10,0,10">
+            <TextBox x:Name="LoginLogTextBox" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" MinHeight="180" Margin="5,0,5,0"/>
+        </GroupBox>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
+            <CheckBox x:Name="RememberCredentialsCheckBox" 
+                      Content="Remember Credentials" 
+                      VerticalAlignment="Center" 
+                      Margin="0,0,20,0"
+                      IsChecked="True"/>
+            <Button Content="Continue" 
+                    Click="ContinueButton_Click" 
+                    MinWidth="120" 
+                    IsDefault="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
