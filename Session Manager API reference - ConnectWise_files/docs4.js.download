@@ -1,0 +1,228 @@
+/* MindTouch 4 Responsive Modifications */
+
+// Resolve CKEditor Scrolling Issue
+$(document).ready(function () {
+	$('#page-options-menu-edit, .mt-section-edit-link').click(function () {
+		cwDocsFour.allowHeaderToScroll();
+	});
+
+	if (location.search.indexOf('action=edit') >= 0) {
+		cwDocsFour.allowHeaderToScroll();
+	}
+
+	$('#mt-toc-container>button.mt-summary-toggle').html('Page Content');
+	//collapse sections on load
+	$('#mt-toc-container button.mt-toggle').removeClass('mt-toggle-collapse').addClass('mt-toggle-expand');
+	$('#mt-toc-container nav.mt-toc-content').hide();
+
+
+});
+
+var cwDocsFour = (function () {
+
+	var sidebarId = '#sidebarLinks',
+		MIN_SCROLL_DISTANCE_FOR_LINK_TO_APPEAR = 100;
+
+	function linkPdf(elemId) {
+		if (Deki) {
+			var link = '/@api/deki/pages/' + Deki.PageId + '/pdf/' + encodeURI(Deki.PageName.replace('/', '_')) + '.pdf?stylesheet=default',
+				pdfLink = '<a title="Save as PDF" href="' + link + '"><img src="//university.connectwise.com/content/docs/Images/pdf.png" alt="" title="" /></a>';
+
+			jQuery(pdfLink).appendTo(elemId);
+		}
+	}
+
+	function linkEmail(elemId) {
+		if (Deki) {
+			var emailHref = 'mailto:?subject=' + Deki.UserName +
+				'%20wants%20to%20share%20a%20link%20%7C%20ConnectWise%20Documentation&body=' +
+				Deki.UserName +
+				'%20wants%20to%20share%20a%20link%20on%20ConnectWise%20Documentation%3A%20' +
+				encodeURI(document.URL);
+			var emailLink = '<br/><a title="Email page" href="' + emailHref + '" onclick><img src="//university.connectwise.com/content/docs/Images/email.png" alt="" title="" style="margin: 5px 0px;"/></a><br/>';
+
+			jQuery(emailLink).appendTo(elemId);
+
+		}
+	}
+
+	function scrollToTop() {
+		try {
+			jQuery('html, body').animate({ scrollTop: 0 }, 1000);
+		} catch (err) {
+			console.log('JQuery animate failed: ' + err);
+		}
+	}
+
+
+	function addSidebar() {
+		var sidebar = '<div id="sidebarLinksContainer" ' +
+			'style="position: fixed;' +
+			'display:flex;' +
+			'right:0;' +
+			'z-index:1001;' +
+			'align-items:center;' +
+			'top: 0;' +
+			'height: 100%;' +
+			'min-width: 68px;">' +
+			'<div id="sidebarLinks" style="z-index:1002;" />' +
+			'</div>';
+
+		jQuery(sidebar).appendTo('body');
+
+		jQuery(document).on('mouseenter', '#sidebarLinksContainer', function () {
+			if (isSideBarLinksNeeded()) {
+				jQuery(sidebarId).fadeIn('slow');
+			}
+		})
+		jQuery(document).on('mouseleave', '#sidebarLinksContainer', function () {
+			if (!isSideBarLinksNeeded || isSideBarLinksAutoHideNeeded()) {
+				jQuery(sidebarId).fadeOut('slow');
+			}
+		})
+
+	}
+
+	function addPdfLink() {
+
+		if (!jQuery(sidebarId).length) {
+			addSidebar();
+		}
+		linkPdf(sidebarId);
+	}
+
+	function addEmailLink() {
+		if (!$(sidebarId).length) {
+			addSidebar();
+		}
+		linkEmail(sidebarId);
+	}
+
+	function addGotoTop() {
+		if (!$(sidebarId).length) {
+			addSidebar();
+		}
+		var imgBack = '<img src="//university.connectwise.com/content/images/back-to-top.png" alt="" title="Back To Top" id="imgBack" />';
+		$(imgBack).click(scrollToTop).appendTo(sidebarId);
+	}
+
+	function isSideBarLinksNeeded() {
+		if (window.matchMedia('(max-width: 767px)').matches) {
+			return false;
+		}
+		return true;
+	}
+
+	function isSideBarLinksAutoHideNeeded() {
+		if (window.matchMedia('(max-width: 1327px)').matches) {
+			return true;
+		}
+		return false;
+	}
+
+	function addSidebarLinks() {
+		$(sidebarId).remove();
+		addPdfLink();
+		addEmailLink();
+		addGotoTop();
+		if (!isSideBarLinksNeeded() || isSideBarLinksAutoHideNeeded()) {
+			jQuery(sidebarId).hide();
+		}
+	}
+
+	function resizeHandler() {
+		// if the GoToToplink does not exist, inject it.
+		if (!jQuery(sidebarId).length) {
+			if (isScrollToTopLinkNeeded()) {
+				addGotoTop();
+			} else {
+				return;
+			}
+		}
+
+		if (!isSideBarLinksNeeded()) {
+			jQuery(sidebarId).fadeOut('slow');
+		} else {
+			if (!isSideBarLinksAutoHideNeeded()) {
+				jQuery(sidebarId).fadeIn('slow');
+			}
+		}
+
+		setScrollToTopLinkVisibile(isScrollToTopLinkNeeded());
+	}
+
+	function isScrollToTopLinkNeeded() {
+		// No link and scroll bar if content < window
+		if (jQuery(document).height() <= jQuery(window).height()) {
+			return false;
+		}
+
+		// No link if scroll bar is at the top
+		if (jQuery(window).scrollTop() <= MIN_SCROLL_DISTANCE_FOR_LINK_TO_APPEAR) {
+			return false;
+		}
+
+		return true;
+	}
+
+	function setScrollToTopLinkVisibile(isVisible) {
+		if (!isVisible) {
+			jQuery('#imgBack').css('visibility', 'hidden');
+			return;
+		}
+
+		// if the scrollToTop link does not exist, inject it.
+		if (!jQuery(sidebarId).length) {
+			addGotoTop();
+			return;
+		}
+
+		jQuery('#imgBack').css('visibility', 'visible');
+	}
+
+	function scrollHandler(e) {
+		setScrollToTopLinkVisibile((jQuery(this).scrollTop() > MIN_SCROLL_DISTANCE_FOR_LINK_TO_APPEAR));
+	}
+
+	function setUserName() {
+		cwUserName = getIntegratorFirstName();
+		if (cwUserName.length == 0) {
+			cwUserName = "!";
+		}
+		$('span#cwname').html(cwUserName);
+	}
+
+	function setWalkeMeVariables() {
+		window.walkMeUserVariables = {
+			companyName: getIntegratorCompany(),
+			companyIdentifier: getIntegratorCompanyId(),
+			companyTypes: getIntegratorCompanyTypes(),
+			state: getIntegratorState(),
+			country: getIntegratorCountry(),
+			username: getIntegratorEmail()
+		};
+	}
+
+	jQuery(window).scroll(scrollHandler);
+	jQuery(window).resize(resizeHandler);
+	setUserName();
+	setWalkeMeVariables();
+
+
+	function scrollHeader() {
+		var width = $(document).width();
+
+		$('.navbar-inverse').removeClass('navbar-fixed-top');
+		$('.navbar-inverse').css('position', 'absolute');
+		$('.navbar-inverse').css('top', '-135px');
+		$('.navbar-inverse').css('width', width);
+		$('.elm-fixed-header').css('margin-top', '0');
+	}
+
+	return {
+		showPDFLink: addPdfLink,
+		showEmailLink: addEmailLink,
+		showAllLinks: addSidebarLinks,
+		allowHeaderToScroll: scrollHeader
+	};
+})();

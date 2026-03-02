@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MspTools.App/MspTools.App.csproj" />
+    <Project Path="src/MspTools.Connectors/MspTools.Connectors.csproj" />
+    <Project Path="src/MspTools.Core/MspTools.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MspTools.Tests/MspTools.Tests.csproj" />
+  </Folder>
+</Solution>

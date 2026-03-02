@@ -1,0 +1,264 @@
+/* ------------------ University Bootstrap Refinements --------------------- */
+/* ------------------ Louie Cocchiola - May 2014 --------------------------- */
+
+/* ------------------- Navbar Enhancements --------------------------------- */
+/* make navbar the official ConnectWise Blue */
+.navbar {
+    background-color: #1B1D36;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: #074F71;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #074F71;
+}
+
+/* change nav items to white */
+.navbar-inverse .navbar-nav > li > a, #user-buttons a {color:#fff;}
+
+/* items on hover are gray */
+.navbar-inverse .navbar-nav > li > a:focus, .navbar-inverse .navbar-nav > li > a:hover {
+    color: #fff;
+    background-color: #777777 !important;
+}
+
+/* Add the logo */
+.header-logo {
+    background: url('data:image/png;base64,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') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    color: white;
+    display: block;
+    float: left;
+    font-size: 0px;
+    margin-top: 5px;
+    width: 240px;
+    height: 74px;
+}
+
+/* Override Bootstrap container width for navbar elements */
+@media (min-width: 1200px) {
+    .navbar .container {
+        width: 1200px !important;
+        max-width: 1200px !important;
+    }
+
+    .collapse.navbar-collapse {
+        width: 1200px !important;
+    }
+
+    .nav.navbar-nav {
+        width: 1200px !important;
+    }
+}
+
+@media screen and (min-width: 1180px) {
+	#user-buttons {
+		padding:0 30px;
+	}
+}
+
+/* Limit the size of the icon in the menu */
+.nav img {
+    height: 20px;
+    width: 20px;
+}
+
+/* ------------------- Search/Chat/Welcome adjustment ---------------------- */
+
+.navbar-nav > li {font-size:14px;}
+
+@media screen and (min-width: 1024px) {
+	#header-right {
+    	padding-top: 24px;
+		}
+
+		#ToggleAdminLinkButton {
+    padding: 0 12px 0 6px;
+		}
+}          
+
+@media screen and (min-width: 1271px) {
+	.navbar-nav > li {
+		font-size:16px;
+	}
+	.navbar-nav > li > a {
+		padding-right:20px;
+	}
+}
+
+.header-text {font-size:18px;}
+.subheader-text {font-size:16px;}
+
+.btn-warning {
+    background-color: #22326E;
+    border-color: #22326E !important;
+}
+
+.btn-warning:hover {
+    color: #fff;
+    background-color: #337AB7 ;
+    border-color: #337AB7 ;
+}
+
+.btn-warning#chat-footer:hover {
+    color: #3A79CF;
+    background-color: #fff;
+    border-color: #22326E;
+}
+
+.btn-warning#chat-footer:active {
+    color: #3A79CF;
+    background-color: #fff;
+    border-color: #22326E;
+}
+
+.btn-warning#chat-footer:focus {
+    color: #3A79CF;
+    background-color: #fff;
+    border-color: #22326E;
+}
+
+	
+/* ------------------- Type Enhancements ----------------------------------- */
+/* add our official font */
+body, h1, h2, h3, h4, h5, h6, p, a, li, td, label, input, div, span, .portlet-header, .portlet-content p, .portlet-content li, footer {
+    font-family: "Cera Pro","myriad-pro-n4","myriad-pro-1","myriad-pro-2",helvetica,arial,sans-serif;
+}
+
+/* Use by bootbox.js */
+.bootbox-body {
+    font-size: 14px;
+}
+
+.portlet-header {font-size:16px;}
+
+@media screen and (min-width:1201px) {
+.portlet-header {font-size:18px;}
+}
+
+.portlet-content p, .x-panel-body.rwcc-list a, .x-panel-body.rwcc-list2 h3 {
+	font-size:14px;
+	line-height: 19px;
+}
+
+/* ------------------ Dropdown Menu Styling ------------------------------- */
+/* style the dropdown backround color and adjust width */
+
+@media screen and (min-width: 481px) {
+	ul.dropdown-menu {
+		min-width: 250px;
+	}
+
+	ul.dropdown-menu li a {
+			padding:8px;
+	}
+}
+
+ul.dropdown-menu {
+    background-color: #074F71;
+}
+
+    ul.dropdown-menu li {
+        border-bottom: 1px solid #1B1D36;
+        border-top: 1px solid #074F71;
+    }
+
+ul.dropdown-menu li a, .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+	color:#fff;
+
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: #F6F6F6;
+    border-color: #F6F6F6;
+    color: #29389A !important;
+}
+
+/* override float behavior of right arrows on multi-level navigation */
+.dropdown-submenu > a:after {
+    position: absolute;
+    float:none;
+    margin-right:0;
+    margin-top:0;
+    right: 10px;
+    top: 40%;
+} 
+
+/* Alerts Modal Adjustment */
+#modalAutomateAlerts a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+#modalAutomateAlerts a:hover {
+    color: #23527c;
+    text-decoration: none;
+}
+
+
+ /* -------------------- Widget flat UI adjustment --------------------- */
+ .ui-widget-header {
+    background-color: #0067B1;
+    background-image: none;
+    border-radius: 0;
+}
+
+@media screen and (min-width: 481px) {
+	.ui-widget-header {
+		padding: 14px;
+	}
+}
+
+/* making widgets wider to fill space */
+@media screen and (max-width: 599px) {
+	.column {width:100%;}
+}
+
+@media screen and (min-width: 600px) {
+	.column {width:50%;}
+}
+
+@media screen and (min-width: 975px) {
+	.column {width:33%;}
+}
+
+/* -------------------- Footer --------------------- */
+footer .footer-navbar a {
+    font-family: "Cera Pro","myriad-pro-n4","myriad-pro-1","myriad-pro-2",helvetica,arial,sans-serif;
+    font-size: 16px;
+}
+
+footer p.copyright {
+    font-family: "Cera Pro","myriad-pro-n4","myriad-pro-1","myriad-pro-2",helvetica,arial,sans-serif;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 400;
+    color: #4e4e4e;
+    text-align: center;
+}
+
+/* -------------------- Footer --------------------- */
+/* http://stackoverflow.com/questions/19262113/change-header-background-color-of-modal-of-twitter-bootstrap */
+.modal-header {
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #0067B1;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+            
+    color: white;
+}
+
+.btn-secondary {
+    color: #777;
+    background-color: #F0F0F0;
+}
+.btn-secondary:hover {
+    color: #444;
+    background-color: #C7C7C7;
+}

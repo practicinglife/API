@@ -1,0 +1,138 @@
+var manageVCookie = "docscwmv";
+var automateVCookie = "docscwav";
+var sellVCookie = "docscwsv";
+var controlVCookie = "docscwcv";
+var cloudconsoleVCookie = "docscwccv";
+
+function getCookieKey(key) {
+	var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+	keyValue = keyValue ? keyValue[2] : '';
+	keyValue = decodeURIComponent(keyValue);
+	return keyValue;
+} 
+
+function queryString(key) {
+    var re = new RegExp("[?&]" + key + "=([^&$]*)", "i");
+    var offset = location.href.search(re);
+    if (offset == -1) return null;
+    return RegExp.$1;
+}
+
+function showVersion(ctrl)
+{
+	var versionClassToShow=$(ctrl).attr('id');
+
+	if(ctrl){
+		if($(ctrl).hasClass('vOpen')){
+			$('.vOpen').removeClass('vOpen').addClass('vClosed');
+			versionClassToShow = '';
+		}
+		else{
+			$('.vOpen').removeClass('vOpen').addClass('vClosed');
+			$(ctrl).removeClass('vClosed').addClass('vOpen');
+		}
+	}
+
+	$('.version').each(function(){
+		if($(this).hasClass(versionClassToShow))
+		{
+			$(this).show();
+		}
+		else
+		{
+			$(this).hide();
+		}
+	});
+
+
+}
+
+function getCookieNameForProduct(prod)
+{
+	switch(prod)
+	{
+		case 'manage':
+			return manageVCookie;
+		case 'automate':
+			return automateVCookie;
+		case 'sell':
+			return sellVCookie;
+		case 'control':
+			return controlVCookie;
+		case 'cloudconsole':
+			return cloudconsoleVCookie;
+		default:
+			return manageVCookie;
+	}
+	
+}
+
+function readVer(prod)
+{
+	var qv = queryString("v");
+	var cookieToUse = getCookieNameForProduct(prod);
+	var cv = getVersionCookie(cookieToUse);
+	if(!qv && !cv){
+		showFirst();
+	}
+	else
+	{
+		var v = (qv === null? cv : qv);
+		addVersionCookie(v, cookieToUse);
+		var isShowing = false;
+		$('.vSelect').each( function(){
+			var ctrlId = $(this).attr('id');
+			if(v >= ctrlId && !isShowing)
+			{
+				showVersion($(this));
+				isShowing = true;	
+			}
+			else
+			{
+			}
+		});
+
+		if(!isShowing){
+			showLatest();
+		}
+	}
+
+}
+
+function addVersionCookie(v, cookieName)
+{
+	var v_value = escape(v);
+
+	document.cookie = cookieName + "=" + v_value + ";path=/;"; 
+}
+
+function getVersionCookie(cookieName)
+{
+	var c_val = getCookieKey(cookieName);
+	
+	if(c_val.length===0){
+		return null;
+	}
+
+	return c_val;
+}
+
+function showLatest()
+{
+	showVersion($('.vSelect:last'));
+}
+
+function showFirst()
+{
+	showVersion($('.vSelect:first'));
+}
+
+function getCookieDuration(val)
+{
+	var now = new Date();
+	var time = now.getTime();
+	var exp = time + (val * 86400000);
+	now.setTime(exp);
+	return now;
+
+}

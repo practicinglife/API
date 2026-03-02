@@ -1,0 +1,50 @@
+// This JS is to programmatically scroll to certain element ID.
+// The browser's auto scroll cannot be used because of the fixed floating University header
+
+(function () {
+
+    function escapeAnchorForJq(elementId) {
+        return elementId.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
+    }
+
+    function scrollToFragment(fragment) {
+        var $anchorElement = $(fragment);
+        if ($anchorElement.length === 0) {
+            return;
+        }
+
+        var offset = $($anchorElement).offset();
+        var scrollto = offset.top - $('.navbar-fixed-top').height() - 50;
+        console.log('scrollto = ' + scrollto);
+
+        $('html, body').animate({ scrollTop: scrollto }, 250);
+    }
+
+    function scrollToUrlFragment() {
+        var anchor = window.location.hash.substr(1);
+
+        if (anchor.length === 0) {
+            return;
+        }
+
+        anchor = escapeAnchorForJq(anchor);
+        $('a[href="#' + anchor + '"]:first').click();
+    }
+
+    $(window).bind('load', function () {
+        // Bind event click on anchor linked within the page.
+        $('a[href^="#"]:not([data-parent="#accordion"])').click(function () {
+            var fragment = $(this).attr('href');
+            scrollToFragment(escapeAnchorForJq(fragment));
+        });
+
+        $(document).ajaxStop(function () {
+            scrollToUrlFragment();
+        });
+
+        setTimeout(function () {
+            scrollToUrlFragment();
+        }, 10);
+    });
+
+}());
