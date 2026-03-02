@@ -98,6 +98,9 @@ public sealed class NewConnectionFormViewModel : ViewModelBase
             ConnectorType.ConnectWiseAsio => "https://openapi.service.itsupport247.net",
             ConnectorType.ConnectWiseControl => "https://your-instance.screenconnect.com/App_Extensions/fc234f0e-2e8e-4a1f-b977-ba41b14031f6",
             ConnectorType.Eset => "https://your-eset-server/era/v1",
+            ConnectorType.SentinelOne => "https://usea1.sentinelone.net/web/api/v2.1",
+            ConnectorType.Acronis => "https://cloud.acronis.com",
+            ConnectorType.Office365 => "https://graph.microsoft.com/v1.0",
             _ => string.Empty
         };
         SelectedAuthType = _connectorType switch
@@ -106,10 +109,17 @@ public sealed class NewConnectionFormViewModel : ViewModelBase
             ConnectorType.ConnectWiseAsio => AuthMethodType.ClientCredentials,
             ConnectorType.ConnectWiseControl => AuthMethodType.BasicAuth,
             ConnectorType.Eset => AuthMethodType.BasicAuth,
+            ConnectorType.SentinelOne => AuthMethodType.ApiKey,
+            ConnectorType.Acronis => AuthMethodType.ClientCredentials,
+            ConnectorType.Office365 => AuthMethodType.ClientCredentials,
             _ => AuthMethodType.ApiKey
         };
-        Scope = _connectorType == ConnectorType.ConnectWiseAsio
-            ? "platform.asset.read platform.devices.read platform.companies.read platform.sites.read"
-            : string.Empty;
+        Scope = _connectorType switch
+        {
+            ConnectorType.ConnectWiseAsio =>
+                "platform.asset.read platform.devices.read platform.companies.read platform.sites.read",
+            ConnectorType.Office365 => "https://graph.microsoft.com/.default",
+            _ => string.Empty
+        };
     }
 }

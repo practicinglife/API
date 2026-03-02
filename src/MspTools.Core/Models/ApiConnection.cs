@@ -9,6 +9,9 @@ public enum ConnectorType
     ConnectWiseAsio,
     ConnectWiseControl,
     Eset,
+    SentinelOne,
+    Acronis,
+    Office365,
     Custom
 }
 
