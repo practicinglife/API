@@ -20,6 +20,9 @@ public static class ConnectorFactory
             ConnectorType.ConnectWiseAsio => new ConnectWiseAsioConnector(connection),
             ConnectorType.ConnectWiseControl => new ConnectWiseControlConnector(connection),
             ConnectorType.Eset => new EsetConnector(connection),
+            ConnectorType.SentinelOne => new SentinelOneConnector(connection),
+            ConnectorType.Acronis => new AcronisConnector(connection),
+            ConnectorType.Office365 => new Office365Connector(connection),
             _ => throw new NotSupportedException($"Connector type '{connection.ConnectorType}' is not supported.")
         };
     }

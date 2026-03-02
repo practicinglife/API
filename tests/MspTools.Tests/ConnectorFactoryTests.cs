@@ -19,6 +19,10 @@ public class ConnectorFactoryTests
     [InlineData(ConnectorType.ConnectWiseManage)]
     [InlineData(ConnectorType.ConnectWiseAsio)]
     [InlineData(ConnectorType.ConnectWiseControl)]
+    [InlineData(ConnectorType.Eset)]
+    [InlineData(ConnectorType.SentinelOne)]
+    [InlineData(ConnectorType.Acronis)]
+    [InlineData(ConnectorType.Office365)]
     public void Create_ReturnsCorrectConnectorType(ConnectorType connectorType)
     {
         var conn = MakeConnection(connectorType);
