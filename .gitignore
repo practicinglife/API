@@ -18,7 +18,10 @@ packages/
 
 # Test results
 TestResults/
-*.trx
+
+# Local app settings (contains MySQL credentials — never commit)
+**/settings.json
+appsettings.Local.json
 *.coverage
 
 # OS files
